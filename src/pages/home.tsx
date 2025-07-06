@@ -11,7 +11,6 @@ export default function HomePage() {
           <a href="#" className="text-gray-600 hover:text-gray-900">masukan</a>
           <a href="#" className="text-gray-600 hover:text-gray-900">donasi</a>
           <a href="#" className="text-gray-600 hover:text-gray-900">coming soon feature</a>
-          <MyComponent />
           <button className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800">
             pre-register
           </button>
@@ -20,6 +19,7 @@ export default function HomePage() {
 
       {/* Main Content */}
       <main className="px-6 py-16">
+          <MyComponent />
         <div className="max-w-6xl mx-auto">
           {/* Hero Section */}
           <div className="mb-16">

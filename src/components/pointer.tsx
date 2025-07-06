@@ -1,5 +1,5 @@
 import Lottie from 'lottie-react';
-import animationData from '../components/pointer';
+import animationData from '../components/pointers.json';
 
 export default function MyComponent() {
   return (
