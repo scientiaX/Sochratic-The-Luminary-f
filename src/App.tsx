@@ -1,35 +1,22 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+// Impor komponen halaman yang berbeda
+import Home from './pages/home';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Router> {/* Ini menyediakan konteks routing untuk aplikasi */}
+      {/* <Header /> Header yang mungkin ingin Anda tampilkan di semua halaman */}
+      <Routes> {/* Container untuk semua definisi rute */}
+        <Route path="/" element={<Home />} /> {/* Jika URL adalah '/', tampilkan Home */}
+        {/* <Route path="/about" element={<AboutPage />} /> Jika URL adalah '/about', tampilkan AboutPage */}
+        {/* <Route path="/contact" element={<ContactPage />} /> Jika URL adalah '/contact', tampilkan ContactPage */}
+        {/* Anda bisa menambahkan rute lain di sini */}
+      </Routes>
+      {/* <Footer /> Footer yang mungkin ingin Anda tampilkan di semua halaman */}
+    </Router>
+  );
 }
 
-export default App
+export default App;
