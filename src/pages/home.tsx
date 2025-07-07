@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import MyComponent from '../components/pointer';
 
 export default function HomePage() {
@@ -23,7 +24,7 @@ export default function HomePage() {
       
       {/* Lottie Animation Section */}
       <main className="px-4 sm:px-6 py-8 sm:py-16 relative">
-        <div className="hidden sm:block absolute top-0 right-0 transform -translate-y-4 -rotate-90">
+        <div className="hidden sm:block absolute top-0 right-8 transform -translate-y-4 -rotate-90">
           <MyComponent />
         </div>
       </main>
@@ -41,9 +42,12 @@ export default function HomePage() {
             <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl">
               cukup 1% dari waktumu untuk latih soft skill tingkat dewa
             </p>
-            <button className="bg-black text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-medium hover:bg-gray-800 transition-colors w-full sm:w-auto">
-              <a href="/selection"> mulai 10 menit pertamamu </a>
-            </button>
+            <Link 
+              to="/selection" 
+              className="bg-black text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-medium hover:bg-gray-800 transition-colors w-full sm:w-auto inline-block text-center"
+            >
+              mulai 10 menit pertamamu
+            </Link>
           </div>
 
           {/* Combined Section with Scroll Track Shadow Effect */}
