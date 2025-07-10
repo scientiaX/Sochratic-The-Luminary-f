@@ -183,7 +183,9 @@ const SocraticChatApp = () => {
 
         {/* Floating Problem Box - positioned below header */}
         <div className="relative">
-          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10 bg-white rounded-lg shadow-lg border-2 border-red-200 p-4 max-w-md w-full mx-4">
+          <div className={`absolute top-4 z-10 bg-white rounded-lg shadow-lg border-2 border-red-200 p-4 ${
+            isMobile ? 'left-4 right-4' : 'left-1/2 transform -translate-x-1/2 max-w-md w-full mx-4'
+          }`}>
             <div className="flex items-center space-x-2 mb-2">
               <Target className="w-5 h-5 text-red-600" />
               <h3 className="font-semibold text-red-700">Masalah</h3>
