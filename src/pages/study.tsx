@@ -14,7 +14,7 @@ const SocraticChatApp = () => {
   
   const [thoughtBoard, setThoughtBoard] = useState({
     'Asumsi Awal': [],
-    'Hipotesis': [],
+    'Pertanyaan': [],
     'Revisi': [],
     'Solusi Akhir': []
   });
