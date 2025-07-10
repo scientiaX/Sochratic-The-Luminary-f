@@ -10,7 +10,7 @@ export default function HomePage() {
         <div className="text-lg sm:text-xl font-bold text-gray-900">Nova X</div>
         <nav className="hidden sm:flex items-center space-x-7">
           <a href="#" className="text-gray-600 hover:text-gray-900 font-bold">masukan</a>
-          <a href="#" className="text-gray-600 hover:text-gray-900 font-bold">donasi</a>
+          <a href="#" className="text-gray-600 hover:text-gray-900 font-bold">dukungan</a>
           <a href="#" className="text-gray-600 hover:text-gray-900 font-bold">coming soon feature</a>
           <button className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800">
             pre-register
