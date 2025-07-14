@@ -43,7 +43,7 @@ export default function HomePage() {
               cukup 1% dari waktumu untuk latih soft skill tingkat dewa
             </p>
             <Link 
-              to="/selection" 
+              to="/login" 
               className="bg-black text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-medium hover:bg-gray-800 transition-colors w-full sm:w-auto inline-block text-center"
             >
               mulai 10 menit pertamamu

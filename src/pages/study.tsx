@@ -135,8 +135,8 @@ const SocraticChatApp = () => {
   const getCategoryIcon = (category) => {
     switch (category) {
       case 'Asumsi Awal': return <Lightbulb className="w-4 h-4" />;
-      case 'Hipotesis': return <Brain className="w-4 h-4" />;
-      case 'Revisi': return <RefreshCw className="w-4 h-4" />;
+      case 'Pertanyaan': return <Brain className="w-4 h-4" />;
+      case 'Materi': return <RefreshCw className="w-4 h-4" />;
       case 'Solusi Akhir': return <Settings className="w-4 h-4" />;
       default: return <AlertCircle className="w-4 h-4" />;
     }
@@ -145,8 +145,8 @@ const SocraticChatApp = () => {
   const getCategoryColor = (category) => {
     switch (category) {
       case 'Asumsi Awal': return 'border-yellow-300 bg-yellow-50';
-      case 'Hipotesis': return 'border-blue-300 bg-blue-50';
-      case 'Revisi': return 'border-purple-300 bg-purple-50';
+      case 'Pertanyaan': return 'border-blue-300 bg-blue-50';
+      case 'Materi': return 'border-purple-300 bg-purple-50';
       case 'Solusi Akhir': return 'border-green-300 bg-green-50';
       default: return 'border-gray-300 bg-gray-50';
     }
