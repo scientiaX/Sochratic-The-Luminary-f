@@ -11,9 +11,14 @@ import { Input } from "../components/ui/input";
 
 export default function StudyPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
-  const handleDropdownClick = () => {
+  const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
   };
 
   // Navigation items data
@@ -40,133 +45,142 @@ export default function StudyPage() {
     },
   ];
 
-  // Menu items data
-  const menuItems = [
-    {
-      label: "pertanyaan",
-      icon: "❓",
-    },
-    {
-      label: "materi",
-      icon: "📚",
-    },
-    {
-      label: "solusi dan pendapat",
-      icon: "💡",
-    },
-  ];
-
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-7xl mx-auto">
-        {/* Top Navigation Bar */}
-        <Card className="mb-6 shadow-lg">
-          <CardContent className="p-4 flex justify-between items-center">
-            <div className="font-bold text-gray-700 text-lg">
-              topic
-            </div>
+    <div className="min-h-screen bg-gray-100 flex flex-col">
+      <div className="flex-1 p-4">
+        <div className="max-w-7xl mx-auto">
+          {/* Top Navigation Bar */}
+          <Card className="mt-0 mb-4 shadow-lg">
+            <CardContent className="p-4 flex justify-between items-center">
+              <div className="font-bold text-gray-700 text-lg">
+                topic
+              </div>
 
-            <div className="flex space-x-2">
-              {navItems.map((item, index) => (
-                <Button
-                  key={index}
-                  variant="ghost"
-                  className="flex items-center space-x-2 h-10 px-3 rounded-lg hover:bg-gray-100"
-                >
-                  {item.icon}
-                  <span className="hidden sm:inline font-normal text-gray-700 text-sm">
-                    {item.text}
-                  </span>
-                </Button>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+              <div className="flex space-x-2">
+                {navItems.map((item, index) => (
+                  <Button
+                    key={index}
+                    variant="ghost"
+                    className="flex items-center space-x-2 h-10 px-3 rounded-lg hover:bg-gray-100"
+                  >
+                    {item.icon}
+                    <span className="hidden sm:inline font-normal text-gray-700 text-sm">
+                      {item.text}
+                    </span>
+                  </Button>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* Main Content Layout - Element utama di tengah */}
-        <div className="flex justify-center">
-          {/* Main Content Area */}
-          <div className="w-full max-w-4xl space-y-6">
-            {/* Dropdown - sekarang di tengah horizontal dengan animasi */}
-            <div className="flex justify-center">
-              <div className="relative">
-                <img
-                  className="w-80 h-11 cursor-pointer hover:opacity-80 transition-opacity"
-                  alt="Dropdown container"
-                  src="https://c.animaapp.com/md8rwr14pGdpfM/img/dropdown-container----dropdown.svg"
-                  onClick={handleDropdownClick}
-                />
-                
-                {/* Dropdown Content */}
-                <div 
-                  className={`absolute top-full left-0 w-full mt-2 transition-all duration-500 ease-in-out transform ${
-                    isDropdownOpen 
-                      ? 'opacity-100 translate-y-0 scale-100' 
-                      : 'opacity-0 -translate-y-4 scale-95 pointer-events-none'
-                  }`}
-                >
-                  <Card className="w-full bg-[#0e132380] rounded-2xl backdrop-blur-[30px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(30px)_brightness(100%)]">
-                    <CardContent className="p-6">
-                      <h2 className="[font-family:'Inter',Helvetica] font-bold text-[#e2e5e8] text-[15px] tracking-[0] leading-6 mb-4">
-                        problem text here
-                      </h2>
-                      <Button 
-                        className="w-full h-11 bg-gray-400 hover:bg-gray-500 text-white rounded-md transition-colors duration-200"
-                        onClick={handleDropdownClick}
-                      >
-                        CONTINUE
-                      </Button>
-                    </CardContent>
-                  </Card>
+          {/* Main Content Layout */}
+          <div className="flex justify-center">
+            <div className="w-full max-w-4xl">
+              {/* Dropdown Container */}
+              <div className="flex justify-center relative mb-3">
+                <div className="relative">
+                  {/* Dropdown Button */}
+                  <Button
+                    className={`w-32 sm:w-80 h-8 sm:h-11 bg-gray-200 hover:bg-gray-300 border border-gray-300 rounded-xl cursor-pointer transition-all duration-300 ease-out ${
+                      isDropdownOpen 
+                        ? 'opacity-30 scale-95' 
+                        : 'opacity-100 scale-100 hover:opacity-80'
+                    }`}
+                    onClick={handleDropdownToggle}
+                  >
+                    <span className="text-gray-600 text-sm font-medium">Show Problem</span>
+                  </Button>
+                  
+                  {/* Dropdown Content */}
+                  <div 
+                    className={`absolute top-0 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 w-screen max-w-4xl px-4 sm:px-0 sm:w-full ${
+                      isDropdownOpen 
+                        ? 'opacity-100 translate-y-0 scale-100' 
+                        : 'opacity-0 -translate-y-8 scale-90 pointer-events-none'
+                    }`}
+                    style={{
+                      transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    }}
+                  >
+                    <Card className="w-full bg-[#0e132380] rounded-2xl backdrop-blur-[30px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(30px)_brightness(100%)] shadow-2xl border-0">
+                      <CardContent className="p-6">
+                        <h2 className="[font-family:'Inter',Helvetica] font-bold text-[#e2e5e8] text-[15px] tracking-[0] leading-6 mb-4">
+                          problem text here afhosh afhfhohf gfjg fogf ghfojgfhg fushgoufghdg sdu fuhgoufh problem text here afhosh afhfhohf gfjg fogf ghfojgfhg fushgoufghdg sdu fuhgoufh
+                        </h2>
+                        
+                        <Button 
+                          className="w-full h-11 bg-gray-400 hover:bg-gray-500 active:bg-gray-600 text-white rounded-xl transition-all duration-150 active:scale-95 transform"
+                          onClick={handleDropdownToggle}
+                        >
+                          CONTINUE
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Main Image */}
-            <Card className="overflow-hidden shadow-lg rounded-2xl">
-              <CardContent className="p-0">
-                <img
-                  className="w-full h-64 sm:h-80 object-cover"
-                  alt="Landscape"
-                  src="https://c.animaapp.com/md8rwr14pGdpfM/img/rectangle.png"
+              {/* Main Image */}
+              <Card className="mt-0 overflow-hidden shadow-lg rounded-2xl mb-3">
+                <CardContent className="p-0">
+                  <img
+                    className="w-full h-20 sm:h-40 object-cover"
+                    alt="Landscape"
+                    src="https://c.animaapp.com/md8rwr14pGdpfM/img/rectangle.png"
+                  />
+                </CardContent>
+              </Card>
+
+              {/* AI profile */}
+              <div className="flex items-center space-x-2 mb-2 mt-7">
+                <Avatar className="w-7 h-7">
+                  <AvatarImage
+                    src="https://c.animaapp.com/md8rwr14pGdpfM/img/rectangle-1.png"
+                    alt="AI avatar"
+                  />
+                  <AvatarFallback>SC</AvatarFallback>
+                </Avatar>
+                <span className="font-medium text-gray-700 text-sm">
+                  ARISTOTIC
+                </span>
+              </div>
+
+              {/* AI Response */}
+              <Card className="bg-white/90 rounded-2xl mb-3">
+                <CardContent className="p-5">
+                  <p className="text-black-800 text-sm leading-relaxed text-lg">
+                    ai respon/first question
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* Message Input */}
+              <div className="mb-20">
+                <Input
+                  className="bg-white/90 h-15 border-2 border-gray-200 rounded-2xl placeholder:text-gray-600 w-full"
+                  placeholder="masukan pertanyaan dan pendapat"
+                  value={inputValue}
+                  onChange={handleInputChange}
                 />
-              </CardContent>
-            </Card>
-
-            {/* User Profile */}
-            <div className="flex items-center space-x-4">
-              <Avatar className="w-12 h-12">
-                <AvatarImage
-                  src="https://c.animaapp.com/md8rwr14pGdpfM/img/rectangle-1.png"
-                  alt="User avatar"
-                />
-                <AvatarFallback>SC</AvatarFallback>
-              </Avatar>
-              <span className="font-medium text-gray-700 text-base">
-                SOCHRATIC
-              </span>
-            </div>
-
-            {/* AI Response */}
-            <Card className="bg-white/90 shadow-lg rounded-2xl">
-              <CardContent className="p-6">
-                <p className="text-gray-700 text-sm leading-relaxed">
-                  ai respon/first question
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Message Input */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Input
-                className="flex-1 h-12 rounded-2xl border-gray-300 px-4 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-                placeholder="masukan pertanyaan dan pendapat anda disini"
-              />
-              <Button className="h-12 px-6 bg-blue-600 hover:bg-blue-700 rounded-2xl text-white font-medium">
-                kirim
-              </Button>
+              </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
+        <div className="max-w-7xl mx-auto flex justify-center">
+          <Button 
+            className={`h-12 px-8 rounded-2xl font-medium transition-all duration-200 ${
+              inputValue.trim() 
+                ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer' 
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
+            disabled={!inputValue.trim()}
+          >
+            next
+          </Button>
         </div>
       </div>
     </div>
