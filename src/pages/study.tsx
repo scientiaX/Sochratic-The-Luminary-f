@@ -1,10 +1,6 @@
 import { Home } from "lucide-react";
 import React, { useState } from "react";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "../components/ui/avatar";
+import NextButton from "../components/element/NextButton";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { Input } from "../components/ui/input";
@@ -12,13 +8,34 @@ import { Input } from "../components/ui/input";
 export default function StudyPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [currentSession, setCurrentSession] = useState(0);
+
+  // Sample conversation sessions
+  const conversationSessions = [
+    {
+      aiResponse: "Apa itu fotosintesis dan bagaimana prosesnya?",
+    },
+    {
+      aiResponse: "Jelaskan tentang hukum Newton yang pertama",
+    },
+    {
+      aiResponse: "Bagaimana cara kerja sistem pencernaan manusia?",
+    }
+  ];
 
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
+  };
+
+  const handleNext = () => {
+    if (inputValue.trim()) {
+      setCurrentSession((prev) => (prev + 1) % conversationSessions.length);
+      setInputValue("");
+    }
   };
 
   // Navigation items data
@@ -131,56 +148,50 @@ export default function StudyPage() {
                 </CardContent>
               </Card>
 
-              {/* AI profile */}
-              <div className="flex items-center space-x-2 mb-2 mt-7">
-                <Avatar className="w-7 h-7">
-                  <AvatarImage
-                    src="https://c.animaapp.com/md8rwr14pGdpfM/img/rectangle-1.png"
-                    alt="AI avatar"
-                  />
-                  <AvatarFallback>SC</AvatarFallback>
-                </Avatar>
-                <span className="font-medium text-gray-700 text-sm">
-                  ARISTOTIC
-                </span>
-              </div>
+              {/* Conversation Box */}
+              <Card className="bg-white border-2 border-gray-300 rounded-2xl mb-20 transition-all duration-500 ease-in-out">
+                <CardContent className="p-6">
+                  {/* ai respon */}
+                  <div className="mb-6">
+                    <div className="text-sm text-gray-500 mb-2 font-medium">Pertanyaan:</div>
+                    <div className="text-gray-800 text-base leading-relaxed">
+                      {conversationSessions[currentSession].aiResponse}
+                    </div>
+                  </div>
 
-              {/* AI Response */}
-              <Card className="bg-white/90 rounded-2xl mb-3">
-                <CardContent className="p-5">
-                  <p className="text-black-800 text-sm leading-relaxed text-lg">
-                    ai respon/first question
-                  </p>
+
+                  {/* Input Field at Bottom of Box */}
+                  <div className="border-t border-gray-200 pt-4">
+                    <Input
+                      className="bg-gray-100 h-12 border border-gray-300 rounded-xl placeholder:text-gray-600 w-full focus:bg-white transition-colors"
+                      placeholder="Masukan pertanyaan dan pendapat"
+                      value={inputValue}
+                      onChange={handleInputChange}
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter' && inputValue.trim()) {
+                          handleNext();
+                        }
+                      }}
+                    />
+                  </div>
                 </CardContent>
               </Card>
-
-              {/* Message Input */}
-              <div className="mb-20">
-                <Input
-                  className="bg-white/90 h-15 border-2 border-gray-200 rounded-2xl placeholder:text-gray-600 w-full"
-                  placeholder="masukan pertanyaan dan pendapat"
-                  value={inputValue}
-                  onChange={handleInputChange}
-                />
-              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Footer */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
+// --- inside the fixed footer ---
+      <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-gray-200 p-4">
         <div className="max-w-7xl mx-auto flex justify-center">
-          <Button 
-            className={`h-12 px-8 rounded-2xl font-medium transition-all duration-200 ${
-              inputValue.trim() 
-                ? 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer' 
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            }`}
+          <button
+            onClick={handleNext}
             disabled={!inputValue.trim()}
+            className="disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 transition-transform"
           >
-            next
-          </Button>
+            <NextButton className="w-[228px] h-[52px]" />
+          </button>
         </div>
       </div>
     </div>
