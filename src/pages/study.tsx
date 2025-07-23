@@ -190,7 +190,7 @@ export default function StudyPage() {
             disabled={!inputValue.trim()}
             className="disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 transition-transform"
           >
-            <NextButton className="w-[228px] h-[52px]" />
+            <NextButton className="w-[228px] h-[60px]" />
           </button>
         </div>
       </div>
