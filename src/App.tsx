@@ -6,6 +6,7 @@ import Home from './pages/home';
 import LessonSelectionPage from './pages/selection';
 import StudyPage from './pages/study';
 import LoginRegisterPage from './pages/login';
+import PremiumPage from './pages/premium';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/selection" element={<LessonSelectionPage />} />
         <Route path="/study" element={<StudyPage />} />
         <Route path="/login" element={<LoginRegisterPage />} />
+        <Route path="/premium" element={<PremiumPage />} />
         {/* <Route path="/about" element={<AboutPage />} /> Jika URL adalah '/about', tampilkan AboutPage */}
         {/* <Route path="/contact" element={<ContactPage />} /> Jika URL adalah '/contact', tampilkan ContactPage */}
         {/* Anda bisa menambahkan rute lain di sini */}

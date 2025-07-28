@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ChevronRight, Star, Clock, Users, BookOpen, Award, Play } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { ChevronRight, Star, Clock, Users, BookOpen, Award, Play, Brain, Search, Zap } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import algorithmPng from '../assets/StudyIcon/algorithm.png';
+import { FallingStars } from '../components/ui/FallingStars';
 const CourseCard = ({ course, onEnroll }: { course: any; onEnroll: () => void }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -206,15 +208,15 @@ const advancedCourses = [
 
 const CourseGridCard = ({ course }: { course: any }) => (
   <div className="flex flex-col items-center">
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 cursor-pointer relative w-32 h-32 flex items-center justify-center">
+    <div className="hover:shadow-md transition-all duration-300 cursor-pointer relative w-32 h-32 flex items-center justify-center">
       {course.isNew && (
         <div className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
           NEW
         </div>
       )}
-      <img src={course.icon} alt={course.title} className="w-20 h-20 rounded-lg object-cover" />
+      <img src={course.icon} alt={course.title} className="w-32 h-32 rounded-xl object-cover" />
     </div>
-    <h3 className="font-semibold text-white mt-3 text-center text-sm">{course.title}</h3>
+    <h3 className="font-semibold text-gray-800 mt-3 text-center text-sm">{course.title}</h3>
   </div>
 );
 
@@ -283,7 +285,7 @@ const LearningPath = ({ title, subtitle, courses, pathRef }: { title: string; su
       </div>
 
       {/* Course Grid */}
-      <div className="bg-gradient-to-br from-black via-gray-800 to-gray-700 rounded-3xl p-8 shadow-xl border border-gray-600">
+      <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-3xl p-8 shadow-xl border border-blue-200">
         <div className="flex gap-6 overflow-x-auto pb-4 md:grid md:grid-cols-3 lg:grid-cols-3 md:overflow-x-visible md:pb-0 scroll-smooth snap-x snap-mandatory">
           {courses.map(course => (
             <div key={course.id} className="snap-center flex-shrink-0 w-full md:w-auto">
@@ -297,41 +299,165 @@ const LearningPath = ({ title, subtitle, courses, pathRef }: { title: string; su
 };
 
 const LessonSelectionPage = () => {
+  const navigate = useNavigate();
   const path1Ref = useRef<HTMLDivElement>(null);
   const path2Ref = useRef<HTMLDivElement>(null);
+  const [activeTab, setActiveTab] = useState('thought-learning');
+
+  const tabs = [
+    {
+      id: 'thought-learning',
+      name: 'Thought Learning',
+      icon: Brain,
+      color: 'from-blue-600 to-purple-600'
+    },
+    {
+      id: 'truth-seeking',
+      name: 'Truth Seeking',
+      icon: Search,
+      color: 'from-green-600 to-teal-600'
+    },
+    {
+      id: 'ultra-thinking',
+      name: 'Ultra Thinking',
+      icon: Zap,
+      color: 'from-orange-600 to-red-600'
+    }
+  ];
+
+  const ComingSoon = ({ title, description, icon: Icon, color }: { title: string; description: string; icon: any; color: string }) => (
+    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
+      <div className={`w-24 h-24 bg-gradient-to-br ${color} rounded-3xl flex items-center justify-center mb-8 shadow-xl`}>
+        <Icon className="text-white w-12 h-12" />
+      </div>
+      
+      <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">{title}</h2>
+      <p className="text-xl sm:text-2xl text-gray-600 mb-8 max-w-2xl">{description}</p>
+      
+      <div className="mb-8 max-w-md text-center">
+        <p className="text-gray-700 text-lg font-medium mb-4">
+          Access and test features and lessons earlier than anyone else in the world by becoming an{' '}
+          <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-bold">
+            ultra contributor
+          </span>
+        </p>
+        <button 
+          onClick={() => navigate('/premium')}
+          className="w-full bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-white px-6 py-3 rounded-xl font-semibold shadow-lg border border-gray-600 hover:from-gray-800 hover:via-gray-700 hover:to-gray-600 transition-all duration-300"
+        >
+          Join Contributor
+        </button>
+      </div>
+      
+      <div className="text-3xl font-bold mb-4 flex items-center justify-center gap-2">
+        <span className="text-2xl">🚀</span>
+        <span className="text-gray-700 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Coming Soon</span>
+      </div>
+      
+      <div className="text-sm text-gray-500">
+        <p>We're working hard to bring you the most advanced learning experience.</p>
+        <p className="mt-2">Stay tuned for updates!</p>
+      </div>
+    </div>
+  );
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'thought-learning':
+        return (
+          <div className="space-y-16">
+            <LearningPath 
+              title="Foundational Programming" 
+              subtitle="Master problem solving essentials in programming"
+              courses={courses}
+              pathRef={path1Ref}
+            />
+            
+            <LearningPath 
+              title="Advanced AI & Machine Learning" 
+              subtitle="Explore the future of artificial intelligence"
+              courses={advancedCourses}
+              pathRef={path2Ref}
+            />
+          </div>
+        );
+      
+      case 'truth-seeking':
+        return (
+          <ComingSoon 
+            title="Truth Seeking"
+            description="Maximize the truth, upgrade your questions and understand what they don't understand"
+            icon={Search}
+            color="from-green-600 to-teal-600"
+          />
+        );
+      
+      case 'ultra-thinking':
+        return (
+          <ComingSoon 
+            title="Ultra Thinking"
+            description="Push the boundaries of thought power with advanced AI mentors and super solving facilities"
+            icon={Zap}
+            color="from-orange-600 to-red-600"
+          />
+        );
+      
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+      {/* Falling Stars Background */}
+      <FallingStars starCount={20} />
+      
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-100">
+      <div className="bg-white shadow-sm border-b border-gray-100 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Pilih Jalan Kebenaran</h1>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Choose The Path of Learning</h1>
+              
+              {/* Tab Buttons */}
+              <div className="flex bg-gray-100 rounded-xl p-1 shadow-inner">
+                {tabs.map((tab) => {
+                  const IconComponent = tab.icon;
+                  const isActive = activeTab === tab.id;
+                  
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-300 ${
+                        isActive
+                          ? `bg-gradient-to-r ${tab.color} text-white shadow-lg transform scale-105`
+                          : 'text-gray-600 hover:text-gray-800 hover:bg-white'
+                      }`}
+                    >
+                      <IconComponent size={16} />
+                      <span className="hidden sm:inline">{tab.name}</span>
+                      <span className="sm:hidden">{tab.name.split(' ')[0]}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-            <button className="flex items-center justify-center sm:justify-start space-x-2 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-white px-4 py-2 rounded-lg shadow-lg border border-gray-600 hover:from-gray-800 hover:via-gray-700 hover:to-gray-600 transition-all duration-300 cursor-pointer text-sm sm:text-base">
+            
+            <button 
+              onClick={() => navigate('/premium')}
+              className="flex items-center justify-center sm:justify-start space-x-2 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-white px-4 py-2 rounded-lg shadow-lg border border-gray-600 hover:from-gray-800 hover:via-gray-700 hover:to-gray-600 transition-all duration-300 cursor-pointer text-sm sm:text-base"
+            >
               <Award size={18} className="text-gray-300 sm:w-5" />
-              <span className="font-medium">Tingkatkan Level Pemikiran</span>
+              <span className="font-medium">Upgrade Your Thinking Rank</span>
             </button>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-16">
-        <LearningPath 
-          title="Foundational Programming" 
-          subtitle="Master problem solving essentials in programming"
-          courses={courses}
-          pathRef={path1Ref}
-        />
-        
-        <LearningPath 
-          title="Advanced AI & Machine Learning" 
-          subtitle="Explore the future of artificial intelligence"
-          courses={advancedCourses}
-          pathRef={path2Ref}
-        />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 relative z-10">
+        {renderContent()}
       </div>
     </div>
   );
