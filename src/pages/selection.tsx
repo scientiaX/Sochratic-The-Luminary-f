@@ -336,7 +336,7 @@ const LessonSelectionPage = () => {
       
       <div className="mb-8 max-w-md text-center">
         <p className="text-gray-700 text-lg font-medium mb-4">
-          Access and test features and lessons earlier than anyone else in the world by becoming an{' '}
+          Access and test features or lessons earlier than anyone else in the world by becoming an{' '}
           <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-bold">
             ultra contributor
           </span>

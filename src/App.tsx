@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Impor komponen halaman yang berbeda
-import Home from './pages/home';
+import IntroductionPage from './pages/introduction';
 import LessonSelectionPage from './pages/selection';
 import StudyPage from './pages/study';
 import LoginRegisterPage from './pages/login';
@@ -13,7 +13,7 @@ function App() {
     <Router> {/* Ini menyediakan konteks routing untuk aplikasi */}
       {/* <Header /> Header yang mungkin ingin Anda tampilkan di semua halaman */}
       <Routes> {/* Container untuk semua definisi rute */}
-        <Route path="/" element={<Home />} /> {/* Jika URL adalah '/', tampilkan Home */}
+        <Route path="/" element={<IntroductionPage />} /> {/* Jika URL adalah '/', tampilkan Home */}
         <Route path="/selection" element={<LessonSelectionPage />} />
         <Route path="/study" element={<StudyPage />} />
         <Route path="/login" element={<LoginRegisterPage />} />

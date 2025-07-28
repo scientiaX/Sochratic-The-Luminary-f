@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import MyComponent from '../components/pointer';
 
-export default function HomePage() {
+export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
