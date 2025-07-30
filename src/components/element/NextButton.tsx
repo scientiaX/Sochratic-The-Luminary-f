@@ -35,9 +35,9 @@ const NextButton = (props: SVGProps<SVGSVGElement>) => (
         y2={28}
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#9F1EFB" />
-        <stop offset={0.5} stopColor="#FF1FEC" />
-        <stop offset={1} stopColor="#FCB842" />
+        <stop stopColor="#3b82f6" />
+        <stop offset={0.5} stopColor="#6366f1" />
+        <stop offset={1} stopColor="#8b5cf6" />
       </linearGradient>
       <filter
         id="a"

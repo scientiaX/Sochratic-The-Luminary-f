@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 
 export default function IntroductionPage() {
+  const navigate = useNavigate();
   // Use scroll animation hook
   useScrollAnimation();
 
@@ -45,6 +46,11 @@ export default function IntroductionPage() {
                     key={index}
                     variant="ghost"
                     className="flex items-center space-x-2 h-10 px-3 rounded-lg hover:bg-gray-100"
+                    onClick={() => {
+                      if (item.text === 'Join' || item.text === 'Profil') {
+                        navigate('/login');
+                      }
+                    }}
                   >
                     {item.icon}
                     <span className="hidden sm:inline font-normal text-gray-700 text-sm">
@@ -217,9 +223,42 @@ export default function IntroductionPage() {
           {/* Video and Explanation Section */}
           <div className="py-16 sm:py-24">
             <div className="max-w-6xl mx-auto px-4 sm:px-6">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+                {/* Video Container */}
+                <div className="relative order-1 lg:order-2 w-full lg:w-1/2 mb-8 lg:mb-0">
+                  <div className="bg-gray-900 rounded-3xl overflow-hidden shadow-2xl aspect-video">
+                    {/* Placeholder for YouTube video */}
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
+                      <div className="text-center">
+                        <div className="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-red-700 transition-colors cursor-pointer">
+                          <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                          </svg>
+                        </div>
+                        <p className="text-gray-300 text-lg font-medium">Video Demo</p>
+                        <p className="text-gray-400 text-sm">YouTube link will be added here</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Video overlay info */}
+                  <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl p-4 shadow-lg border border-gray-200">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900">2:45 min</p>
+                        <p className="text-xs text-gray-500">Demo video</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 {/* Explanation Box */}
-                <div className="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-3xl p-8 lg:p-10 shadow-lg">
+                <div className="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-3xl p-8 lg:p-10 shadow-lg order-2 lg:order-1 w-full lg:w-1/2">
                   <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
                     See How It Works
                   </h2>
@@ -250,39 +289,6 @@ export default function IntroductionPage() {
                         </svg>
                       </div>
                       <p className="text-gray-700">Instant feedback and progress tracking by procces not result</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Video Container */}
-                <div className="relative">
-                  <div className="bg-gray-900 rounded-3xl overflow-hidden shadow-2xl aspect-video">
-                    {/* Placeholder for YouTube video */}
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
-                      <div className="text-center">
-                        <div className="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4 hover:bg-red-700 transition-colors cursor-pointer">
-                          <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8 5v14l11-7z"/>
-                          </svg>
-                        </div>
-                        <p className="text-gray-300 text-lg font-medium">Video Demo</p>
-                        <p className="text-gray-400 text-sm">YouTube link will be added here</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Video overlay info */}
-                  <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl p-4 shadow-lg border border-gray-200">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-gray-900">2:45 min</p>
-                        <p className="text-xs text-gray-500">Demo video</p>
-                      </div>
                     </div>
                   </div>
                 </div>

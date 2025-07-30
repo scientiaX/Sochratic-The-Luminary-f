@@ -206,19 +206,30 @@ const advancedCourses = [
   }
 ];
 
-const CourseGridCard = ({ course }: { course: any }) => (
-  <div className="flex flex-col items-center">
-    <div className="hover:shadow-md transition-all duration-300 cursor-pointer relative w-32 h-32 flex items-center justify-center">
-      {course.isNew && (
-        <div className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-          NEW
-        </div>
-      )}
-      <img src={course.icon} alt={course.title} className="w-32 h-32 rounded-xl object-cover" />
+const CourseGridCard = ({ course }: { course: any }) => {
+  const navigate = useNavigate();
+  
+  const handleEnroll = () => {
+    navigate(`/study/${course.id}`);
+  };
+
+  return (
+    <div className="flex flex-col items-center">
+      <div 
+        className="hover:shadow-md transition-all duration-300 cursor-pointer relative w-32 h-32 flex items-center justify-center"
+        onClick={handleEnroll}
+      >
+        {course.isNew && (
+          <div className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+            NEW
+          </div>
+        )}
+        <img src={course.icon} alt={course.title} className="w-32 h-32 rounded-xl object-cover" />
+      </div>
+      <h3 className="font-semibold text-gray-800 mt-3 text-center text-sm">{course.title}</h3>
     </div>
-    <h3 className="font-semibold text-gray-800 mt-3 text-center text-sm">{course.title}</h3>
-  </div>
-);
+  );
+};
 
 const LearningPath = ({ title, subtitle, courses, pathRef }: { title: string; subtitle: string; courses: any[]; pathRef: React.RefObject<HTMLDivElement | null> }) => {
   const [isVisible, setIsVisible] = useState(false);
