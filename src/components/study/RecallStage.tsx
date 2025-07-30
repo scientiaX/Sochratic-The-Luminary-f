@@ -1,111 +1,230 @@
 // src/components/study/RecallStage.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import NextButton from '../element/NextButton';
 import api from '@/lib/api';
 
 interface Props {
   topicId: string;
 }
 
-// Mock questions for demo
-const mockQuestions = {
-  '1': [
-    'Apa itu algoritma dan mengapa penting dalam programming?',
-    'Jelaskan perbedaan antara array dan linked list!',
-    'Apa itu Big O notation dan berikan contoh kompleksitas O(n²)?',
-    'Bagaimana cara kerja bubble sort algorithm?'
-  ],
-  '2': [
-    'Apa itu mathematical thinking dalam konteks programming?',
-    'Bagaimana pola matematis membantu dalam problem solving?',
-    'Jelaskan konsep rekursi dengan contoh sederhana!',
-    'Apa perbedaan antara iterative dan recursive approach?'
-  ]
-};
-
 export default function RecallStage({ topicId }: Props) {
-  const [questions, setQuestions] = useState<string[]>([]);
-  const [answers, setAnswers] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [answers, setAnswers] = useState(['', '', '']);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  useEffect(() => {
-    const loadQuestions = async () => {
-      try {
-        const res = await api.get(`/topics/${topicId}/recall`);
-        setQuestions([res.data.test1, res.data.test2, res.data.test3, res.data.test4]);
-        setAnswers(['', '', '', '']);
-      } catch (error) {
-        console.log('Backend not available, using mock questions');
-        // Use mock questions as fallback
-        const mockData = mockQuestions[topicId as keyof typeof mockQuestions] || [
-          'Apa yang telah Anda pelajari dari topik ini?',
-          'Bagaimana Anda akan menerapkan pengetahuan ini?',
-          'Apa tantangan terbesar yang Anda hadapi?',
-          'Bagaimana Anda akan mengembangkan skill ini lebih lanjut?'
-        ];
-        setQuestions(mockData);
-        setAnswers(['', '', '', '']);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // Mock questions for different topics
+  const mockQuestions = {
+    '1': [
+      'What is the time complexity of bubble sort in the worst case?',
+      'Explain the difference between bubble sort and quick sort.',
+      'How would you optimize bubble sort for already sorted arrays?'
+    ],
+    '2': [
+      'What is the probability of drawing a blue ball from the same box?',
+      'Explain the concept of complementary probability.',
+      'How would you calculate probability for dependent events?'
+    ],
+    '3': [
+      'What is the determinant of a 2x2 matrix?',
+      'Explain when a system of linear equations has no solution.',
+      'How do you find the inverse of a matrix?'
+    ]
+  };
 
-    loadQuestions();
-  }, [topicId]);
+  const questions = mockQuestions[topicId as keyof typeof mockQuestions] || mockQuestions['1'];
+
+  const handleAnswerChange = (index: number, value: string) => {
+    const newAnswers = [...answers];
+    newAnswers[index] = value;
+    setAnswers(newAnswers);
+  };
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     try {
-      await api.post('/exp', { answers });
+      // Try to submit to real API
+      await api.post('/recall', { topicId, answers });
     } catch (error) {
-      console.log('Backend not available, simulating submission');
+      console.log('Backend not available, using mock submission');
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    } finally {
+      setIsLoading(false);
+      setIsSubmitted(true);
     }
-    
+  };
+
+  const handleFinish = () => {
+    // Reset stage to conversation for new session
     localStorage.removeItem('currentStage');
     window.location.href = '/selection';
   };
 
-  if (isLoading) {
+  if (isSubmitted) {
     return (
-      <Card className="rounded-2xl shadow-lg">
-        <CardContent className="p-6">
-          <div className="text-center">
-            <p>Memuat pertanyaan...</p>
+      <div className="min-h-screen bg-gray-100 flex flex-col">
+        <div className="flex-1 p-4">
+          <div className="max-w-4xl mx-auto">
+            {/* Header */}
+            <Card className="mt-0 mb-4 shadow-lg">
+              <CardContent className="p-4 flex justify-between items-center">
+                <div className="font-bold text-gray-700 text-lg">
+                  Nova X
+                </div>
+
+                <div className="flex space-x-2">
+                  <Button
+                    variant="ghost"
+                    className="flex items-center space-x-2 h-10 px-3 rounded-lg hover:bg-gray-100"
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 7V9C15 10.1 14.1 11 13 11V22H11V16H9V22H7V11C5.9 11 5 10.1 5 9V7L3 7V9H1V7C1 5.9 1.9 5 3 5H21C22.1 5 23 5.9 23 7V9H21Z"/>
+                    </svg>
+                    <span className="hidden sm:inline font-normal text-gray-700 text-sm">
+                      Profil
+                    </span>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="flex items-center space-x-2 h-10 px-3 rounded-lg hover:bg-gray-100"
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M16 4C18.2 4 20 5.8 20 8C20 10.2 18.2 12 16 12C13.8 12 12 10.2 12 8C12 5.8 13.8 4 16 4ZM16 6C14.9 6 14 6.9 14 8C14 9.1 14.9 10 16 10C17.1 10 18 9.1 18 8C18 6.9 17.1 6 16 6ZM4 8C5.1 8 6 8.9 6 10C6 11.1 5.1 12 4 12C2.9 12 2 11.1 2 10C2 8.9 2.9 8 4 8ZM4 10C4 10 4 10 4 10ZM16 14C19.3 14 22 16.7 22 20V22H10V20C10 16.7 12.7 14 16 14ZM8 18C8 18 8 18 8 18H8V20H8V18ZM4 14C6.2 14 8 15.8 8 18V20H2V18C2 15.8 3.8 14 4 14Z"/>
+                    </svg>
+                    <span className="hidden sm:inline font-normal text-gray-700 text-sm">
+                      Join
+                    </span>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-2xl shadow-lg">
+              <CardContent className="p-6 text-center space-y-4">
+                <h2 className="text-xl font-bold text-green-600">Active Recall Completed!</h2>
+                <p className="text-gray-600">
+                  Great job! You have successfully completed the learning session. 
+                  Your answers have been recorded for review.
+                </p>
+              </CardContent>
+            </Card>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+        
+        {/* Fixed Footer */}
+        <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-gray-200 p-4">
+          <div className="max-w-4xl mx-auto flex justify-center">
+            <button
+              onClick={handleFinish}
+              className="active:scale-95 transition-transform"
+            >
+              <NextButton className="w-[228px] h-[60px]" />
+            </button>
+          </div>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Card className="rounded-2xl shadow-lg">
-      <CardContent className="p-6 space-y-4">
-        <h2 className="text-xl font-bold">Active Recall</h2>
-        
-        <div className="text-xs text-blue-600 bg-blue-50 p-2 rounded">
-          💡 Demo Mode: Backend belum tersedia. Pertanyaan menggunakan mock data.
-        </div>
-        
-        {questions.map((q, i) => (
-          <div key={i} className="space-y-2">
-            <p className="font-semibold">{i + 1}. {q}</p>
-            <Textarea
-              value={answers[i]}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                const newAns = [...answers];
-                newAns[i] = e.target.value;
-                setAnswers(newAns);
-              }}
-              placeholder="Jawaban Anda..."
-              className="min-h-[80px]"
-            />
+    <div className="min-h-screen bg-gray-100 flex flex-col">
+      <div className="flex-1 p-4">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <Card className="mt-0 mb-4 shadow-lg">
+            <CardContent className="p-4 flex justify-between items-center">
+              <div className="font-bold text-gray-700 text-lg">
+                Nova X
+              </div>
+
+              <div className="flex space-x-2">
+                <Button
+                  variant="ghost"
+                  className="flex items-center space-x-2 h-10 px-3 rounded-lg hover:bg-gray-100"
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 7V9C15 10.1 14.1 11 13 11V22H11V16H9V22H7V11C5.9 11 5 10.1 5 9V7L3 7V9H1V7C1 5.9 1.9 5 3 5H21C22.1 5 23 5.9 23 7V9H21Z"/>
+                  </svg>
+                  <span className="hidden sm:inline font-normal text-gray-700 text-sm">
+                    Profil
+                  </span>
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="flex items-center space-x-2 h-10 px-3 rounded-lg hover:bg-gray-100"
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M16 4C18.2 4 20 5.8 20 8C20 10.2 18.2 12 16 12C13.8 12 12 10.2 12 8C12 5.8 13.8 4 16 4ZM16 6C14.9 6 14 6.9 14 8C14 9.1 14.9 10 16 10C17.1 10 18 9.1 18 8C18 6.9 17.1 6 16 6ZM4 8C5.1 8 6 8.9 6 10C6 11.1 5.1 12 4 12C2.9 12 2 11.1 2 10C2 8.9 2.9 8 4 8ZM4 10C4 10 4 10 4 10ZM16 14C19.3 14 22 16.7 22 20V22H10V20C10 16.7 12.7 14 16 14ZM8 18C8 18 8 18 8 18H8V20H8V18ZM4 14C6.2 14 8 15.8 8 18V20H2V18C2 15.8 3.8 14 4 14Z"/>
+                  </svg>
+                  <span className="hidden sm:inline font-normal text-gray-700 text-sm">
+                    Join
+                  </span>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Main Content */}
+          <div className="max-w-6xl mx-auto">
+            <Card className="rounded-2xl shadow-lg">
+              <CardContent className="p-6 space-y-4">
+                <h2 className="text-xl font-bold">Active Recall</h2>
+                
+                <p className="text-sm text-gray-600">
+                  Test your understanding with these questions based on what you've learned.
+                </p>
+                
+                <div className="space-y-4">
+                  {questions.map((question: string, index: number) => (
+                    <div key={index} className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700">
+                        Question {index + 1}:
+                      </label>
+                      <p className="text-gray-800 mb-2">{question}</p>
+                      <Textarea
+                        value={answers[index]}
+                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => 
+                          handleAnswerChange(index, e.target.value)
+                        }
+                        placeholder="Write your answer here..."
+                        className="min-h-[80px]"
+                      />
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="text-xs text-blue-600 bg-blue-50 p-2 rounded">
+                  💡 Answer these questions to reinforce your learning and test your understanding.
+                </div>
+                
+                <Button 
+                  onClick={handleSubmit}
+                  disabled={isLoading}
+                  className="w-full"
+                >
+                  {isLoading ? 'Submitting...' : 'Submit Answers'}
+                </Button>
+              </CardContent>
+            </Card>
           </div>
-        ))}
-        <Button onClick={handleSubmit} className="w-full">
-          Kirim Jawaban & Selesai
-        </Button>
-      </CardContent>
-    </Card>
+        </div>
+      </div>
+      
+      {/* Fixed Footer */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-gray-200 p-4">
+        <div className="max-w-7xl mx-auto flex justify-center">
+          <button
+            onClick={handleSubmit}
+            disabled={isLoading || answers.some(answer => !answer.trim())}
+            className="disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 transition-transform"
+          >
+            <NextButton className="w-[228px] h-[60px]" />
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

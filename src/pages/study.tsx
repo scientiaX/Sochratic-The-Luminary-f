@@ -23,26 +23,30 @@ export default function StudyPage() {
   // Fungsi untuk pindah tahap
   const nextStage = (newStage: Stage, text?: string) => {
     setStage(newStage);
-    if (text) setAiText(text);
+    if (text) {
+      if (newStage === 'explanation') {
+        setAiText(text);
+      } else if (newStage === 'realisation') {
+        setProblem(text);
+      }
+    }
     localStorage.setItem('currentStage', newStage);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-4xl mx-auto">
-        {stage === 'conversation' && (
-          <ConversationStage topicId={topicId!} onNext={nextStage} />
-        )}
-        {stage === 'explanation' && (
-          <ExplanationStage text={aiText} onNext={nextStage} />
-        )}
-        {stage === 'realisation' && (
-          <RealisationStage problem={problem} onNext={nextStage} />
-        )}
-        {stage === 'recall' && (
-          <RecallStage topicId={topicId!} />
-        )}
-      </div>
+    <div className="min-h-screen bg-gray-100">
+      {stage === 'conversation' && (
+        <ConversationStage topicId={topicId!} onNext={nextStage} />
+      )}
+      {stage === 'explanation' && (
+        <ExplanationStage text={aiText} onNext={nextStage} />
+      )}
+      {stage === 'realisation' && (
+        <RealisationStage problem={problem} onNext={nextStage} />
+      )}
+      {stage === 'recall' && (
+        <RecallStage topicId={topicId!} />
+      )}
     </div>
   );
 }
