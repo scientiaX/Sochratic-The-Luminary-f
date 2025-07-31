@@ -421,7 +421,7 @@ const LessonSelectionPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
       {/* Falling Stars Background */}
-      <FallingStars starCount={20} />
+      <FallingStars starCount={20} starColor="#3B82F6" />
       
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-100 relative z-10">

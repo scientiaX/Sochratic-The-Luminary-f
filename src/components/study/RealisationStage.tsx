@@ -3,11 +3,14 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Home } from 'lucide-react';
 import NextButton from '../element/NextButton';
 import api from '@/lib/api';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   problem: string;
+  finalSolution?: string;
   onNext: (stage: 'recall') => void;
 }
 
@@ -158,36 +161,60 @@ In production, this would run in a secure sandbox with resource limits.`;
   }
 };
 
-export default function RealisationStage({ problem, onNext }: Props) {
-  const [userSolution, setUserSolution] = useState('');
+export default function RealisationStage({ problem, finalSolution, onNext }: Props) {
+  const navigate = useNavigate();
   const [aiRealisation, setAiRealisation] = useState<{explanation: string, code: string} | null>(null);
   const [editableCode, setEditableCode] = useState('');
-  const [currentStep, setCurrentStep] = useState<'input' | 'ai-realisation'>('input');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isExecuting, setIsExecuting] = useState(false);
   const [executionOutput, setExecutionOutput] = useState('');
-  const [solutionPrompt] = useState(getSolutionPrompt(problem));
 
-  const handleSubmitSolution = async () => {
-    if (!userSolution.trim()) return;
-    
-    setIsLoading(true);
-    try {
-      // Try to call real API first
-      const res = await api.post('/realisation', { problem, userSolution });
-      setAiRealisation(res.data.realisation);
-      setEditableCode(res.data.realisation.code || '');
-    } catch (error) {
-      console.log('Backend not available, using mock realisation');
-      // Use mock realisation
-      const mockRealisation = getAIRealisation(problem, userSolution);
-      setAiRealisation(mockRealisation);
-      setEditableCode(mockRealisation.code);
-    } finally {
-      setIsLoading(false);
-      setCurrentStep('ai-realisation');
-    }
-  };
+  // Navigation items
+  const navItems = [
+    {
+      icon: <Home className="w-4 h-4" />,
+      text: "Home",
+    },
+    {
+      icon: (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 7V9C15 10.1 14.1 11 13 11V22H11V16H9V22H7V11C5.9 11 5 10.1 5 9V7L3 7V9H1V7C1 5.9 1.9 5 3 5H21C22.1 5 23 5.9 23 7V9H21Z"/>
+        </svg>
+      ),
+      text: "Profil",
+    },
+    {
+      icon: (
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M16 4C18.2 4 20 5.8 20 8C20 10.2 18.2 12 16 12C13.8 12 12 10.2 12 8C12 5.8 13.8 4 16 4ZM16 6C14.9 6 14 6.9 14 8C14 9.1 14.9 10 16 10C17.1 10 18 9.1 18 8C18 6.9 17.1 6 16 6ZM4 8C5.1 8 6 8.9 6 10C6 11.1 5.1 12 4 12C2.9 12 2 11.1 2 10C2 8.9 2.9 8 4 8ZM4 10C4 10 4 10 4 10ZM16 14C19.3 14 22 16.7 22 20V22H10V20C10 16.7 12.7 14 16 14ZM8 18C8 18 8 18 8 18H8V20H8V18ZM4 14C6.2 14 8 15.8 8 18V20H2V18C2 15.8 3.8 14 4 14Z"/>
+        </svg>
+      ),
+      text: "Join",
+    },
+  ];
+
+  // Auto-generate AI realisation on component mount
+  React.useEffect(() => {
+    const generateRealisation = async () => {
+      setIsLoading(true);
+      try {
+        // Try to call real API first
+        const res = await api.post('/realisation', { problem, userSolution: finalSolution || '' });
+        setAiRealisation(res.data.realisation);
+        setEditableCode(res.data.realisation.code || '');
+      } catch (error) {
+        console.log('Backend not available, using mock realisation');
+        // Use mock realisation
+        const mockRealisation = getAIRealisation(problem, finalSolution || '');
+        setAiRealisation(mockRealisation);
+        setEditableCode(mockRealisation.code);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    generateRealisation();
+  }, [problem, finalSolution]);
 
   const handleRunCode = async () => {
     if (!editableCode.trim()) return;
@@ -213,82 +240,66 @@ export default function RealisationStage({ problem, onNext }: Props) {
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <div className="flex-1 p-4">
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <Card className="mt-0 mb-4 shadow-lg">
-            <CardContent className="p-4 flex justify-between items-center">
-              <div className="font-bold text-gray-700 text-lg">
-                Nova X
-              </div>
+                                           {/* Top Navigation Bar */}
+            <Card className="mt-0 mb-4 shadow-lg">
+              <CardContent className="p-4 flex justify-between items-center">
+                <div className="font-bold text-gray-700 text-lg">
+                  Nova X
+                </div>
 
-              <div className="flex space-x-2">
-                <Button
-                  variant="ghost"
-                  className="flex items-center space-x-2 h-10 px-3 rounded-lg hover:bg-gray-100"
-                >
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 7V9C15 10.1 14.1 11 13 11V22H11V16H9V22H7V11C5.9 11 5 10.1 5 9V7L3 7V9H1V7C1 5.9 1.9 5 3 5H21C22.1 5 23 5.9 23 7V9H21Z"/>
-                  </svg>
-                  <span className="hidden sm:inline font-normal text-gray-700 text-sm">
-                    Profil
-                  </span>
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="flex items-center space-x-2 h-10 px-3 rounded-lg hover:bg-gray-100"
-                >
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M16 4C18.2 4 20 5.8 20 8C20 10.2 18.2 12 16 12C13.8 12 12 10.2 12 8C12 5.8 13.8 4 16 4ZM16 6C14.9 6 14 6.9 14 8C14 9.1 14.9 10 16 10C17.1 10 18 9.1 18 8C18 6.9 17.1 6 16 6ZM4 8C5.1 8 6 8.9 6 10C6 11.1 5.1 12 4 12C2.9 12 2 11.1 2 10C2 8.9 2.9 8 4 8ZM4 10C4 10 4 10 4 10ZM16 14C19.3 14 22 16.7 22 20V22H10V20C10 16.7 12.7 14 16 14ZM8 18C8 18 8 18 8 18H8V20H8V18ZM4 14C6.2 14 8 15.8 8 18V20H2V18C2 15.8 3.8 14 4 14Z"/>
-                  </svg>
-                  <span className="hidden sm:inline font-normal text-gray-700 text-sm">
-                    Join
-                  </span>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+                <div className="flex space-x-2">
+                  {navItems.map((item, index) => (
+                    <Button
+                      key={index}
+                      variant="ghost"
+                      className="flex items-center space-x-2 h-10 px-3 rounded-lg hover:bg-gray-100"
+                      onClick={() => {
+                        if (item.text === 'Home') {
+                          navigate('/selection');
+                                              } else if (item.text === 'Join' || item.text === 'Profil') {
+                        navigate('/premium');
+                      }
+                      }}
+                    >
+                      {item.icon}
+                      <span className="hidden sm:inline font-normal text-gray-700 text-sm">
+                        {item.text}
+                      </span>
+                    </Button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+           {/* Progress Bar */}
+           <Card className="mb-6 shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+             <CardContent className="p-4">
+               <div className="flex items-center justify-between text-sm text-gray-500 mb-2">
+                 <span>Realisation Stage</span>
+                 <span>Step 4 of 5</span>
+               </div>
+               <div className="w-full bg-gray-200 rounded-full h-2">
+                 <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-500" style={{ width: '80%' }}></div>
+               </div>
+             </CardContent>
+           </Card>
 
           {/* Main Content */}
           <div className="max-w-6xl mx-auto">
             <Card className="rounded-2xl shadow-lg">
-              <CardContent className="p-6 space-y-4">
-                <h2 className="text-xl font-bold">Solution Realisation</h2>
-                
-                {currentStep === 'input' && (
-                  <>
-                    {/* Solution Request Section */}
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                      <div className="text-sm text-blue-600 mb-2 font-medium">Implement the Concepts You Have Learned:</div>
-                      <div className="text-gray-800 text-base leading-relaxed">
-                        {solutionPrompt}
-                      </div>
-                    </div>
-                    
-                    <p className="text-sm text-gray-600">
-                      {problem || 'Implement the algorithm solution you have learned'}
-                    </p>
-                    
-                    <div className="text-xs text-blue-600 bg-blue-50 p-2 rounded">
-                      💡 Write your solution below. AI will create an optimized realisation version.
-                    </div>
-                    
-                    <Textarea
-                      value={userSolution}
-                      onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setUserSolution(e.target.value)}
-                      className="font-mono h-48"
-                      placeholder="Write your solution here... (code, explanation, or answer)"
-                    />
-                    
-                    <Button 
-                      onClick={handleSubmitSolution} 
-                      disabled={isLoading || !userSolution.trim()}
-                      className="w-full"
-                    >
-                      {isLoading ? 'AI is creating realisation...' : 'Continue to AI Realisation'}
-                    </Button>
-                  </>
-                )}
+                             <CardContent className="p-6 space-y-4">
+                 <h2 className="text-xl font-bold">Solution Realisation</h2>
+                 
+                 {isLoading && (
+                   <div className="text-center py-8">
+                     <div className="text-lg text-gray-600 mb-4">AI is creating your optimized realisation...</div>
+                     <div className="flex justify-center">
+                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                     </div>
+                   </div>
+                 )}
 
-                {currentStep === 'ai-realisation' && aiRealisation && (
+                 {!isLoading && aiRealisation && (
                   <>
                     {/* AI Realisation Section */}
                     <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
@@ -337,6 +348,8 @@ export default function RealisationStage({ problem, onNext }: Props) {
                     )}
                   </>
                 )}
+
+                
               </CardContent>
             </Card>
           </div>

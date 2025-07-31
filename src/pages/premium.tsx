@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Check, Star, Zap, Brain, Search, Award, Crown, Rocket, Shield, Infinity, Target, Sparkles, Users, BookOpen, X } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Check, Star, Zap, Brain, Search, Award, Crown, Rocket, Shield, Infinity, Target, Sparkles, Users, BookOpen, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { FallingStars } from '../components/ui/FallingStars';
 
@@ -202,14 +202,14 @@ const PackageCard = ({ pkg, isSelected, onSelect }: { pkg: Package; isSelected: 
         </div>
       )}
 
-             <div 
-         className={`relative overflow-hidden rounded-3xl p-8 h-full cursor-pointer transition-all duration-500 ${
-           isSelected 
-             ? 'bg-gray-900 shadow-2xl ring-4 ring-yellow-500 ring-opacity-50 border border-gray-700' 
-             : 'bg-gray-900/90 backdrop-blur-sm shadow-xl hover:shadow-2xl border border-gray-800'
-         }`}
-         onClick={onSelect}
-       >
+                                                                                                                                                                                                                               <div 
+             className={`relative overflow-hidden rounded-3xl p-8 min-h-[1100px] cursor-pointer transition-all duration-500 ${
+               isSelected 
+                 ? 'bg-gray-900 shadow-2xl ring-4 ring-yellow-500 ring-opacity-50 border border-gray-700' 
+                 : 'bg-gray-900/90 backdrop-blur-sm shadow-xl hover:shadow-2xl border border-gray-800'
+             }`}
+             onClick={onSelect}
+           >
         {/* Background Gradient */}
         <div className={`absolute inset-0 bg-gradient-to-br ${pkg.gradient} opacity-5`}></div>
         
@@ -282,6 +282,63 @@ const PackageCard = ({ pkg, isSelected, onSelect }: { pkg: Package; isSelected: 
 const PremiumPage = () => {
   const navigate = useNavigate();
   const [selectedPackage, setSelectedPackage] = useState<string>('truth-seeker');
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(1); // Start with Truth Seeker (middle package)
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Auto-scroll to selected package on mobile
+  useEffect(() => {
+    if (isMobile && scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const cardWidth = container.scrollWidth / packages.length;
+      const targetScroll = cardWidth * packages.findIndex(pkg => pkg.id === selectedPackage);
+      
+      container.scrollTo({
+        left: targetScroll,
+        behavior: 'smooth'
+      });
+    }
+  }, [selectedPackage, isMobile]);
+
+  const handlePackageSelect = (packageId: string) => {
+    setSelectedPackage(packageId);
+    if (isMobile) {
+      const packageIndex = packages.findIndex(pkg => pkg.id === packageId);
+      setCurrentIndex(packageIndex);
+    }
+  };
+
+  const scrollToPackage = (direction: 'left' | 'right') => {
+    if (!scrollContainerRef.current) return;
+    
+    const container = scrollContainerRef.current;
+    const cardWidth = container.scrollWidth / packages.length;
+    const currentScroll = container.scrollLeft;
+    
+    let targetScroll;
+    if (direction === 'left') {
+      targetScroll = Math.max(0, currentScroll - cardWidth);
+    } else {
+      targetScroll = Math.min(container.scrollWidth - container.clientWidth, currentScroll + cardWidth);
+    }
+    
+    container.scrollTo({
+      left: targetScroll,
+      behavior: 'smooth'
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden">
@@ -312,41 +369,110 @@ const PremiumPage = () => {
             </p>
           </div>
 
-                     {/* Stats */}
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-             <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
-               <div className="text-2xl font-bold text-white mb-2">✅</div>
-               <div className="text-gray-300">Verified by Science</div>
-             </div>
-             <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
-               <div className="text-2xl font-bold text-white mb-2">🏆</div>
-               <div className="text-gray-300">Top 1 Most Effective Learning Method</div>
-             </div>
-             <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
-               <div className="text-2xl font-bold text-white mb-2">🌟</div>
-               <div className="text-gray-300">Methods Supported by Great Figures</div>
-             </div>
-           </div>
-        </div>
-      </div>
-
-      {/* Packages */}
-      <div className="relative z-10 pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {packages.map((pkg) => (
-              <PackageCard
-                key={pkg.id}
-                pkg={pkg}
-                isSelected={selectedPackage === pkg.id}
-                onSelect={() => setSelectedPackage(pkg.id)}
-              />
-            ))}
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
+              <div className="text-2xl font-bold text-white mb-2">✅</div>
+              <div className="text-gray-300">Verified by Science</div>
+            </div>
+            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
+              <div className="text-2xl font-bold text-white mb-2">🏆</div>
+              <div className="text-gray-300">Top 1 Most Effective Learning Method</div>
+            </div>
+            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
+              <div className="text-2xl font-bold text-white mb-2">🌟</div>
+              <div className="text-gray-300">Methods Supported by Great Figures</div>
+            </div>
           </div>
         </div>
       </div>
 
+                                  {/* Packages */}
+       <div className="relative z-10 pb-40">
+          <div className={`max-w-7xl mx-auto ${isMobile ? 'px-0' : 'px-4 sm:px-6 lg:px-8'}`}>
+                      {/* Mobile Navigation Arrows - Floating on sides */}
+            {isMobile && (
+              <>
+                <button
+                  onClick={() => scrollToPackage('left')}
+                  className="absolute left-2 top-1/2 transform -translate-y-1/2 z-30 w-12 h-12 bg-gray-900/80 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-all duration-300 border border-gray-700 hover:border-gray-600 shadow-lg"
+                >
+                  <ChevronLeft size={24} />
+                </button>
+                
+                <button
+                  onClick={() => scrollToPackage('right')}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 z-30 w-12 h-12 bg-gray-900/80 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-all duration-300 border border-gray-700 hover:border-gray-600 shadow-lg"
+                >
+                  <ChevronRight size={24} />
+                </button>
+                
+                {/* Dot indicators */}
+                <div className="flex justify-center space-x-2 mb-6">
+                  {packages.map((_, index) => (
+                    <div
+                      key={index}
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        index === currentIndex ? 'bg-yellow-400' : 'bg-gray-600'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
 
+                     {/* Desktop Grid / Mobile Horizontal Scroll */}
+                                               <div 
+               ref={scrollContainerRef}
+               className={`${
+                 isMobile 
+                   ? 'flex overflow-x-auto scrollbar-hide snap-x snap-mandatory gap-4 pb-16 pt-8 px-4' 
+                   : 'grid grid-cols-1 md:grid-cols-3 gap-8'
+               }`}
+               style={{
+                 scrollbarWidth: 'none',
+                 msOverflowStyle: 'none'
+               }}
+             >
+                           {packages.map((pkg, index) => (
+                <div
+                  key={pkg.id}
+                  className={`${
+                    isMobile 
+                      ? 'flex-shrink-0 w-72 snap-center my-8' 
+                      : ''
+                  }`}
+                >
+                 <PackageCard
+                   pkg={pkg}
+                   isSelected={selectedPackage === pkg.id}
+                   onSelect={() => handlePackageSelect(pkg.id)}
+                 />
+               </div>
+             ))}
+           </div>
+
+                     {/* Mobile Swipe Instructions */}
+           {isMobile && (
+             <div className="text-center mt-6 px-4">
+               <p className="text-gray-400 text-sm">
+                 💡 Swipe left or right to browse packages
+               </p>
+             </div>
+           )}
+        </div>
+      </div>
+
+      {/* Custom CSS for hiding scrollbar */}
+      <style>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </div>
   );
 };

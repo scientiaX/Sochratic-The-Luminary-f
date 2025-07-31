@@ -1,26 +1,24 @@
-// src/components/study/ExplanationStage.tsx
-import React, { useState, useEffect, useRef } from 'react';
+// src/components/study/FinalSolutionStage.tsx
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Home, Type } from 'lucide-react';
+import { Home, Edit3, CheckCircle } from 'lucide-react';
 import NextButton from '../element/NextButton';
 import { FallingStars } from '../ui/FallingStars';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
-  text: string;
-  onNext: (stage: 'finalSolution') => void;
+  onNext: (stage: 'realisation', solution: string) => void;
 }
 
-export default function ExplanationStage({ text, onNext }: Props) {
+export default function FinalSolutionStage({ onNext }: Props) {
   const navigate = useNavigate();
+  const [solution, setSolution] = useState('');
   const [isVisible, setIsVisible] = useState(false);
-  const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsVisible(true);
-    console.log('ExplanationStage mounted with text:', text?.substring(0, 100) + '...');
-  }, [text]);
+  }, []);
 
   // Navigation items
   const navItems = [
@@ -88,52 +86,79 @@ export default function ExplanationStage({ text, onNext }: Props) {
           <Card className="mb-6 shadow-lg border-0 bg-white/80 backdrop-blur-sm">
             <CardContent className="p-4">
               <div className="flex items-center justify-between text-sm text-gray-500 mb-2">
-                <span>Explanation Stage</span>
-                <span>Step 2 of 5</span>
+                <span>Final Solution Stage</span>
+                <span>Step 3 of 5</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-500" style={{ width: '40%' }}></div>
+                <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-500" style={{ width: '60%' }}></div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Main Content - Static Box */}
+          {/* Main Content */}
           <div className="max-w-4xl mx-auto">
             <Card className={`rounded-3xl shadow-2xl border-0 bg-white/95 backdrop-blur-sm transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
               <CardContent className="p-8">
                 {/* Header */}
                 <div className="text-center mb-8">
-                  <div className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-100 to-purple-100 px-6 py-3 rounded-full mb-4">
-                    <Type className="w-5 h-5 text-blue-600" />
-                    <span className="font-semibold text-gray-700">Concept Explanation</span>
+                  <div className="inline-flex items-center gap-3 bg-gradient-to-r from-green-100 to-blue-100 px-6 py-3 rounded-full mb-4">
+                    <Edit3 className="w-5 h-5 text-green-600" />
+                    <span className="font-semibold text-gray-700">Final Solution</span>
                   </div>
-                  <h1 className="text-3xl font-bold text-gray-900 mb-2">Understanding the Concepts</h1>
-                  <p className="text-gray-600 text-lg">Read through the detailed explanation below</p>
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">Write Your Solution</h1>
+                  <p className="text-gray-600 text-lg">Based on what you've learned, write your final solution to the problem</p>
                 </div>
 
-                {/* Static Text Container */}
+                {/* Solution Input */}
                 <div className="relative">
-                  {/* Fixed background box */}
-                  <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8 border border-blue-200">
-                    {/* Text content */}
-                    <div 
-                      ref={textRef}
-                      className="prose max-w-none"
-                      style={{ 
-                        fontSize: '1.1rem',
-                        lineHeight: '1.8',
-                        color: '#374151'
-                      }}
-                    >
-                      <div className="whitespace-pre-wrap">
-                        {text || 'Loading explanation...'}
-                      </div>
+                  <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-2xl p-8 border border-green-200">
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Your Solution
+                      </label>
+                      <textarea
+                        className="w-full h-64 p-4 border border-gray-300 rounded-xl resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
+                        placeholder="Write your solution here... You can include:
+• Your approach to solving the problem
+• The algorithm or method you chose
+• Any important considerations
+• Code snippets if applicable"
+                        value={solution}
+                        onChange={(e) => setSolution(e.target.value)}
+                        style={{
+                          fontSize: '1rem',
+                          lineHeight: '1.6',
+                          fontFamily: 'inherit'
+                        }}
+                      />
+                    </div>
+
+                    {/* Character count */}
+                    <div className="flex justify-between items-center text-sm text-gray-500">
+                      <span>Share your thoughts and approach</span>
+                      <span>{solution.length} characters</span>
                     </div>
                   </div>
 
                   {/* Floating elements for visual appeal */}
-                  <div className="absolute top-4 right-4 w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-10 animate-pulse"></div>
-                  <div className="absolute bottom-4 left-4 w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full opacity-10 animate-pulse" style={{ animationDelay: '1s' }}></div>
+                  <div className="absolute top-4 right-4 w-16 h-16 bg-gradient-to-r from-green-400 to-blue-400 rounded-full opacity-10 animate-pulse"></div>
+                  <div className="absolute bottom-4 left-4 w-12 h-12 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-10 animate-pulse" style={{ animationDelay: '1s' }}></div>
+                </div>
+
+                {/* Tips */}
+                <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold text-blue-900 mb-1">Tips for a great solution:</h4>
+                      <ul className="text-sm text-blue-800 space-y-1">
+                        <li>• Explain your reasoning and approach</li>
+                        <li>• Include any assumptions you made</li>
+                        <li>• Mention the time/space complexity if applicable</li>
+                        <li>• Be clear and concise in your explanation</li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
 
                 
@@ -143,14 +168,15 @@ export default function ExplanationStage({ text, onNext }: Props) {
         </div>
       </div>
 
-      {/* Fixed Footer - Always visible */}
+      {/* Fixed Footer */}
       <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-gray-200 p-6 z-20">
         <div className="max-w-7xl mx-auto flex justify-center">
           <button
             type="button"
             aria-label="Continue to realisation stage"
-            onClick={() => onNext('finalSolution')}
-            className="active:scale-95 transition-all duration-300 hover:scale-105"
+            onClick={() => onNext('realisation', solution)}
+            disabled={!solution.trim()}
+            className="active:scale-95 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <NextButton className="w-[228px] h-[60px]" />
           </button>
@@ -158,4 +184,4 @@ export default function ExplanationStage({ text, onNext }: Props) {
       </div>
     </div>
   );
-}
+} 

@@ -1,11 +1,12 @@
 // src/components/study/ConversationStage.tsx
 import React, { useState, useEffect } from 'react';
-import { Home } from 'lucide-react';
+import { Home, BookOpen, Sparkles } from 'lucide-react';
 import NextButton from '../element/NextButton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import api from '@/lib/api';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   topicId: string;
@@ -13,12 +14,12 @@ interface Props {
 }
 
 export default function ConversationStage({ topicId, onNext }: Props) {
+  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [currentSession, setCurrentSession] = useState(0);
   const [typedProblem, setTypedProblem] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [explanationText, setExplanationText] = useState('');
   const [currentStage, setCurrentStage] = useState<'conversation' | 'explanation'>('conversation');
 
@@ -187,14 +188,16 @@ print(f"4x - y = {4*X[0] - X[1]:.2f}")
   const handleNext = () => {
     if (inputValue.trim()) {
       if (currentStage === 'conversation') {
+        // Get explanation text first
+        const mockExplanation = mockExplanations[topicId as keyof typeof mockExplanations] || mockExplanations['1'];
+        setExplanationText(mockExplanation);
+        
         // Move to explanation stage
         setCurrentStage('explanation');
-        setIsTransitioning(true);
         
-        // Simulate AI response delay
-        setTimeout(() => {
-          setIsTransitioning(false);
-        }, 1000);
+        // Transition to explanation stage immediately
+        console.log('Calling onNext with explanation text:', mockExplanation.substring(0, 100) + '...');
+        onNext('explanation', mockExplanation);
       } else if (currentStage === 'explanation') {
         // Move to realisation stage with problem data
         onNext('realisation', mockData.problem);
@@ -203,26 +206,7 @@ print(f"4x - y = {4*X[0] - X[1]:.2f}")
     }
   };
 
-  const startTransition = async () => {
-    setIsTransitioning(true);
-    setCurrentStage('explanation');
-    
-    try {
-      // Try to get explanation from API
-      const res = await api.post('/explanation', { topicId });
-      setExplanationText(res.data.explanation);
-    } catch (error) {
-      console.log('Backend not available, using mock explanation');
-      // Use mock explanation
-      const mockExplanation = mockExplanations[topicId as keyof typeof mockExplanations] || mockExplanations['1'];
-      setExplanationText(mockExplanation);
-    }
-    
-    // Wait for transition animation, then call onNext
-    setTimeout(() => {
-      onNext('explanation', explanationText);
-    }, 1000);
-  };
+
 
   // Function to render explanation content with code blocks
   const renderExplanationContent = (text: string) => {
@@ -286,26 +270,52 @@ print(f"4x - y = {4*X[0] - X[1]:.2f}")
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <div className="flex-1 p-4">
         <div className="max-w-7xl mx-auto">
-          {/* Top Navigation Bar */}
-          <Card className="mt-0 mb-4 shadow-lg">
-            <CardContent className="p-4 flex justify-between items-center">
-              <div className="font-bold text-gray-700 text-lg">
-                Nova X
+          {/* Top Navigation */}
+          <Card className={`mt-0 mb-4 shadow-xl border-0 bg-white/80 backdrop-blur-sm transition-all duration-700`}>
+            <CardContent className="p-6 flex justify-between items-center">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                  <BookOpen className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <div className="font-bold text-gray-900 text-xl">Nova X</div>
+                  <div className="text-sm text-gray-500">Learning Platform</div>
+                </div>
               </div>
 
-              <div className="flex space-x-2">
+              <div className="flex space-x-3">
                 {navItems.map((item, index) => (
                   <Button
-                    key={index}
+                    key={`nav-${index}`}
                     variant="ghost"
-                    className="flex items-center space-x-2 h-10 px-3 rounded-lg hover:bg-gray-100"
+                    className="flex items-center space-x-2 h-12 px-4 rounded-xl hover:bg-gray-100 transition-all duration-300"
+                    onClick={() => {
+                      if (item.text === 'Home') {
+                        navigate('/selection');
+                      } else if (item.text === 'Join' || item.text === 'Profil') {
+                        navigate('/premium');
+                      }
+                    }}
                   >
                     {item.icon}
-                    <span className="hidden sm:inline font-normal text-gray-700 text-sm">
+                    <span className="hidden sm:inline font-medium text-gray-700 text-sm">
                       {item.text}
                     </span>
                   </Button>
                 ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Progress Bar */}
+          <Card className="mb-6 shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between text-sm text-gray-500 mb-2">
+                <span>Conversation Stage</span>
+                <span>Step 1 of 5</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-500" style={{ width: '20%' }}></div>
               </div>
             </CardContent>
           </Card>
@@ -354,13 +364,9 @@ print(f"4x - y = {4*X[0] - X[1]:.2f}")
                 </div>
 
                 {/* Conversation Box */}
-                <Card className={`bg-white border-2 border-gray-300 rounded-2xl mb-20 transition-all duration-1000 ease-in-out ${
-                  isTransitioning ? 'scale-105 shadow-2xl' : ''
-                }`}>
-                  <CardContent className={`p-6 transition-all duration-1000 ${
-                    isTransitioning ? 'min-h-[400px]' : ''
-                  }`}>
-                    {currentStage === 'conversation' && !isTransitioning && (
+                <Card className="bg-white border-2 border-gray-300 rounded-2xl mb-20">
+                  <CardContent className="p-6">
+                    {currentStage === 'conversation' && (
                       <>
                         {/* AI Response */}
                         <div className="mb-6">
@@ -391,27 +397,20 @@ print(f"4x - y = {4*X[0] - X[1]:.2f}")
                       <>
                         <div className="text-sm text-gray-500 mb-2 font-medium">Material Explanation:</div>
                         {renderExplanationContent(explanationText)}
-                      </>
-                    )}
+                  </>
+                )}
 
-                    {isTransitioning && (
-                      <>
-                        <div className="text-sm text-gray-500 mb-2 font-medium">Material Explanation:</div>
-                        {renderExplanationContent(explanationText)}
-                      </>
-                    )}
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
+
+              </CardContent>
+            </Card>
           </div>
+        </div>
+      </div>
         </div>
       </div>
 
       {/* Footer */}
-      <div className={`fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-gray-200 p-4 transition-all duration-1000 ${
-        isTransitioning ? 'opacity-0 translate-y-full' : ''
-      }`}>
+      <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-gray-200 p-4">
         <div className="max-w-7xl mx-auto flex justify-center">
           <button
             onClick={handleNext}
