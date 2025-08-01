@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Eye, EyeOff, User, Lock, Mail, ArrowRight, Calendar } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Eye, EyeOff, User, Lock, Mail, ArrowRight, Calendar, Wifi, WifiOff } from 'lucide-react';
 import atomImg from '../assets/icon/atom.png';
 import { FallingStars } from '../components/ui/FallingStars';
+import api, { handleApiError, checkApiHealth } from '../lib/api';
 
 // Define types for form and errors
 interface FormData {
@@ -33,6 +34,75 @@ export default function LoginRegisterPage() {
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [connectionStatus, setConnectionStatus] = useState<'checking' | 'online' | 'offline'>('checking');
+  const [serverMessage, setServerMessage] = useState<string>('');
+
+  // Check backend connection on component mount
+  useEffect(() => {
+    checkConnection();
+    // Check connection every 30 seconds
+    const interval = setInterval(checkConnection, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const checkConnection = async () => {
+    try {
+      const isHealthy = await checkApiHealth();
+      setConnectionStatus(isHealthy ? 'online' : 'offline');
+      if (isHealthy) {
+        setServerMessage('Connected to server');
+      } else {
+        setServerMessage('Server unavailable');
+      }
+    } catch {
+      setConnectionStatus('offline');
+      setServerMessage('Connection failed');
+    }
+  };
+
+  // Test functions for backend connection
+  const testRegister = async () => {
+    if (connectionStatus === 'offline') {
+      setServerMessage('Cannot test - server offline');
+      return;
+    }
+
+    try {
+      setServerMessage('Testing registration...');
+      const response = await api.post('/auth/register', {
+        username: 'testuser' + Date.now(),
+        email: 'test' + Date.now() + '@example.com', 
+        password: 'password123',
+        name: 'Test User',
+        age: 25
+      });
+      console.log('Register:', response.data);
+      setServerMessage('✅ Registration test successful');
+    } catch (error) {
+      console.error('Register error:', error);
+      setServerMessage('❌ Registration test failed: ' + handleApiError(error));
+    }
+  };
+
+  const testLogin = async () => {
+    if (connectionStatus === 'offline') {
+      setServerMessage('Cannot test - server offline');
+      return;
+    }
+
+    try {
+      setServerMessage('Testing login...');
+      const response = await api.post('/auth/login', {
+        username: 'testuser',
+        password: 'password123'
+      });
+      console.log('Login:', response.data);
+      setServerMessage('✅ Login test successful');
+    } catch (error) {
+      console.error('Login error:', error);
+      setServerMessage('❌ Login test failed: ' + handleApiError(error));
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -82,11 +152,80 @@ export default function LoginRegisterPage() {
 
   const handleSubmit = async () => {
     if (!validateForm()) return;
+    
+    // Check connection before attempting submission
+    if (connectionStatus === 'offline') {
+      setErrors({ password: 'Server is offline. Please try again later.' });
+      return;
+    }
+    
     setIsLoading(true);
-    setTimeout(() => {
-      window.location.href = '/selection';
+    setErrors({});
+    
+    try {
+      if (isLogin) {
+        // Login request
+        const response = await api.post('/auth/login', {
+          username: formData.username,
+          password: formData.password
+        });
+        
+        // Store user info and token if available
+        if (response.data.user) {
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+        }
+        if (response.data.token) {
+          localStorage.setItem('auth_token', response.data.token);
+        }
+        
+        setServerMessage('✅ Login successful! Redirecting...');
+        
+        // Redirect to selection page
+        setTimeout(() => {
+          window.location.href = '/selection';
+        }, 1000);
+      } else {
+        // Register request
+        const response = await api.post('/auth/register', {
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+          name: formData.username,
+          age: parseInt(formData.age)
+        });
+        
+        // Store user info and token if available
+        if (response.data.user) {
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+        }
+        if (response.data.token) {
+          localStorage.setItem('auth_token', response.data.token);
+        }
+        
+        setServerMessage('✅ Registration successful! Redirecting...');
+        
+        // Redirect to selection page
+        setTimeout(() => {
+          window.location.href = '/selection';
+        }, 1000);
+      }
+    } catch (error) {
+      console.error('Authentication failed:', error);
+      const errorMessage = handleApiError(error);
+      
+      // Show appropriate error message
+      if (errorMessage.toLowerCase().includes('username') || errorMessage.toLowerCase().includes('password')) {
+        setErrors({ password: errorMessage });
+      } else if (errorMessage.toLowerCase().includes('email')) {
+        setErrors({ email: errorMessage });
+      } else {
+        setErrors({ password: errorMessage });
+      }
+      
+      setServerMessage('❌ ' + errorMessage);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   const switchMode = () => {
@@ -131,6 +270,35 @@ export default function LoginRegisterPage() {
             <p className="text-blue-100 text-sm sm:text-base">
               {isLogin ? 'Sign in to your account' : 'Register to get started'}
             </p>
+            
+            {/* Connection Status */}
+            <div className="flex items-center justify-center gap-2 mt-3 mb-2">
+              {connectionStatus === 'checking' && (
+                <div className="flex items-center gap-2 text-yellow-300 text-xs">
+                  <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                  <span>Checking connection...</span>
+                </div>
+              )}
+              {connectionStatus === 'online' && (
+                <div className="flex items-center gap-2 text-green-300 text-xs">
+                  <Wifi className="w-3 h-3" />
+                  <span>Server online</span>
+                </div>
+              )}
+              {connectionStatus === 'offline' && (
+                <div className="flex items-center gap-2 text-red-300 text-xs">
+                  <WifiOff className="w-3 h-3" />
+                  <span>Server offline</span>
+                </div>
+              )}
+            </div>
+            
+            {/* Server Message */}
+            {serverMessage && (
+              <div className="text-xs text-blue-200 bg-blue-900/20 rounded-lg px-3 py-2 mt-2">
+                {serverMessage}
+              </div>
+            )}
           </div>
           {/* Form */}
           <div className="space-y-4">
@@ -273,6 +441,24 @@ export default function LoginRegisterPage() {
               )}
             </button>
           </div>
+          {/* Test Buttons */}
+          <div className="mt-4 flex gap-2">
+            <button
+              type="button"
+              onClick={testRegister}
+              className="flex-1 bg-green-500 text-white py-2 px-3 rounded-lg text-sm hover:bg-green-600 transition-colors"
+            >
+              Test Register
+            </button>
+            <button
+              type="button"
+              onClick={testLogin}
+              className="flex-1 bg-orange-500 text-white py-2 px-3 rounded-lg text-sm hover:bg-orange-600 transition-colors"
+            >
+              Test Login
+            </button>
+          </div>
+
           {/* Switch Mode */}
           <div className="mt-4 text-center">
             <p className="text-blue-200 mb-2">
