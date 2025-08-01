@@ -285,7 +285,7 @@ export default function RealisationStage({ problem, finalSolution, onNext }: Pro
            </Card>
 
           {/* Main Content */}
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto mb-16">
             <Card className="rounded-2xl shadow-lg">
                              <CardContent className="p-6 space-y-4">
                  <h2 className="text-xl font-bold">Solution Realisation</h2>

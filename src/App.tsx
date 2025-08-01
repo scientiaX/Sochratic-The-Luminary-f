@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom';
 
 // Impor komponen halaman yang berbeda
 import IntroductionPage from './pages/introduction';
@@ -7,6 +7,13 @@ import LessonSelectionPage from './pages/selection';
 import StudyPage from './pages/study';
 import LoginRegisterPage from './pages/login';
 import PremiumPage from './pages/premium';
+import CompletionStage from './components/study/CompletionStage';
+
+// Wrapper component untuk CompletionStage
+function CompletionWrapper() {
+  const { topicId } = useParams();
+  return <CompletionStage topicId={topicId || "1"} />;
+}
 
 function App() {
   return (
@@ -17,6 +24,7 @@ function App() {
         <Route path="/selection" element={<LessonSelectionPage />} />
         <Route path="/study/:topicId" element={<StudyPage />} />
         <Route path="/study" element={<Navigate to="/selection" replace />} />
+        <Route path="/completion/:topicId" element={<CompletionWrapper />} />
         <Route path="/login" element={<LoginRegisterPage />} />
         <Route path="/premium" element={<PremiumPage />} />
         {/* <Route path="/about" element={<AboutPage />} /> Jika URL adalah '/about', tampilkan AboutPage */}

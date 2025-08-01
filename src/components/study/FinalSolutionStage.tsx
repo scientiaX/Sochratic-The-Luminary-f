@@ -96,7 +96,7 @@ export default function FinalSolutionStage({ onNext }: Props) {
           </Card>
 
           {/* Main Content */}
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-4xl mx-auto mb-16">
             <Card className={`rounded-3xl shadow-2xl border-0 bg-white/95 backdrop-blur-sm transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
               <CardContent className="p-8">
                 {/* Header */}

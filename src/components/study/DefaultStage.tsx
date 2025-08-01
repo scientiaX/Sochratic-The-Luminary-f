@@ -1,4 +1,21 @@
-// src/components/study/ConversationStage.tsx
+/**
+ * Default Stage Component
+ * 
+ * This is the initial learning stage where users begin their study session.
+ * It provides an interactive interface for users to engage with the topic,
+ * ask questions, and receive explanations. The component includes a problem
+ * presentation system and a conversation interface for learning.
+ * 
+ * Features:
+ * - Interactive problem presentation with typing animation
+ * - Question-based learning approach
+ * - Real-time conversation interface
+ * - Seamless transition to explanation stage
+ * 
+ * @author Nova X Team
+ * @version 1.0.0
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Home, BookOpen, Sparkles } from 'lucide-react';
 import NextButton from '../element/NextButton';
@@ -8,22 +25,43 @@ import { Input } from '@/components/ui/input';
 import api from '@/lib/api';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * Props interface for DefaultStage component
+ * 
+ * @interface Props
+ * @property {string} topicId - Unique identifier for the current topic
+ * @property {function} onNext - Callback function to transition to next stage
+ */
 interface Props {
   topicId: string;
   onNext: (stage: 'explanation' | 'realisation', text?: string) => void;
 }
 
-export default function ConversationStage({ topicId, onNext }: Props) {
+/**
+ * DefaultStage Component
+ * 
+ * The primary learning interface that serves as the entry point for study sessions.
+ * Manages user interactions, problem presentation, and stage transitions.
+ * 
+ * @param {Props} props - Component properties
+ * @returns {JSX.Element} The default stage interface
+ */
+export default function DefaultStage({ topicId, onNext }: Props) {
   const navigate = useNavigate();
+  
+  // UI State Management
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [currentSession, setCurrentSession] = useState(0);
   const [typedProblem, setTypedProblem] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [explanationText, setExplanationText] = useState('');
-  const [currentStage, setCurrentStage] = useState<'conversation' | 'explanation'>('conversation');
+  const [currentStage, setCurrentStage] = useState<'default' | 'explanation'>('default');
 
-  // Mock responses for different topics
+  /**
+   * Mock data for different learning topics
+   * Contains problem statements and guided questions for each topic
+   */
   const mockResponses = {
     '1': {
       title: 'Algorithms & Data Structures',
@@ -54,7 +92,10 @@ export default function ConversationStage({ topicId, onNext }: Props) {
     }
   };
 
-  // Mock explanation responses
+  /**
+   * Mock explanation content for each topic
+   * Provides detailed explanations with code examples and theoretical concepts
+   */
   const mockExplanations = {
     '1': `# Bubble Sort Algorithm
 
@@ -151,9 +192,12 @@ print(f"4x - y = {4*X[0] - X[1]:.2f}")
 3. Multiply A^(-1) with B to get solution X`
   };
 
+  // Get the current topic data
   const mockData = mockResponses[topicId as keyof typeof mockResponses] || mockResponses['1'];
 
-  // Auto-open dropdown and start typing animation on first load
+  /**
+   * Initialize the component with auto-opening dropdown and typing animation
+   */
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsDropdownOpen(true);
@@ -163,6 +207,11 @@ print(f"4x - y = {4*X[0] - X[1]:.2f}")
     return () => clearTimeout(timer);
   }, [mockData.problem]);
 
+  /**
+   * Creates a typing animation effect for problem presentation
+   * 
+   * @param {string} text - The text to be typed out
+   */
   const typeProblem = (text: string) => {
     let index = 0;
     setTypedProblem("");
@@ -177,17 +226,29 @@ print(f"4x - y = {4*X[0] - X[1]:.2f}")
     }, 30);
   };
 
+  /**
+   * Toggles the problem dropdown visibility
+   */
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  /**
+   * Handles input field changes for user questions
+   * 
+   * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
+   */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
+  /**
+   * Handles stage transitions and user input processing
+   * Manages the flow between default and explanation stages
+   */
   const handleNext = () => {
     if (inputValue.trim()) {
-      if (currentStage === 'conversation') {
+      if (currentStage === 'default') {
         // Get explanation text first
         const mockExplanation = mockExplanations[topicId as keyof typeof mockExplanations] || mockExplanations['1'];
         setExplanationText(mockExplanation);
@@ -206,9 +267,12 @@ print(f"4x - y = {4*X[0] - X[1]:.2f}")
     }
   };
 
-
-
-  // Function to render explanation content with code blocks
+  /**
+   * Renders explanation content with proper formatting for code blocks and headers
+   * 
+   * @param {string} text - The explanation text to render
+   * @returns {JSX.Element[]} Array of formatted content elements
+   */
   const renderExplanationContent = (text: string) => {
     const parts = text.split(/```([\s\S]*?)```/);
     return parts.map((part, i) => {
@@ -246,7 +310,9 @@ print(f"4x - y = {4*X[0] - X[1]:.2f}")
     });
   };
 
-  // Navigation items data
+  /**
+   * Navigation items configuration for the top navigation bar
+   */
   const navItems = [
     {
       icon: (
@@ -311,7 +377,7 @@ print(f"4x - y = {4*X[0] - X[1]:.2f}")
           <Card className="mb-6 shadow-lg border-0 bg-white/80 backdrop-blur-sm">
             <CardContent className="p-4">
               <div className="flex items-center justify-between text-sm text-gray-500 mb-2">
-                <span>Conversation Stage</span>
+                <span>Default Stage</span>
                 <span>Step 1 of 5</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
@@ -363,10 +429,10 @@ print(f"4x - y = {4*X[0] - X[1]:.2f}")
                   </div>
                 </div>
 
-                {/* Conversation Box */}
-                <Card className="bg-white border-2 border-gray-300 rounded-2xl mb-20">
+                {/* Default Stage Interface */}
+                <Card className="bg-white border-2 border-gray-300 rounded-2xl mb-12">
                   <CardContent className="p-6">
-                    {currentStage === 'conversation' && (
+                    {currentStage === 'default' && (
                       <>
                         {/* AI Response */}
                         <div className="mb-6">
