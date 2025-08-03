@@ -37,8 +37,8 @@ type Stage = 'default' | 'explanation' | 'finalSolution' | 'realisation' | 'reca
  * @returns {JSX.Element} The study page with current stage rendered
  */
 export default function StudyPage() {
-  // Extract topic ID from URL parameters
-  const { topicId } = useParams();
+  // Extract course ID and topic ID from URL parameters
+  const { courseId, topicId } = useParams();
   
   // State management for learning flow
   const [stage, setStage] = useState<Stage>('default'); // Current learning stage

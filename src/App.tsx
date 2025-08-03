@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'rea
 // Impor komponen halaman yang berbeda
 import IntroductionPage from './pages/introduction';
 import LessonSelectionPage from './pages/selection';
+import TopicsPage from './pages/topics';
 import StudyPage from './pages/study';
 import LoginRegisterPage from './pages/login';
 import PremiumPage from './pages/premium';
@@ -11,7 +12,7 @@ import CompletionStage from './components/study/CompletionStage';
 
 // Wrapper component untuk CompletionStage
 function CompletionWrapper() {
-  const { topicId } = useParams();
+  const { courseId, topicId } = useParams();
   return <CompletionStage topicId={topicId || "1"} />;
 }
 
@@ -22,9 +23,10 @@ function App() {
       <Routes> {/* Container untuk semua definisi rute */}
         <Route path="/" element={<IntroductionPage />} /> {/* Jika URL adalah '/', tampilkan Home */}
         <Route path="/selection" element={<LessonSelectionPage />} />
-        <Route path="/study/:topicId" element={<StudyPage />} />
+        <Route path="/topics/:courseId" element={<TopicsPage />} />
+        <Route path="/study/:courseId/:topicId" element={<StudyPage />} />
         <Route path="/study" element={<Navigate to="/selection" replace />} />
-        <Route path="/completion/:topicId" element={<CompletionWrapper />} />
+        <Route path="/completion/:courseId/:topicId" element={<CompletionWrapper />} />
         <Route path="/login" element={<LoginRegisterPage />} />
         <Route path="/premium" element={<PremiumPage />} />
         {/* <Route path="/about" element={<AboutPage />} /> Jika URL adalah '/about', tampilkan AboutPage */}

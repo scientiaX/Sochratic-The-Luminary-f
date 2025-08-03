@@ -16,12 +16,7 @@ const CourseCard = ({ course, onEnroll }: { course: any; onEnroll: () => void })
       <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 p-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-black bg-opacity-10"></div>
         <div className="relative z-10">
-          {/* Algorithm Icon */}
-          <div className="w-16 h-16 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center mb-4 backdrop-blur-sm">
-            <img src={algorithmPng} alt="Algorithm Icon" className="w-16 h-16 drop-shadow-lg rounded-2xl" />
-          </div>
-          <h3 className="text-2xl font-bold text-white mb-2">{course.title}</h3>
-          <p className="text-blue-100 text-sm leading-relaxed">{course.description}</p>
+          <h3 className="text-2xl font-bold text-white">{course.title}</h3>
         </div>
         
         {/* Floating particles effect */}
@@ -210,7 +205,7 @@ const CourseGridCard = ({ course }: { course: any }) => {
   const navigate = useNavigate();
   
   const handleEnroll = () => {
-    navigate(`/study/${course.id}`);
+    navigate(`/topics/${course.id}`);
   };
 
   return (
@@ -284,16 +279,12 @@ const LearningPath = ({ title, subtitle, courses, pathRef }: { title: string; su
       ref={pathRef}
       className={`transform transition-all duration-1000 ease-out ${getTransformClass()}`}
     >
-      {/* Learning Path Header */}
-      <div className="text-center mb-8 sm:mb-12">
-        <div className="flex flex-col sm:flex-row items-center justify-center mb-4 gap-4">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-600 rounded-xl flex items-center justify-center">
-            <BookOpen className="text-white w-5 h-5 sm:w-6 sm:h-6" size={24} />
-          </div>
-          <h2 className="text-2xl sm:text-4xl font-bold text-gray-900">{title}</h2>
-        </div>
-        <p className="text-lg sm:text-xl text-gray-600 px-4">{subtitle}</p>
-      </div>
+             {/* Learning Path Header */}
+       <div className="text-center mb-8 sm:mb-12">
+         <div className="flex flex-col sm:flex-row items-center justify-center mb-4 gap-4">
+           <h2 className="text-2xl sm:text-4xl font-bold text-gray-900">{title}</h2>
+         </div>
+       </div>
 
       {/* Course Grid */}
       <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-3xl p-8 shadow-xl border border-blue-200">
