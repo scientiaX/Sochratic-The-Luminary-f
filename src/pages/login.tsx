@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, User, Lock, Mail, ArrowRight, Calendar } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import atomImg from '../assets/icon/atom.png';
 import { FallingStars } from '../components/ui/FallingStars';
+import { authAPI, setAuthToken } from '../lib/api';
+import type { AuthResponse } from '../lib/api';
 
 // Define types for form and errors
 interface FormData {
@@ -9,6 +12,7 @@ interface FormData {
   email: string;
   password: string;
   confirmPassword: string;
+  name: string;
   age: string;
 }
 
@@ -17,10 +21,12 @@ interface FormErrors {
   email?: string;
   password?: string;
   confirmPassword?: string;
+  name?: string;
   age?: string;
 }
 
 export default function LoginRegisterPage() {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -29,17 +35,27 @@ export default function LoginRegisterPage() {
     email: '',
     password: '',
     confirmPassword: '',
+    name: '',
     age: ''
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState<string>('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    
+    // For username, remove spaces automatically
+    let processedValue = value;
+    if (name === 'username') {
+      processedValue = value.replace(/\s/g, '');
+    }
+    
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: processedValue
     }));
+    
     // Clear error when user starts typing
     if (errors[name as keyof FormErrors]) {
       setErrors(prev => ({
@@ -51,42 +67,140 @@ export default function LoginRegisterPage() {
 
   const validateForm = () => {
     const newErrors: FormErrors = {};
+    
+    // Username validation
     if (!formData.username.trim()) {
       newErrors.username = 'Username is required';
     } else if (formData.username.length < 3) {
       newErrors.username = 'Username must be at least 3 characters';
+    } else if (/\s/.test(formData.username)) {
+      newErrors.username = 'Username cannot contain spaces';
+    } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
+      newErrors.username = 'Username can only contain letters, numbers, and underscores';
     }
+    
     if (!isLogin) {
+      // Name validation
+      if (!formData.name.trim()) {
+        newErrors.name = 'Full name is required';
+      } else if (formData.name.length < 2) {
+        newErrors.name = 'Full name must be at least 2 characters';
+      }
+      
+      // Email validation
       if (!formData.email.trim()) {
         newErrors.email = 'Email is required';
       } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
         newErrors.email = 'Invalid email format';
       }
+      
+      // Age validation - increase minimum age to 4
       if (!formData.age.trim()) {
         newErrors.age = 'Age is required';
-      } else if (isNaN(Number(formData.age)) || parseInt(formData.age) < 13 || parseInt(formData.age) > 120) {
-        newErrors.age = 'Age must be a number between 13-120';
+      } else if (isNaN(Number(formData.age)) || parseInt(formData.age) < 4 || parseInt(formData.age) > 120) {
+        newErrors.age = 'Age must be a number between 4-120';
       }
     }
+    
+    // Password validation
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
+    
+    // Confirm password validation
     if (!isLogin && formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
+    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
     if (!validateForm()) return;
+    
     setIsLoading(true);
-    setTimeout(() => {
-      window.location.href = '/selection';
+    setApiError('');
+    
+         try {
+       if (isLogin) {
+         // Login
+         const loginData = {
+           username: formData.username,
+           password: formData.password,
+         };
+         console.log('Sending login data:', loginData);
+         
+         const response: AuthResponse = await authAPI.login(loginData);
+         
+         // Handle both old and new response formats
+         if (response.success && response.token) {
+           setAuthToken(response.token);
+           navigate('/selection');
+         } else if (response.message && response.user) {
+           // New backend response format - successful login
+           setAuthToken('dummy-token'); // Backend doesn't return token yet
+           navigate('/selection');
+         } else {
+           setApiError(response.message || 'Login failed');
+         }
+       } else {
+                   // Register
+          const registerData = {
+            username: formData.username,
+            email: formData.email,
+            password: formData.password,
+            name: formData.name,
+            age: parseInt(formData.age),
+          };
+         console.log('Sending register data:', registerData);
+         
+         const response: AuthResponse = await authAPI.register(registerData);
+         
+         // Handle both old and new response formats
+         if (response.success && response.token) {
+           setAuthToken(response.token);
+           navigate('/selection');
+         } else if (response.message && response.user) {
+           // New backend response format - successful registration
+           setAuthToken('dummy-token'); // Backend doesn't return token yet
+           navigate('/selection');
+         } else {
+           setApiError(response.message || 'Registration failed');
+         }
+       }
+    } catch (error) {
+      console.error('Auth error:', error);
+      
+             // Handle specific error cases
+       if (error instanceof Error) {
+         if (error.message.includes('400') || error.message.includes('Bad Request')) {
+           if (isLogin) {
+             setApiError('Invalid username or password. Please check your credentials.');
+           } else {
+             setApiError('Registration failed. Please check all required fields: username, email, full name, password, and age.');
+           }
+         } else if (error.message.includes('500') || error.message.includes('Internal Server Error')) {
+           if (isLogin) {
+             setApiError('User not found. Please register first or check your credentials.');
+           } else {
+             setApiError('Registration failed. Please try again or contact support.');
+           }
+         } else if (error.message.includes('404')) {
+           setApiError('Service not available. Please try again later.');
+         } else if (error.message.includes('Network') || error.message.includes('fetch')) {
+           setApiError('Network error. Please check your connection and try again.');
+         } else {
+           setApiError(error.message);
+         }
+       } else {
+         setApiError('An unexpected error occurred. Please try again.');
+       }
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   const switchMode = () => {
@@ -96,9 +210,11 @@ export default function LoginRegisterPage() {
       email: '',
       password: '',
       confirmPassword: '',
+      name: '',
       age: ''
     });
     setErrors({});
+    setApiError('');
   };
 
   return (
@@ -154,28 +270,50 @@ export default function LoginRegisterPage() {
                 <p className="text-pink-400 text-sm">{errors.username}</p>
               )}
             </div>
-            {/* Email Field (Register only) */}
-            {!isLogin && (
-              <div className="space-y-1.5">
-                <label className="block text-blue-200 text-sm font-medium">
-                  Email
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-300" />
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full pl-10 pr-3 py-2 sm:py-3 bg-transparent border border-blue-200 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all duration-200"
-                    placeholder="Enter your email"
-                  />
-                </div>
-                {errors.email && (
-                  <p className="text-pink-400 text-sm">{errors.email}</p>
-                )}
-              </div>
-            )}
+                         {/* Name Field (Register only) */}
+             {!isLogin && (
+               <div className="space-y-1.5">
+                 <label className="block text-blue-200 text-sm font-medium">
+                   Full Name
+                 </label>
+                 <div className="relative">
+                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-300" />
+                   <input
+                     type="text"
+                     name="name"
+                     value={formData.name}
+                     onChange={handleInputChange}
+                     className="w-full pl-10 pr-3 py-2 sm:py-3 bg-transparent border border-blue-200 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all duration-200"
+                     placeholder="Enter your full name"
+                   />
+                 </div>
+                 {errors.name && (
+                   <p className="text-pink-400 text-sm">{errors.name}</p>
+                 )}
+               </div>
+             )}
+             {/* Email Field (Register only) */}
+             {!isLogin && (
+               <div className="space-y-1.5">
+                 <label className="block text-blue-200 text-sm font-medium">
+                   Email
+                 </label>
+                 <div className="relative">
+                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-300" />
+                   <input
+                     type="email"
+                     name="email"
+                     value={formData.email}
+                     onChange={handleInputChange}
+                     className="w-full pl-10 pr-3 py-2 sm:py-3 bg-transparent border border-blue-200 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all duration-200"
+                     placeholder="Enter your email"
+                   />
+                 </div>
+                 {errors.email && (
+                   <p className="text-pink-400 text-sm">{errors.email}</p>
+                 )}
+               </div>
+             )}
             {/* Age Field (Register only) */}
             {!isLogin && (
               <div className="space-y-1.5">
@@ -184,16 +322,16 @@ export default function LoginRegisterPage() {
                 </label>
                 <div className="relative">
                   <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-blue-300" />
-                  <input
-                    type="number"
-                    name="age"
-                    value={formData.age}
-                    onChange={handleInputChange}
-                    min="13"
-                    max="120"
-                    className="w-full pl-10 pr-3 py-2 sm:py-3 bg-transparent border border-blue-200 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all duration-200"
-                    placeholder="Enter your age"
-                  />
+                                     <input
+                     type="number"
+                     name="age"
+                     value={formData.age}
+                     onChange={handleInputChange}
+                     min="16"
+                     max="120"
+                     className="w-full pl-10 pr-3 py-2 sm:py-3 bg-transparent border border-blue-200 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all duration-200"
+                     placeholder="Enter your age (min 4)"
+                   />
                 </div>
                 {errors.age && (
                   <p className="text-pink-400 text-sm">{errors.age}</p>
@@ -256,6 +394,13 @@ export default function LoginRegisterPage() {
                 )}
               </div>
             )}
+            {/* API Error Display */}
+            {apiError && (
+              <div className="bg-red-500/20 border border-red-400 rounded-lg p-3">
+                <p className="text-red-300 text-sm text-center">{apiError}</p>
+              </div>
+            )}
+            
             {/* Submit Button */}
             <button
               type="button"

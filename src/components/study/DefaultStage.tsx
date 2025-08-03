@@ -22,7 +22,7 @@ import NextButton from '../element/NextButton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import api from '@/lib/api';
+// API imports removed since this component doesn't use backend APIs yet
 import { useNavigate } from 'react-router-dom';
 
 /**

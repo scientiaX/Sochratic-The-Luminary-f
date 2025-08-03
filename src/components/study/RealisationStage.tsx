@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Home } from 'lucide-react';
 import NextButton from '../element/NextButton';
-import api from '@/lib/api';
+// API imports removed since this component doesn't use backend APIs yet
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
@@ -117,17 +117,11 @@ print("Solution optimized based on learning")`
 // Safe Python execution with sandboxing
 const executePythonCode = async (code: string): Promise<string> => {
   try {
-    // Try to call real API with sandboxed execution
-    const res = await api.post('/execute-python', { 
-      code,
-      timeout: 5000, // 5 second timeout
-      memory_limit: '50MB',
-      allow_imports: ['math', 'random', 'datetime'] // Only safe imports
-    });
-    return res.data.output;
+    // For now, use mock execution since we don't have Python execution endpoint
+    console.log('Using mock execution for demo');
+    return mockExecutePython(code);
   } catch (error) {
-    console.log('Backend not available, using mock execution');
-    // Mock execution for demo
+    console.log('Error in execution, using mock execution');
     return mockExecutePython(code);
   }
 };
@@ -198,13 +192,13 @@ export default function RealisationStage({ problem, finalSolution, onNext }: Pro
     const generateRealisation = async () => {
       setIsLoading(true);
       try {
-        // Try to call real API first
-        const res = await api.post('/realisation', { problem, userSolution: finalSolution || '' });
-        setAiRealisation(res.data.realisation);
-        setEditableCode(res.data.realisation.code || '');
+        // For now, use mock realisation since we don't have realisation endpoint
+        console.log('Using mock realisation for demo');
+        const mockRealisation = getAIRealisation(problem, finalSolution || '');
+        setAiRealisation(mockRealisation);
+        setEditableCode(mockRealisation.code);
       } catch (error) {
-        console.log('Backend not available, using mock realisation');
-        // Use mock realisation
+        console.log('Error in realisation, using mock realisation');
         const mockRealisation = getAIRealisation(problem, finalSolution || '');
         setAiRealisation(mockRealisation);
         setEditableCode(mockRealisation.code);

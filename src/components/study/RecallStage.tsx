@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Home } from 'lucide-react';
 import NextButton from '../element/NextButton';
-import api from '@/lib/api';
+// API imports removed since this component doesn't use backend APIs yet
 import { useNavigate } from 'react-router-dom';
 import CompletionStage from './CompletionStage';
 
@@ -73,10 +73,12 @@ export default function RecallStage({ topicId }: Props) {
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
-      // Try to submit to real API
-      await api.post('/recall', { topicId, answers });
+      // For now, use mock submission since we don't have recall endpoint
+      console.log('Using mock submission for demo');
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
     } catch (error) {
-      console.log('Backend not available, using mock submission');
+      console.log('Error in submission, using mock submission');
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 1000));
     } finally {
