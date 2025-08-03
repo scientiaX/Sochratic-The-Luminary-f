@@ -8,6 +8,7 @@ import TopicsPage from './pages/topics';
 import StudyPage from './pages/study';
 import LoginRegisterPage from './pages/login';
 import PremiumPage from './pages/premium';
+import ProfilePage from './pages/profile';
 import CompletionStage from './components/study/CompletionStage';
 
 // Wrapper component untuk CompletionStage
@@ -29,6 +30,7 @@ function App() {
         <Route path="/completion/:courseId/:topicId" element={<CompletionWrapper />} />
         <Route path="/login" element={<LoginRegisterPage />} />
         <Route path="/premium" element={<PremiumPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         {/* <Route path="/about" element={<AboutPage />} /> Jika URL adalah '/about', tampilkan AboutPage */}
         {/* <Route path="/contact" element={<ContactPage />} /> Jika URL adalah '/contact', tampilkan ContactPage */}
         {/* Anda bisa menambahkan rute lain di sini */}

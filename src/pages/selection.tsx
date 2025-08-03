@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ChevronRight, Star, Clock, Users, BookOpen, Award, Play, Brain, Search, Zap } from 'lucide-react';
+import { ChevronRight, Star, Clock, Users, BookOpen, Award, Play, Brain, Search, Zap, User, Trophy, Users as Friends, MessageCircle, Plus, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import algorithmPng from '../assets/StudyIcon/algorithm.png';
 import { FallingStars } from '../components/ui/FallingStars';
@@ -300,6 +300,167 @@ const LearningPath = ({ title, subtitle, courses, pathRef }: { title: string; su
   );
 };
 
+// Floating Menu Component
+const FloatingMenu = () => {
+  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [ripple, setRipple] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Track scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 100); // Header height threshold
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const menuItems = [
+    {
+      id: 'profile',
+      label: 'Profile',
+      icon: User,
+      action: () => navigate('/profile'),
+      color: 'bg-blue-500 hover:bg-blue-600 active:bg-blue-700'
+    },
+    {
+      id: 'rank',
+      label: 'Rank',
+      icon: Trophy,
+      action: () => {
+        // TODO: Navigate to rank page
+        alert('Rank feature coming soon!');
+      },
+      color: 'bg-purple-500 hover:bg-purple-600 active:bg-purple-700'
+    },
+    {
+      id: 'friends',
+      label: 'Friends',
+      icon: Friends,
+      action: () => {
+        // TODO: Navigate to friends page
+        alert('Friends feature coming soon!');
+      },
+      color: 'bg-green-500 hover:bg-green-600 active:bg-green-700'
+    },
+    {
+      id: 'threads',
+      label: 'Threads',
+      icon: MessageCircle,
+      action: () => {
+        // TODO: Navigate to threads page
+        alert('Threads feature coming soon!');
+      },
+      color: 'bg-orange-500 hover:bg-orange-600 active:bg-orange-700'
+    }
+  ];
+
+  const toggleMenu = () => {
+    if (isAnimating) return;
+    
+    setIsAnimating(true);
+    setRipple(true);
+    
+    if (isOpen) {
+      setIsOpen(false);
+      setTimeout(() => setIsAnimating(false), 300);
+    } else {
+      setIsOpen(true);
+      setTimeout(() => setIsAnimating(false), 300);
+    }
+    
+    setTimeout(() => setRipple(false), 600);
+  };
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: Event) => {
+      const target = event.target as HTMLElement;
+      if (isOpen && !target.closest('.floating-menu')) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isOpen]);
+
+  return (
+    <div className={`floating-menu fixed left-4 sm:left-6 z-50 transition-all duration-300 ${
+      isScrolled ? 'top-4' : 'top-56 sm:top-28'
+    }`}>
+      {/* Menu Items */}
+      <div className={`absolute top-16 sm:top-16 left-0 right-0 transition-all duration-300 ease-out ${
+        isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
+      }`}>
+        {menuItems.map((item, index) => {
+          const IconComponent = item.icon;
+          return (
+            <div
+              key={item.id}
+              className={`mb-2 sm:mb-3 transition-all duration-300 ease-out flex justify-center ${
+                isOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+              }`}
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <button
+                onClick={() => {
+                  item.action();
+                  setIsOpen(false);
+                }}
+                className={`${item.color} text-white p-2.5 sm:p-3 rounded-full shadow-lg hover:shadow-xl active:shadow-inner transform hover:scale-110 active:scale-95 transition-all duration-200 flex items-center justify-center group relative touch-manipulation`}
+                title={item.label}
+              >
+                <IconComponent size={18} className="sm:w-5 sm:h-5" />
+                {/* Desktop Tooltip */}
+                <span className="absolute left-full ml-3 px-2 py-1 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap hidden sm:block">
+                  {item.label}
+                </span>
+                {/* Mobile Label */}
+                <span className="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap sm:hidden">
+                  {item.label}
+                </span>
+              </button>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Main Floating Button */}
+      <button
+        onClick={toggleMenu}
+        className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-lg hover:shadow-xl active:shadow-inner transform hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center relative overflow-hidden touch-manipulation ${
+          isOpen 
+            ? 'bg-red-500 hover:bg-red-600 active:bg-red-700' 
+            : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 active:from-blue-800 active:to-purple-800'
+        }`}
+      >
+        {/* Ripple Effect */}
+        {ripple && (
+          <div className="absolute inset-0 bg-white bg-opacity-30 rounded-full animate-ping" />
+        )}
+        
+        {isOpen ? (
+          <X size={20} className="text-white relative z-10 sm:w-6 sm:h-6" />
+        ) : (
+          <Plus size={20} className="text-white relative z-10 sm:w-6 sm:h-6" />
+        )}
+      </button>
+    </div>
+  );
+};
+
 const LessonSelectionPage = () => {
   const navigate = useNavigate();
   const path1Ref = useRef<HTMLDivElement>(null);
@@ -413,6 +574,9 @@ const LessonSelectionPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
       {/* Falling Stars Background */}
       <FallingStars starCount={20} starColor="#3B82F6" />
+      
+      {/* Floating Menu */}
+      <FloatingMenu />
       
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-100 relative z-10">
