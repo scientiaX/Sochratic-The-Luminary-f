@@ -1,19 +1,25 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
-import tailwindcss from 'tailwindcss' // <-- 1. Impor tailwindcss
+import tailwindcss from 'tailwindcss'
 import path from 'path'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
+    alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
+  },
+  css: {
+    postcss: { plugins: [tailwindcss] },
+  },
+  // ↓↓↓  ADD ONLY THIS  ↓↓↓
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
-  css: { // <-- 2. Tambahkan object css ini
-    postcss: {
-      plugins: [tailwindcss], // <--- Lewatkan fungsi secara langsung
-    },
-  },
+  // ↑↑↑  END ADD  ↑↑↑
 })
