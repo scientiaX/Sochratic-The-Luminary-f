@@ -188,11 +188,15 @@ export const getAuthToken = (): string | null => {
 // Utility function to set auth token in localStorage
 export const setAuthToken = (token: string): void => {
   localStorage.setItem('authToken', token);
+  localStorage.setItem('token', token);
+  localStorage.setItem('auth_token', token);
 };
 
 // Utility function to remove auth token from localStorage
 export const removeAuthToken = (): void => {
   localStorage.removeItem('authToken');
+  localStorage.removeItem('token');
+  localStorage.removeItem('auth_token');
 };
 
 // Utility function to check if user is authenticated
@@ -331,4 +335,6 @@ export const checkApiHealth = async (): Promise<boolean> => {
   }
 };
 
+
 export default api;
+

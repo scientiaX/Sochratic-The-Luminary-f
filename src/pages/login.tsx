@@ -136,16 +136,12 @@ export default function LoginRegisterPage() {
          const response: AuthResponse = await authAPI.login(loginData);
          
          // Handle both old and new response formats
-         if (response.success && response.token) {
-           setAuthToken(response.token);
-           navigate('/selection');
-         } else if (response.message && response.user) {
-           // New backend response format - successful login
-           setAuthToken('dummy-token'); // Backend doesn't return token yet
-           navigate('/selection');
-         } else {
-           setApiError(response.message || 'Login failed');
-         }
+         if (response.token) {
+          setAuthToken(response.token);
+          navigate('/selection');
+        } else {
+          setApiError(response.message || 'Login failed: No token received');
+        }        
        } else {
                    // Register
           const registerData = {
@@ -160,12 +156,8 @@ export default function LoginRegisterPage() {
          const response: AuthResponse = await authAPI.register(registerData);
          
          // Handle both old and new response formats
-         if (response.success && response.token) {
+         if (response.token) {
            setAuthToken(response.token);
-           navigate('/selection');
-         } else if (response.message && response.user) {
-           // New backend response format - successful registration
-           setAuthToken('dummy-token'); // Backend doesn't return token yet
            navigate('/selection');
          } else {
            setApiError(response.message || 'Registration failed');
