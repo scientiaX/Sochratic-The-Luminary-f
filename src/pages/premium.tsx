@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Check, Star, Zap, Brain, Search, Award, Crown, Rocket, Shield, Infinity, Target, Sparkles, Users, BookOpen, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { FallingStars } from '../components/ui/FallingStars';
+import { startCheckout } from '@/lib/payments';
 
 interface FeatureCategory {
   name: string;
@@ -260,10 +261,13 @@ const PackageCard = ({ pkg, isSelected, onSelect }: { pkg: Package; isSelected: 
 
                     {/* CTA Button */}
           <button 
-            onClick={() => {
-              // Here you can add logic to handle package selection
-              console.log(`Selected package: ${pkg.name}`);
-              // You can add payment processing logic here
+            onClick={async () => {
+              try {
+                await startCheckout(pkg.id);
+              } catch (err) {
+                const message = err instanceof Error ? err.message : 'Checkout failed.';
+                alert(message);
+              }
             }}
             className={`w-full py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
               isSelected
@@ -271,7 +275,7 @@ const PackageCard = ({ pkg, isSelected, onSelect }: { pkg: Package; isSelected: 
                 : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-600'
             }`}
           >
-            {isSelected ? 'Selected' : 'Choose Plan'}
+            {isSelected ? 'Continue to Checkout' : 'Choose Plan'}
           </button>
         </div>
       </div>

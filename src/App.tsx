@@ -7,6 +7,8 @@ import LessonSelectionPage from './pages/selection';
 import StudyPage from './pages/study';
 import LoginRegisterPage from './pages/login';
 import PremiumPage from './pages/premium';
+import CheckoutSuccessPage from './pages/checkout-success';
+import CheckoutCancelPage from './pages/checkout-cancel';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route path="/study" element={<Navigate to="/selection" replace />} />
         <Route path="/login" element={<LoginRegisterPage />} />
         <Route path="/premium" element={<PremiumPage />} />
+        <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
+        <Route path="/checkout/cancel" element={<CheckoutCancelPage />} />
         {/* <Route path="/about" element={<AboutPage />} /> Jika URL adalah '/about', tampilkan AboutPage */}
         {/* <Route path="/contact" element={<ContactPage />} /> Jika URL adalah '/contact', tampilkan ContactPage */}
         {/* Anda bisa menambahkan rute lain di sini */}
