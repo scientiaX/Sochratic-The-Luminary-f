@@ -373,9 +373,8 @@ const courseTopics = {
   // Add data for other courses as needed
 };
 
-const TopicCard = ({ topic, onStart }: { topic: any; onStart: () => void }) => {
+const TopicCard = ({ topic, onStart, index }: { topic: any; onStart: () => void; index: number }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const IconComponent = topic.icon;
 
   return (
     <div 
@@ -398,7 +397,7 @@ const TopicCard = ({ topic, onStart }: { topic: any; onStart: () => void }) => {
             <div className={`w-12 h-12 rounded-xl flex items-center justify-center backdrop-blur-sm ${
               topic.isCompleted ? 'bg-white bg-opacity-20' : 'bg-white bg-opacity-20'
             }`}>
-              <IconComponent className="w-6 h-6 text-white" />
+              <span className="text-2xl font-bold text-white">{index + 1}</span>
             </div>
                          <div>
                <h3 className="text-xl font-bold text-white">{topic.title}</h3>
@@ -456,8 +455,8 @@ const TopicsPage = () => {
   const topicsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (courseId && courseTopics[courseId as keyof typeof courseTopics]) {
-      setSelectedCourse(courseTopics[courseId as keyof typeof courseTopics]);
+    if (courseId && courseTopics[courseId as unknown as keyof typeof courseTopics]) {
+      setSelectedCourse(courseTopics[courseId as unknown as keyof typeof courseTopics]);
     }
   }, [courseId]);
 
@@ -605,11 +604,12 @@ const TopicsPage = () => {
          <div ref={topicsRef}>
            <h2 className="text-2xl font-bold text-gray-900 mb-6">Learning Topics</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {selectedCourse.topics.map((topic: any) => (
+            {selectedCourse.topics.map((topic: any, index: number) => (
               <TopicCard 
                 key={topic.id} 
                 topic={topic} 
-                onStart={() => handleStartTopic(topic.id)} 
+                onStart={() => handleStartTopic(topic.id)}
+                index={index}
               />
             ))}
           </div>

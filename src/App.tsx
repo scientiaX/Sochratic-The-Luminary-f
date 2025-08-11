@@ -10,6 +10,8 @@ import LoginRegisterPage from './pages/login';
 import PremiumPage from './pages/premium';
 import ProfilePage from './pages/profile';
 import CompletionStage from './components/study/CompletionStage';
+import CheckoutSuccessPage from './pages/checkout-success';
+import CheckoutCancelPage from './pages/checkout-cancel';
 
 // Wrapper component untuk CompletionStage
 function CompletionWrapper() {
@@ -31,6 +33,8 @@ function App() {
         <Route path="/login" element={<LoginRegisterPage />} />
         <Route path="/premium" element={<PremiumPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
+        <Route path="/checkout/cancel" element={<CheckoutCancelPage />} />
         {/* <Route path="/about" element={<AboutPage />} /> Jika URL adalah '/about', tampilkan AboutPage */}
         {/* <Route path="/contact" element={<ContactPage />} /> Jika URL adalah '/contact', tampilkan ContactPage */}
         {/* Anda bisa menambahkan rute lain di sini */}
