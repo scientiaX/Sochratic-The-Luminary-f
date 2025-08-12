@@ -25,48 +25,6 @@ interface Package {
 
 const packages: Package[] = [
   {
-    id: 'thought-learner',
-    name: 'Thought Learner',
-    subtitle: 'Foundation of Everything',
-    price: '$3',
-    originalPrice: '$5',
-    description: 'Master the basics of problem solving and high-end thinking',
-    icon: Brain,
-    gradient: 'from-blue-600 via-purple-600 to-indigo-700',
-    featureCategories: [
-      {
-        name: 'Learning Content',
-        icon: BookOpen,
-        features: [
-          'Access to 50+ foundational lessons',
-          'Interactive problem-solving exercises',
-          'Step-by-step video tutorials',
-          'Downloadable study materials'
-        ]
-      },
-      {
-        name: 'Progress & Analytics',
-        icon: Target,
-        features: [
-          'Progress tracking & analytics',
-          'Performance insights dashboard',
-          'Learning path recommendations',
-          'Achievement badges system'
-        ]
-      },
-      {
-        name: 'Community & Support',
-        icon: Users,
-        features: [
-          'Community discussion forums',
-          'Email support',
-          'Mobile app access',
-          'Certificate of completion'
-        ]
-      }
-    ]
-  },
-  {
     id: 'truth-seeker',
     name: 'Truth Seeker',
     subtitle: 'Junior Level Contributor',
@@ -82,30 +40,30 @@ const packages: Package[] = [
         name: 'Advanced Learning',
         icon: Brain,
         features: [
-          'Everything in Thought Learner',
-          'Access to 100+ advanced lessons',
+          'Unlimited lesson access in thought learning',
+          'Access to truth seeking advanced lessons',
           'Exclusive "Truth Discovery" modules',
-          'Advanced AI mentor assistance'
+          'Advanced truth seeking AI mentor'
         ]
       },
       {
         name: 'Exclusive Access',
         icon: Crown,
         features: [
-          'Priority community access',
-          'Live Q&A sessions monthly',
-          'Early access to new features',
-          'Exclusive study materials'
+          'Priority team recommendations',
+          'Bandage verification truth seeker',
+          'Trusted accounts and opinions',
+          'AI opinion analysis on nova thread posts'
         ]
       },
       {
         name: 'Premium Support',
         icon: Shield,
         features: [
-          'Advanced analytics dashboard',
-          'Priority email & chat support',
+          'Advanced course recommendations based on thought talent',
+          'Ai to reflect and evaluate thinking',
           'Personal learning advisor',
-          'Custom study schedules'
+          'AI interactive reminder'
         ]
       }
     ]
@@ -119,35 +77,36 @@ const packages: Package[] = [
     description: 'Push the boundaries of thought power with advanced AI mentors and super solving facilities',
     icon: Zap,
     gradient: 'from-orange-600 via-red-600 to-pink-700',
-    badge: 'ONLY THE CHOSEN',
+    badge: 'THE CHOSEN ONE',
     featureCategories: [
       {
         name: 'Ultimate Access',
         icon: Infinity,
         features: [
           'Everything in Truth Seeker',
-          'Unlimited access to all content',
-          'Personal AI mentor 24/7',
+          'Project based learning',
+          'Interdisciplinary learning of problems',
+          'early access to new features and lessons'
         ]
       },
       {
         name: 'Exclusive Experiences',
         icon: Sparkles,
         features: [
-          'Exclusive "Ultra Thinking" workshops',
-          'Direct access to expert instructors',
-          'Exclusive networking events',
-          'Exclusive research insights'
+          'Exclusive "Ultra Thinking" labs',
+          'Direct access to talented students',
+          'Exclusive networking teams',
+          'Exclusive project completion collaboration'
         ]
       },
       {
         name: 'Personal Success',
         icon: Award,
         features: [
-          'Custom learning path creation',
+          'Team matching to build a startup',
           'Advanced project portfolio',
-          'Dedicated success manager',
-          'Priority feature requests'
+          'Mentoring training in distributing products directly to the public',
+          'Easy access to investors for monthly project winning teams'
         ]
       }
     ]
@@ -283,7 +242,7 @@ const PremiumPage = () => {
   const navigate = useNavigate();
   const [selectedPackage, setSelectedPackage] = useState<string>('truth-seeker');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [currentIndex, setCurrentIndex] = useState(1); // Start with Truth Seeker (middle package)
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
   // Detect mobile device
@@ -297,6 +256,23 @@ const PremiumPage = () => {
     
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Update current index when scrolling
+  useEffect(() => {
+    if (isMobile && scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      
+      const handleScroll = () => {
+        const cardWidth = container.scrollWidth / packages.length;
+        const scrollLeft = container.scrollLeft;
+        const newIndex = Math.round(scrollLeft / cardWidth);
+        setCurrentIndex(newIndex);
+      };
+
+      container.addEventListener('scroll', handleScroll);
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
+  }, [isMobile, packages.length]);
 
   // Auto-scroll to selected package on mobile
   useEffect(() => {
@@ -314,31 +290,39 @@ const PremiumPage = () => {
 
   const handlePackageSelect = (packageId: string) => {
     setSelectedPackage(packageId);
-    if (isMobile) {
-      const packageIndex = packages.findIndex(pkg => pkg.id === packageId);
-      setCurrentIndex(packageIndex);
-    }
   };
 
-  const scrollToPackage = (direction: 'left' | 'right') => {
+  const scrollToNext = () => {
     if (!scrollContainerRef.current) return;
     
     const container = scrollContainerRef.current;
     const cardWidth = container.scrollWidth / packages.length;
-    const currentScroll = container.scrollLeft;
-    
-    let targetScroll;
-    if (direction === 'left') {
-      targetScroll = Math.max(0, currentScroll - cardWidth);
-    } else {
-      targetScroll = Math.min(container.scrollWidth - container.clientWidth, currentScroll + cardWidth);
-    }
+    const nextIndex = Math.min(currentIndex + 1, packages.length - 1);
+    const targetScroll = cardWidth * nextIndex;
     
     container.scrollTo({
       left: targetScroll,
       behavior: 'smooth'
     });
   };
+
+  const scrollToPrevious = () => {
+    if (!scrollContainerRef.current) return;
+    
+    const container = scrollContainerRef.current;
+    const cardWidth = container.scrollWidth / packages.length;
+    const previousIndex = Math.max(currentIndex - 1, 0);
+    const targetScroll = cardWidth * previousIndex;
+    
+    container.scrollTo({
+      left: targetScroll,
+      behavior: 'smooth'
+    });
+  };
+
+  // Determine which navigation button to show
+  const canGoLeft = currentIndex > 0;
+  const canGoRight = currentIndex < packages.length - 1;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden">
@@ -360,12 +344,12 @@ const PremiumPage = () => {
             <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl">
               <Crown className="text-white w-10 h-10" />
             </div>
-            <h1 className="text-5xl sm:text-6xl font-bold text-white mb-4">
-                Unlock Your Full Potential,
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-4">
+              Unlock Your Full Potential,
               <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent"> What Templates Can't Do</span>
             </h1>
-            <p className="text-xl sm:text-2xl text-gray-300 max-w-3xl mx-auto">
-            Be a part of this mass revolution by unlocking the chunks of truth that only the deserving can access.
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+              Be a part of this mass revolution by unlocking the chunks of truth that only the deserving can access.
             </p>
           </div>
 
@@ -387,79 +371,85 @@ const PremiumPage = () => {
         </div>
       </div>
 
-                                  {/* Packages */}
-       <div className="relative z-10 pb-40">
-          <div className={`max-w-7xl mx-auto ${isMobile ? 'px-0' : 'px-4 sm:px-6 lg:px-8'}`}>
-                      {/* Mobile Navigation Arrows - Floating on sides */}
-            {isMobile && (
-              <>
+      {/* Packages */}
+      <div className="relative z-10 pb-40">
+        <div className={`max-w-7xl mx-auto ${isMobile ? 'px-0' : 'px-4 sm:px-6 lg:px-8'}`}>
+          {/* Mobile Dynamic Navigation - Show only one button at a time */}
+          {isMobile && (
+            <>
+              {/* Left Arrow - Only show if can go left */}
+              {canGoLeft && (
                 <button
-                  onClick={() => scrollToPackage('left')}
+                  onClick={scrollToPrevious}
                   className="absolute left-2 top-1/2 transform -translate-y-1/2 z-30 w-12 h-12 bg-gray-900/80 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-all duration-300 border border-gray-700 hover:border-gray-600 shadow-lg"
                 >
                   <ChevronLeft size={24} />
                 </button>
-                
+              )}
+              
+              {/* Right Arrow - Only show if can go right */}
+              {canGoRight && (
                 <button
-                  onClick={() => scrollToPackage('right')}
+                  onClick={scrollToNext}
                   className="absolute right-2 top-1/2 transform -translate-y-1/2 z-30 w-12 h-12 bg-gray-900/80 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-all duration-300 border border-gray-700 hover:border-gray-600 shadow-lg"
                 >
                   <ChevronRight size={24} />
                 </button>
-                
-                {/* Dot indicators */}
-                <div className="flex justify-center space-x-2 mb-6">
-                  {packages.map((_, index) => (
-                    <div
-                      key={index}
-                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                        index === currentIndex ? 'bg-yellow-400' : 'bg-gray-600'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
+              )}
+              
+              {/* Dot indicators */}
+              <div className="flex justify-center space-x-2 mb-6">
+                {packages.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      index === currentIndex ? 'bg-yellow-400' : 'bg-gray-600'
+                    }`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
 
-                     {/* Desktop Grid / Mobile Horizontal Scroll */}
-                                               <div 
-               ref={scrollContainerRef}
-               className={`${
-                 isMobile 
-                   ? 'flex overflow-x-auto scrollbar-hide snap-x snap-mandatory gap-4 pb-16 pt-8 px-4' 
-                   : 'grid grid-cols-1 md:grid-cols-3 gap-8'
-               }`}
-               style={{
-                 scrollbarWidth: 'none',
-                 msOverflowStyle: 'none'
-               }}
-             >
-                           {packages.map((pkg, index) => (
-                <div
-                  key={pkg.id}
-                  className={`${
-                    isMobile 
-                      ? 'flex-shrink-0 w-72 snap-center my-8' 
-                      : ''
-                  }`}
-                >
-                 <PackageCard
-                   pkg={pkg}
-                   isSelected={selectedPackage === pkg.id}
-                   onSelect={() => handlePackageSelect(pkg.id)}
-                 />
-               </div>
-             ))}
-           </div>
+          {/* Desktop Grid / Mobile Horizontal Scroll */}
+          <div 
+            ref={scrollContainerRef}
+            className={`${
+              isMobile 
+                ? 'flex overflow-x-auto scrollbar-hide snap-x snap-mandatory gap-4 pb-16 pt-8 px-4' 
+                : 'grid grid-cols-1 md:grid-cols-3 gap-8'
+            }`}
+            style={{
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none'
+            }}
+          >
+            {packages.map((pkg, index) => (
+              <div
+                key={pkg.id}
+                className={`${
+                  isMobile 
+                    ? 'flex-shrink-0 w-72 snap-center my-8' 
+                    : ''
+                }`}
+              >
+                <PackageCard
+                  pkg={pkg}
+                  isSelected={selectedPackage === pkg.id}
+                  onSelect={() => handlePackageSelect(pkg.id)}
+                />
+              </div>
+            ))}
+          </div>
 
-                     {/* Mobile Swipe Instructions */}
-           {isMobile && (
-             <div className="text-center mt-6 px-4">
-               <p className="text-gray-400 text-sm">
-                 💡 Swipe left or right to browse packages
-               </p>
-             </div>
-           )}
+          {/* Mobile Swipe Instructions */}
+          {isMobile && (
+            <div className="text-center mt-6 px-4">
+              <p className="text-gray-400 text-sm">
+                💡 Swipe left or right to browse packages
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
