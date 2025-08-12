@@ -37,7 +37,7 @@ export default function IntroductionPage() {
           <Card className="mt-0 mb-4 shadow-lg">
             <CardContent className="p-4 flex justify-between items-center">
               <div className="font-bold text-gray-700 text-lg">
-                Nova X
+                novaX
               </div>
 
               <div className="flex space-x-2">
@@ -305,7 +305,7 @@ export default function IntroductionPage() {
             {/* Company Info */}
             <div className="lg:col-span-2">
               <div className="mb-6">
-                <h3 className="text-2xl font-bold mb-4">Nova X</h3>
+                <h3 className="text-2xl font-bold mb-4">novaX</h3>
                 <p className="text-gray-300 mb-6 max-w-md">
                   Empowering the next generation of problem solvers and truth seekers with AI-powered learning experiences that adapt to your unique thought.
                 </p>
@@ -365,7 +365,7 @@ export default function IntroductionPage() {
           <div className="border-t border-gray-800 mt-12 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <p className="text-gray-400 text-sm mb-4 md:mb-0">
-                © 2024 Nova X. All rights reserved.
+                © 2024 novaX. All rights reserved.
               </p>
               <div className="flex space-x-6">
                 <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy</a>

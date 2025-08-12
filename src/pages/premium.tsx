@@ -114,24 +114,10 @@ const packages: Package[] = [
 ];
 
 const FeatureIcon = ({ feature }: { feature: string }) => {
-  const getIcon = (feature: string) => {
-    if (feature.includes('AI')) return <Brain className="w-4 h-4" />;
-    if (feature.includes('access')) return <Infinity className="w-4 h-4" />;
-    if (feature.includes('support')) return <Shield className="w-4 h-4" />;
-    if (feature.includes('certificate')) return <Award className="w-4 h-4" />;
-    if (feature.includes('community')) return <Users className="w-4 h-4" />;
-    if (feature.includes('exclusive')) return <Crown className="w-4 h-4" />;
-    if (feature.includes('priority')) return <Target className="w-4 h-4" />;
-    if (feature.includes('advanced')) return <Sparkles className="w-4 h-4" />;
-    return <Check className="w-4 h-4" />;
-  };
-
   return (
     <div className="flex items-center space-x-3">
-      <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white">
-        {getIcon(feature)}
-      </div>
-             <span className="text-gray-300">{feature}</span>
+      <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+      <span className="text-gray-300">{feature}</span>
     </div>
   );
 };
@@ -161,14 +147,14 @@ const PackageCard = ({ pkg, isSelected, onSelect }: { pkg: Package; isSelected: 
         </div>
       )}
 
-                                                                                                                                                                                                                               <div 
-             className={`relative overflow-hidden rounded-3xl p-8 min-h-[1100px] cursor-pointer transition-all duration-500 ${
-               isSelected 
-                 ? 'bg-gray-900 shadow-2xl ring-4 ring-yellow-500 ring-opacity-50 border border-gray-700' 
-                 : 'bg-gray-900/90 backdrop-blur-sm shadow-xl hover:shadow-2xl border border-gray-800'
-             }`}
-             onClick={onSelect}
-           >
+      <div 
+        className={`relative overflow-hidden rounded-3xl p-8 min-h-[1100px] cursor-pointer transition-all duration-500 ${
+          isSelected 
+            ? 'bg-gray-900 shadow-2xl ring-4 ring-yellow-500 ring-opacity-50 border border-gray-700' 
+            : 'bg-gray-900/90 backdrop-blur-sm shadow-xl hover:shadow-2xl border border-gray-800'
+        }`}
+        onClick={onSelect}
+      >
         {/* Background Gradient */}
         <div className={`absolute inset-0 bg-gradient-to-br ${pkg.gradient} opacity-5`}></div>
         
@@ -182,21 +168,21 @@ const PackageCard = ({ pkg, isSelected, onSelect }: { pkg: Package; isSelected: 
             <div className={`w-16 h-16 bg-gradient-to-br ${pkg.gradient} rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg`}>
               <IconComponent className="text-white w-8 h-8" />
             </div>
-                       <h3 className="text-2xl font-bold text-white mb-2">{pkg.name}</h3>
-           <p className="text-gray-300 mb-4">{pkg.subtitle}</p>
-           <p className="text-sm text-gray-400 mb-6">{pkg.description}</p>
+            <h3 className="text-2xl font-bold text-white mb-2">{pkg.name}</h3>
+            <p className="text-gray-300 mb-4">{pkg.subtitle}</p>
+            <p className="text-sm text-gray-400 mb-6">{pkg.description}</p>
           </div>
 
           {/* Pricing */}
-                     <div className="text-center mb-8">
-             <div className="flex items-center justify-center space-x-2 mb-2">
-               <span className="text-4xl font-bold text-white">{pkg.price}</span>
-               {pkg.originalPrice && (
-                 <span className="text-lg text-gray-400 line-through">{pkg.originalPrice}</span>
-               )}
-             </div>
-             <span className="text-gray-400">per month</span>
-           </div>
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center space-x-2 mb-2">
+              <span className="text-4xl font-bold text-white">{pkg.price}</span>
+              {pkg.originalPrice && (
+                <span className="text-lg text-gray-400 line-through">{pkg.originalPrice}</span>
+              )}
+            </div>
+            <span className="text-gray-400">per month</span>
+          </div>
 
           {/* Features */}
           <div className="space-y-6 mb-8">
@@ -217,12 +203,10 @@ const PackageCard = ({ pkg, isSelected, onSelect }: { pkg: Package; isSelected: 
             ))}
           </div>
 
-                    {/* CTA Button */}
+          {/* CTA Button */}
           <button 
             onClick={() => {
-              // Here you can add logic to handle package selection
               console.log(`Selected package: ${pkg.name}`);
-              // You can add payment processing logic here
             }}
             className={`w-full py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
               isSelected
@@ -324,6 +308,10 @@ const PremiumPage = () => {
   const canGoLeft = currentIndex > 0;
   const canGoRight = currentIndex < packages.length - 1;
 
+  const goBack = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden">
       {/* Falling Stars Background */}
@@ -331,49 +319,50 @@ const PremiumPage = () => {
       
       {/* Close Button */}
       <button 
-        onClick={() => navigate(-1)}
-        className="absolute top-6 right-6 z-20 w-12 h-12 bg-gray-900/80 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-all duration-300 border border-gray-700 hover:border-gray-600 shadow-lg"
+        onClick={goBack}
+        className="absolute top-4 right-4 md:top-6 md:right-6 z-20 w-10 h-10 md:w-12 md:h-12 bg-gray-900/80 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-all duration-300 border border-gray-700 hover:border-gray-600 shadow-lg"
       >
-        <X size={24} />
+        <X size={20} className="md:w-6 md:h-6" />
       </button>
       
       {/* Header */}
-      <div className="relative z-10 pt-16 pb-8">
+      <div className="relative z-10 pt-12 md:pt-16 pb-6 md:pb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="mb-8">
-            <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl">
-              <Crown className="text-white w-10 h-10" />
+          <div className="mb-6 md:mb-8">
+            <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-4 md:mb-6 shadow-2xl">
+              <Crown className="text-white w-8 h-8 md:w-10 md:h-10" />
             </div>
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-white mb-3 md:mb-4 leading-tight">
               Unlock Your Full Potential,
+              <br className="hidden sm:block" />
               <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent"> What Templates Can't Do</span>
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto px-2">
               Be a part of this mass revolution by unlocking the chunks of truth that only the deserving can access.
             </p>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
-              <div className="text-2xl font-bold text-white mb-2">✅</div>
-              <div className="text-gray-300">Verified by Science</div>
+          {/* Mobile-Optimized Stats */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-8 mb-8 md:mb-12 px-2">
+            <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 border border-gray-700">
+              <div className="text-xl md:text-2xl font-bold text-white mb-1 md:mb-2">✅</div>
+              <div className="text-sm md:text-base text-gray-300">Verified by Science</div>
             </div>
-            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
-              <div className="text-2xl font-bold text-white mb-2">🏆</div>
-              <div className="text-gray-300">Top 1 Most Effective Learning Method</div>
+            <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 border border-gray-700 sm:col-span-2 md:col-span-1">
+              <div className="text-xl md:text-2xl font-bold text-white mb-1 md:mb-2">🏆</div>
+              <div className="text-sm md:text-base text-gray-300">Top 1 Most Effective Learning Method</div>
             </div>
-            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
-              <div className="text-2xl font-bold text-white mb-2">🌟</div>
-              <div className="text-gray-300">Methods Supported by Great Figures</div>
+            <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 border border-gray-700 sm:col-span-2 md:col-span-1 sm:mx-auto sm:max-w-xs md:max-w-none">
+              <div className="text-xl md:text-2xl font-bold text-white mb-1 md:mb-2">🌟</div>
+              <div className="text-sm md:text-base text-gray-300">Methods Supported by Great Figures</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Packages */}
-      <div className="relative z-10 pb-40">
-        <div className={`max-w-7xl mx-auto ${isMobile ? 'px-0' : 'px-4 sm:px-6 lg:px-8'}`}>
+      <div className="relative z-10 pb-20 md:pb-40">
+        <div className={`max-w-5xl mx-auto ${isMobile ? 'px-0' : 'px-4 sm:px-6 lg:px-8'}`}>
           {/* Mobile Dynamic Navigation - Show only one button at a time */}
           {isMobile && (
             <>
@@ -381,9 +370,9 @@ const PremiumPage = () => {
               {canGoLeft && (
                 <button
                   onClick={scrollToPrevious}
-                  className="absolute left-2 top-1/2 transform -translate-y-1/2 z-30 w-12 h-12 bg-gray-900/80 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-all duration-300 border border-gray-700 hover:border-gray-600 shadow-lg"
+                  className="absolute left-2 top-1/2 transform -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 bg-gray-900/80 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-all duration-300 border border-gray-700 hover:border-gray-600 shadow-lg"
                 >
-                  <ChevronLeft size={24} />
+                  <ChevronLeft size={20} />
                 </button>
               )}
               
@@ -391,9 +380,9 @@ const PremiumPage = () => {
               {canGoRight && (
                 <button
                   onClick={scrollToNext}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 z-30 w-12 h-12 bg-gray-900/80 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-all duration-300 border border-gray-700 hover:border-gray-600 shadow-lg"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 z-30 w-10 h-10 md:w-12 md:h-12 bg-gray-900/80 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-all duration-300 border border-gray-700 hover:border-gray-600 shadow-lg"
                 >
-                  <ChevronRight size={24} />
+                  <ChevronRight size={20} />
                 </button>
               )}
               
@@ -411,13 +400,13 @@ const PremiumPage = () => {
             </>
           )}
 
-          {/* Desktop Grid / Mobile Horizontal Scroll */}
+          {/* Desktop Centered / Mobile Horizontal Scroll */}
           <div 
             ref={scrollContainerRef}
             className={`${
               isMobile 
                 ? 'flex overflow-x-auto scrollbar-hide snap-x snap-mandatory gap-4 pb-16 pt-8 px-4' 
-                : 'grid grid-cols-1 md:grid-cols-3 gap-8'
+                : 'flex justify-center gap-8 flex-wrap'
             }`}
             style={{
               scrollbarWidth: 'none',
@@ -430,7 +419,7 @@ const PremiumPage = () => {
                 className={`${
                   isMobile 
                     ? 'flex-shrink-0 w-72 snap-center my-8' 
-                    : ''
+                    : 'w-full max-w-sm'
                 }`}
               >
                 <PackageCard
