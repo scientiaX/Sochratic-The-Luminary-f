@@ -42,7 +42,6 @@ const packages: Package[] = [
         features: [
           'Unlimited lesson access in thought learning',
           'Access to truth seeking advanced lessons',
-          'Exclusive "Truth Discovery" modules',
           'Advanced truth seeking AI mentor',
           'Advanced STEM understanding and super repetition'
         ]
