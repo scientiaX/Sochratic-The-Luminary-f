@@ -1,6 +1,5 @@
 import React from 'react';
 import { useFallingStars } from '../../hooks/useFallingStars';
-import '../../styles/animations.css';
 
 interface FallingStarsProps {
   starCount?: number;
