@@ -1,7 +1,6 @@
 import cosmicBackground from "@/assets/cosmic-planet-background.jpg";
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-// import { Card, CardContent } from "@/components/ui/card";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const IntroductionPage = () => {
@@ -112,6 +111,123 @@ const IntroductionPage = () => {
       </div>
       </div>
 
+      {/* Black Introduction Section */}
+      <div className="min-h-screen bg-black text-white flex flex-col">
+        <div className="flex-1 p-4">
+          <div className="max-w-7xl mx-auto">
+            {/* Main Content */}
+            <div className="max-w-6xl mx-auto pb-16 sm:pb-14 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                 data-scroll="fade-up">
+              {/* Hero Section */}
+              <div className="mb-12 sm:mb-16 pt-16 sm:pt-24">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+                  Transform Your Mind<br />
+                  <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                    In 10 Minutes
+                  </span>
+                </h1>
+                <p className="text-lg sm:text-xl text-gray-300 mb-6 sm:mb-8 max-w-2xl">
+                  Experience the future of learning where AI adapts to your thinking patterns and accelerates your problem-solving abilities
+                </p>
+                <Link 
+                  to="/login" 
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl w-full sm:w-auto inline-block text-center"
+                >
+                  Begin Your Journey
+                </Link>
+              </div>
+
+              {/* Features Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 sm:mb-24">
+                <div className="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-3xl p-6 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                     data-scroll="fade-up" style={{animationDelay: '0.2s'}}>
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-4">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-white">Lightning Fast Learning</h3>
+                  <p className="text-gray-400">AI-powered adaptation that matches your pace and accelerates your understanding</p>
+                </div>
+
+                <div className="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-3xl p-6 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                     data-scroll="fade-up" style={{animationDelay: '0.4s'}}>
+                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mb-4">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-white">Smart Problem Solving</h3>
+                  <p className="text-gray-400">Real-world challenges that build critical thinking and analytical skills</p>
+                </div>
+
+                <div className="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-3xl p-6 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                     data-scroll="fade-up" style={{animationDelay: '0.6s'}}>
+                  <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-red-600 rounded-full flex items-center justify-center mb-4">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-white">Progress Tracking</h3>
+                  <p className="text-gray-400">Monitor your growth with detailed analytics with thinking process</p>
+                </div>
+              </div>
+
+              {/* Statistics Section */}
+              <div className="text-center mb-16 sm:mb-24 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                   data-scroll="fade-up">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-8">
+                  Why <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Problem Solving</span> Matters
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                  <div className="bg-gradient-to-r from-yellow-400/10 to-orange-500/10 border border-yellow-500/30 rounded-3xl p-8 backdrop-blur-sm opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                       data-scroll="fade-up" style={{animationDelay: '0.2s'}}>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-yellow-400 mb-4">
+                      WORLD ECONOMIC FORUM
+                    </h3>
+                    <p className="text-gray-300">
+                      Problem-solving is the #1 skill needed in the era of automation and AI orchestrators
+                    </p>
+                  </div>
+                  
+                  <div className="bg-gradient-to-r from-blue-400/10 to-purple-500/10 border border-blue-500/30 rounded-3xl p-8 backdrop-blur-sm opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                       data-scroll="fade-up" style={{animationDelay: '0.4s'}}>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-blue-400 mb-4">
+                      TOP LINKEDIN SKILL
+                    </h3>
+                    <p className="text-gray-300">
+                      Most sought-after skill by employers across all industries
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Call to Action */}
+              <div className="text-center opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                   data-scroll="fade-up">
+                <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+                  Ready to <span className="bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">Unlock</span> Your Team?
+                </h2>
+                <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+                  Join thousands of students who can be your collaboration and discussion team
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  <Link 
+                    to="/login" 
+                    className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-8 py-4 rounded-2xl text-lg font-semibold hover:from-green-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl w-full sm:w-auto text-center"
+                  >
+                    Start Collaborating Now
+                  </Link>
+                  <button className="border border-gray-600 text-gray-300 px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 w-full sm:w-auto">
+                    Watch Demo
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Scrollable Content Section */}
       <div className="min-h-screen bg-gray-100 flex flex-col">
         <div className="flex-1 p-4">
@@ -122,17 +238,17 @@ const IntroductionPage = () => {
               {/* Hero Section */}
               <div className="mb-12 sm:mb-16">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
-                  10 minutes a day<br />
-                  improves problem solving
+                  online thinking lab<br />
+                  with transcendent AI
                 </h1>
                 <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl">
-                Just 1% of your time is enough to train something your teacher doesn't understand
+                Online lab + Project portfolio + Deep-learning method + transcendent AI
                 </p>
                 <Link 
                   to="/login" 
                   className="bg-black text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-medium hover:bg-gray-800 transition-colors w-full sm:w-auto inline-block text-center"
                 >
-                  start your first 10 minutes
+                  start your truth journey
                 </Link>
               </div>
 
@@ -143,21 +259,21 @@ const IntroductionPage = () => {
                     <div className="bg-gradient-to-r from-yellow-400/10 to-orange-500/10 border border-yellow-500/30 rounded-3xl p-6 backdrop-blur-sm min-w-[280px] md:min-w-0 md:p-8 snap-center opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
                          data-scroll="fade-up" style={{animationDelay: '0.2s'}}>
                       <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-yellow-500 mb-4">
-                        WORLD ECONOMIC FORUM
+                        DEEP-LEARNING METHOD
                       </h2>
                       <p className="text-base sm:text-lg text-gray-700">
-                        According to the WEF, problem-solving is the most needed skill in the era of<br className="hidden sm:block" />
-                        <span className="sm:hidden"> </span>automation and AI orchestrators (in the future)
+                        High level repetition, active retrieval, meta cognition reflection, problem based and project based learning <br className="hidden sm:block" />
+                        <span className="sm:hidden"> </span>
                       </p>
                     </div>
                     
                     <div className="bg-gradient-to-r from-yellow-400/10 to-orange-500/10 border border-yellow-500/30 rounded-3xl p-6 backdrop-blur-sm min-w-[280px] md:min-w-0 md:p-8 snap-center opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
                          data-scroll="fade-up" style={{animationDelay: '0.4s'}}>
                       <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-yellow-500 mb-4">
-                        TOP SKILLS ON LINKEDIN
+                        AI TRANSCENDENT
                       </h2>
                       <p className="text-base sm:text-lg text-gray-700">
-                        Problem solving is the most sought-after skill on LinkedIn
+                      AI that assesses thinking skills in all conditions while learning, arguing, experimenting, working on projects and collaborating
                       </p>
                     </div>
                   </div>
@@ -190,7 +306,7 @@ const IntroductionPage = () => {
                         </svg>
                       </div>
                       <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">Adaptive Intelligence</h3>
-                      <p className="text-sm md:text-base text-gray-400">Our AI learns your patterns and adapts challenges to your skill level</p>
+                      <p className="text-sm md:text-base text-gray-400">Our AI learns your patterns and adapts challenges or reflection to your skill level</p>
                     </div>
                     
                     <div className="text-center p-3 rounded-3xl bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 min-w-[220px] md:min-w-0 md:p-6 snap-center opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
@@ -201,7 +317,7 @@ const IntroductionPage = () => {
                         </svg>
                       </div>
                       <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">Lightning Fast and Immersive</h3>
-                      <p className="text-sm md:text-base text-gray-400">Get deep reflection and progress tracking in real-time by your THOUGHT</p>
+                      <p className="text-sm md:text-base text-gray-400">Makes it easy to learn comprehensive learning quickly and effectively</p>
                     </div>
                     
                     <div className="text-center p-3 rounded-3xl bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 min-w-[220px] md:min-w-0 md:p-6 snap-center opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
@@ -212,7 +328,7 @@ const IntroductionPage = () => {
                         </svg>
                       </div>
                       <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">Secure & Private</h3>
-                      <p className="text-sm md:text-base text-gray-400">Your learning data is PROTECTED from AI training with embedding technology</p>
+                      <p className="text-sm md:text-base text-gray-400">Your learning data is protected from AI training with embedding technology</p>
                     </div>
                   </div>
                 </div>
