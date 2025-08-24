@@ -7,7 +7,6 @@ import {
   Clock,
   Star,
   Edit,
-  Camera,
   Bell,
   Shield,
   HelpCircle,
@@ -68,7 +67,6 @@ const mockAchievements = [
 const ProfilePage = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
-  const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -145,6 +143,8 @@ const ProfilePage = () => {
     return `${monthNames[month - 1]} ${year}`;
   };
 
+
+
   // Loading
   if (loading) {
     return (
@@ -200,9 +200,10 @@ const ProfilePage = () => {
             <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white shadow-lg bg-gray-200 flex items-center justify-center">
               <User size={48} className="text-gray-400" />
             </div>
-            <button className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 bg-blue-600 text-white p-1.5 sm:p-2 rounded-full shadow-lg hover:bg-blue-700 transition-colors">
-              <Camera size={12} className="sm:w-4 sm:h-4" />
-            </button>
+            {/* Online/Offline Status Indicator */}
+            <div className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-white shadow-lg bg-green-500 flex items-center justify-center">
+              <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-white"></div>
+            </div>
           </div>
 
           <div className="flex-1 min-w-0">
@@ -210,7 +211,6 @@ const ProfilePage = () => {
               <div className="flex-1 min-w-0">
                 <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 sm:mb-2 truncate">{profileData.name}</h1>
                 <p className="text-gray-600 mb-1 sm:mb-2 text-sm sm:text-base">@{profileData.username}</p>
-                <p className="text-gray-700 mb-2 text-sm sm:text-base">{profileData.email}</p>
                 <p className="text-gray-700 mb-3 sm:mb-4 text-sm sm:text-base line-clamp-2">Passionate learner exploring the depths of programming and problem solving.</p>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600">
                   <div className="flex items-center gap-1">
@@ -225,7 +225,7 @@ const ProfilePage = () => {
               </div>
 
               <button
-                onClick={() => setIsEditing(!isEditing)}
+                onClick={() => navigate('/edit-profile')}
                 className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg text-sm sm:text-base whitespace-nowrap"
               >
                 <Edit size={16} className="sm:w-5 sm:h-5" />
@@ -340,8 +340,7 @@ const ProfilePage = () => {
         <h2 className="text-xl font-bold text-gray-900 mb-4">Account Settings</h2>
         <div className="space-y-4">
           {[
-            { label: 'Profile Information', icon: User, desc: 'Update your personal details' },
-            { label: 'Notifications', icon: Bell, desc: 'Manage your notification preferences' },
+            { label: 'Profile Information', icon: User, desc: 'Update your personal details', action: () => navigate('/edit-profile') },
             { label: 'Privacy & Security', icon: Shield, desc: 'Control your privacy settings' },
             { label: 'Help & Support', icon: HelpCircle, desc: 'Get help and contact support' },
             { label: 'Logout', icon: LogOut, desc: 'Sign out of your account', danger: true, action: () => navigate('/login') }
@@ -349,7 +348,7 @@ const ProfilePage = () => {
             <div
               key={item.label}
               onClick={item.action || (() => navigate('/profile'))}
-              className={`flex items-center justify-between p-4 rounded-xl transition-colors cursor-pointer ${item.danger ? 'bg-red-50 hover:bg-red-100' : 'bg-gray-50 hover:bg-gray-100'}`}
+              className={`flex items-center justify-between p-4 rounded-xl transition-colors cursor-pointer ${item.danger ? 'bg-red-50 hover:bg-gray-100' : 'bg-gray-50 hover:bg-gray-100'}`}
             >
               <div className="flex items-center gap-3">
                 <div className={`p-2 rounded-lg ${item.danger ? 'bg-red-100' : 'bg-blue-100'}`}>
@@ -425,12 +424,8 @@ const ProfilePage = () => {
             <div className="text-right">
               <p className="text-sm text-gray-500">Member since</p>
               <p className="text-lg font-semibold text-gray-900">{formatJoinDate(profileData.createdAt)}</p>
-              <p className="text-sm text-gray-500">Age: {profileData.age}</p>
+              <p className="text-sm text-gray-500">Age: {profileData.age} years old</p>
             </div>
-          </div>
-          <div className="flex items-center gap-4 text-sm text-gray-600">
-            <Mail className="w-4 h-4" />
-            <span>{profileData.email}</span>
           </div>
         </div>
 

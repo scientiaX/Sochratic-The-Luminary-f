@@ -9,6 +9,7 @@ import StudyPage from './pages/study';
 import LoginRegisterPage from './pages/login';
 import PremiumPage from './pages/premium';
 import ProfilePage from './pages/profile';
+import EditProfilePage from './pages/edit-profile';
 import CompletionStage from './components/study/CompletionStage';
 import CheckoutSuccessPage from './pages/checkout-success';
 import CheckoutCancelPage from './pages/checkout-cancel';
@@ -33,6 +34,7 @@ function App() {
         <Route path="/login" element={<LoginRegisterPage />} />
         <Route path="/premium" element={<PremiumPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/edit-profile" element={<EditProfilePage />} />
         <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
         <Route path="/checkout/cancel" element={<CheckoutCancelPage />} />
         {/* <Route path="/about" element={<AboutPage />} /> Jika URL adalah '/about', tampilkan AboutPage */}
