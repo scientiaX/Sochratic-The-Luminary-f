@@ -37,6 +37,8 @@ export interface ProfileData {
   username: string;
   age: number;
   email: string;
+  bio?: string;
+  profilePhoto?: string;
   createdAt: {
     month: number;
     year: number;
@@ -46,11 +48,22 @@ export interface ProfileData {
     exp: number;
     level: number;
   }>;
+  isOnline?: boolean;
 }
 
 export interface ApiError {
   message: string;
   status?: number;
+}
+
+export interface UpdateProfileRequest {
+  bio?: string;
+  profilePhoto?: string;
+}
+
+export interface UserStatus {
+  status: 'online' | 'offline';
+  lastSeen: string;
 }
 
 // Generic API call function
@@ -120,7 +133,7 @@ export const authAPI = {
     }
     
     try {
-      const result = await apiCall<{ success: boolean; data: ProfileData }>('/api/profile', {
+      const result = await apiCall<{ success: boolean; data: ProfileData }>('/api/profile/profile', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -137,6 +150,111 @@ export const authAPI = {
       return result.data;
     } catch (error) {
       console.error('Error in getProfile:', error);
+      throw error;
+    }
+  },
+
+  // Update Profile
+  updateProfile: async (data: UpdateProfileRequest): Promise<ProfileData> => {
+    const token = getAuthToken();
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+    
+    try {
+      const result = await apiCall<{ success: boolean; data: ProfileData; message: string }>('/api/profile/profile', {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      });
+      
+      if (!result.success) {
+        throw new Error('Failed to update profile data');
+      }
+      
+      if (!result.data) {
+        throw new Error('Profile data is missing from response');
+      }
+      
+      return result.data;
+    } catch (error) {
+      console.error('Error in updateProfile:', error);
+      throw error;
+    }
+  },
+
+  // Set Online Status
+  setOnlineStatus: async (isOnline: boolean): Promise<{ success: boolean; message: string }> => {
+    const token = getAuthToken();
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+    
+    try {
+      const endpoint = isOnline ? '/api/profile/status/online' : '/api/profile/status/offline';
+      const result = await apiCall<{ success: boolean; message: string }>(endpoint, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      
+      return result;
+    } catch (error) {
+      console.error('Error in setOnlineStatus:', error);
+      throw error;
+    }
+  },
+
+  // Get User Status
+  getUserStatus: async (): Promise<UserStatus> => {
+    const token = getAuthToken();
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+    
+    try {
+      const result = await apiCall<{ success: boolean; data: UserStatus }>('/api/profile/status', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      
+      if (!result.success) {
+        throw new Error('Failed to fetch user status');
+      }
+      
+      if (!result.data) {
+        throw new Error('User status data is missing from response');
+      }
+      
+      return result.data;
+    } catch (error) {
+      console.error('Error in getUserStatus:', error);
+      throw error;
+    }
+  },
+
+  // Send Heartbeat
+  sendHeartbeat: async (): Promise<{ success: boolean; message: string }> => {
+    const token = getAuthToken();
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+    
+    try {
+      const result = await apiCall<{ success: boolean; message: string }>('/api/profile/heartbeat', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      
+      return result;
+    } catch (error) {
+      console.error('Error in sendHeartbeat:', error);
       throw error;
     }
   },

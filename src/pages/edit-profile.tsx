@@ -37,6 +37,9 @@ const EditProfilePage = () => {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  
+  const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
 
   // Fetch profile data
   useEffect(() => {
@@ -64,8 +67,13 @@ const EditProfilePage = () => {
           username: data.username || '',
           age: data.age?.toString() || '',
           email: data.email || '',
-          bio: 'Passionate learner exploring the depths of programming and problem solving.' // Default bio
+          bio: data.bio || 'Passionate learner exploring the depths of programming and problem solving.'
         });
+        
+        // Set photo preview if exists
+        if (data.profilePhoto) {
+          setPhotoPreview(data.profilePhoto);
+        }
       } catch (err) {
         console.error('Error fetching profile:', err);
         if (err instanceof Error && err.message.includes('authentication')) {
@@ -81,6 +89,8 @@ const EditProfilePage = () => {
           username: 'demo_user',
           age: 25,
           email: 'demo@example.com',
+          bio: 'Passionate learner exploring the depths of programming and problem solving.',
+          profilePhoto: undefined,
           createdAt: { month: 8, year: 2024 },
           intelligenceProgress: [
             { type: 'mathematics', exp: 150, level: 3 },
@@ -95,7 +105,7 @@ const EditProfilePage = () => {
           username: demoData.username,
           age: demoData.age.toString(),
           email: demoData.email,
-          bio: 'Passionate learner exploring the depths of programming and problem solving.'
+          bio: demoData.bio
         });
         setError('Backend connection failed. Showing demo data.');
       } finally {
@@ -111,6 +121,23 @@ const EditProfilePage = () => {
       ...prev,
       [name]: value
     }));
+  };
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setProfilePhoto(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPhotoPreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removePhoto = () => {
+    setProfilePhoto(null);
+    setPhotoPreview(null);
   };
 
   const handleSave = async () => {
@@ -129,16 +156,43 @@ const EditProfilePage = () => {
         return;
       }
 
-      // Simulate API call (replace with actual API call)
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Prepare update data
+      const updateData: any = {
+        bio: formData.bio
+      };
+
+      // Handle photo upload if there's a new photo
+      if (profilePhoto) {
+        // In a real app, you would upload the file to a server first
+        // For now, we'll simulate it by creating a data URL
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const photoUrl = e.target?.result as string;
+          updateData.profilePhoto = photoUrl;
+          
+          // Update profile via API
+          updateProfile(updateData);
+        };
+        reader.readAsDataURL(profilePhoto);
+      } else {
+        // Update profile without photo
+        updateProfile(updateData);
+      }
       
+    } catch (err) {
+      setError('Failed to save profile. Please try again.');
+    }
+  };
+
+  const updateProfile = async (updateData: any) => {
+    try {
+      await authAPI.updateProfile(updateData);
       setSuccess(true);
       setTimeout(() => {
         navigate('/profile');
       }, 1500);
-      
     } catch (err) {
-      setError('Failed to save profile. Please try again.');
+      setError('Failed to update profile. Please try again.');
     } finally {
       setSaving(false);
     }
@@ -235,7 +289,15 @@ const EditProfilePage = () => {
             <div className="flex items-center gap-6">
               <div className="relative">
                 <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white shadow-lg bg-gray-200 flex items-center justify-center">
-                  <User size={48} className="text-gray-400" />
+                  {photoPreview ? (
+                    <img 
+                      src={photoPreview} 
+                      alt="Profile Preview" 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <User size={48} className="text-gray-400" />
+                  )}
                 </div>
                 {/* Online/Offline Status Indicator */}
                 <div className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-white shadow-lg bg-green-500 flex items-center justify-center">
@@ -243,11 +305,20 @@ const EditProfilePage = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-3">
-                <button className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                <label className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer">
                   <Camera size={16} />
-                  Change Photo
-                </button>
-                <button className="flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">
+                  <span>Change Photo</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                    className="hidden"
+                  />
+                </label>
+                <button 
+                  onClick={removePhoto}
+                  className="flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors"
+                >
                   <X size={16} />
                   Remove Photo
                 </button>

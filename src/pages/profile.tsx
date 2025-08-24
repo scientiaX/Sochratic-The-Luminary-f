@@ -22,6 +22,8 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { FallingStars } from '../components/ui/FallingStars';
+import OnlineStatusIndicator from '../components/ui/OnlineStatusIndicator';
+import OnlineUsersList from '../components/ui/OnlineUsersList';
 import { authAPI, setAuthToken } from '../lib/api';
 import type { ProfileData } from '../lib/api';
 
@@ -70,6 +72,7 @@ const ProfilePage = () => {
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isOnline, setIsOnline] = useState(false);
 
   const tabs = [
     { id: 'overview', name: 'Overview', icon: User },
@@ -96,6 +99,7 @@ const ProfilePage = () => {
         setAuthToken(token);
         const data = await authAPI.getProfile();
         setProfileData(data);
+        setIsOnline(data.isOnline || false);
       } catch (err) {
         console.error('Error fetching profile:', err);
         if (err instanceof Error && err.message.includes('authentication')) {
@@ -110,6 +114,8 @@ const ProfilePage = () => {
           username: 'demo_user',
           age: 25,
           email: 'demo@example.com',
+          bio: 'Passionate learner exploring the depths of programming and problem solving.',
+          profilePhoto: undefined,
           createdAt: { month: 8, year: 2024 },
           intelligenceProgress: [
             { type: 'mathematics', exp: 150, level: 3 },
@@ -124,6 +130,43 @@ const ProfilePage = () => {
     };
     fetchProfile();
   }, [navigate]);
+
+  // Set online status and heartbeat system
+  useEffect(() => {
+    const setOnlineStatus = async () => {
+      try {
+        await authAPI.setOnlineStatus(true);
+        setIsOnline(true);
+      } catch (error) {
+        console.error('Failed to set online status:', error);
+      }
+    };
+
+    const startHeartbeat = () => {
+      const interval = setInterval(async () => {
+        try {
+          await authAPI.sendHeartbeat();
+        } catch (error) {
+          console.error('Heartbeat failed:', error);
+          setIsOnline(false);
+        }
+      }, 30000); // Every 30 seconds
+
+      return interval;
+    };
+
+    // Set online status when component mounts
+    setOnlineStatus();
+    
+    // Start heartbeat
+    const heartbeatInterval = startHeartbeat();
+
+    // Cleanup: set offline status when component unmounts
+    return () => {
+      clearInterval(heartbeatInterval);
+      authAPI.setOnlineStatus(false).catch(console.error);
+    };
+  }, []);
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
@@ -198,11 +241,23 @@ const ProfilePage = () => {
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
           <div className="relative flex-shrink-0">
             <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white shadow-lg bg-gray-200 flex items-center justify-center">
-              <User size={48} className="text-gray-400" />
+              {profileData.profilePhoto ? (
+                <img 
+                  src={profileData.profilePhoto} 
+                  alt="Profile" 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <User size={48} className="text-gray-400" />
+              )}
             </div>
             {/* Online/Offline Status Indicator */}
-            <div className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-white shadow-lg bg-green-500 flex items-center justify-center">
-              <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-white"></div>
+            <div className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2">
+              <OnlineStatusIndicator 
+                userId={profileData.id} 
+                initialStatus={isOnline} 
+                size="lg"
+              />
             </div>
           </div>
 
@@ -211,7 +266,9 @@ const ProfilePage = () => {
               <div className="flex-1 min-w-0">
                 <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 sm:mb-2 truncate">{profileData.name}</h1>
                 <p className="text-gray-600 mb-1 sm:mb-2 text-sm sm:text-base">@{profileData.username}</p>
-                <p className="text-gray-700 mb-3 sm:mb-4 text-sm sm:text-base line-clamp-2">Passionate learner exploring the depths of programming and problem solving.</p>
+                <p className="text-gray-700 mb-3 sm:mb-4 text-sm sm:text-base line-clamp-2">
+                  {profileData.bio || 'No bio available. Click Edit Profile to add one!'}
+                </p>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600">
                   <div className="flex items-center gap-1">
                     <Calendar size={14} className="sm:w-4 sm:h-4" />
@@ -289,25 +346,32 @@ const ProfilePage = () => {
         </div>
       </div>
 
-      {profileData.intelligenceProgress && profileData.intelligenceProgress.length > 0 && (
-        <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8 border border-gray-100">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Intelligence Progress</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {profileData.intelligenceProgress.map((progress, index) => (
-              <div key={index} className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 sm:p-6 border border-gray-200">
-                <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <div className="p-2 sm:p-3 bg-blue-100 rounded-lg sm:rounded-xl">
-                    <Brain className="w-4 h-4 sm:w-6 sm:h-6 text-blue-600" />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {profileData.intelligenceProgress && profileData.intelligenceProgress.length > 0 && (
+          <div className="lg:col-span-2 bg-white rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8 border border-gray-100">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Intelligence Progress</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {profileData.intelligenceProgress.map((progress, index) => (
+                <div key={index} className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 sm:p-6 border border-gray-200">
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className="p-2 sm:p-3 bg-blue-100 rounded-lg sm:rounded-xl">
+                      <Brain className="w-4 h-4 sm:w-6 sm:h-6 text-blue-600" />
+                    </div>
+                    <span className="text-xs sm:text-sm font-medium text-gray-600 uppercase">{progress.type}</span>
                   </div>
-                  <span className="text-xs sm:text-sm font-medium text-gray-600 uppercase">{progress.type}</span>
+                  <h3 className="text-lg sm:text-2xl font-bold text-gray-900 mb-1">Level {progress.level}</h3>
+                  <p className="text-gray-600 text-xs sm:text-sm">{progress.exp} XP</p>
                 </div>
-                <h3 className="text-lg sm:text-2xl font-bold text-gray-900 mb-1">Level {progress.level}</h3>
-                <p className="text-gray-600 text-xs sm:text-sm">{progress.exp} XP</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+        )}
+        
+        {/* Online Users List */}
+        <div className="lg:col-span-1">
+          <OnlineUsersList />
         </div>
-      )}
+      </div>
     </div>
   );
 
