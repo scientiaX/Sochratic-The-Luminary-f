@@ -7,7 +7,7 @@ import LessonSelectionPage from './pages/selection';
 import TopicsPage from './pages/topics';
 import StudyPage from './pages/study';
 import LoginRegisterPage from './pages/login';
-import PremiumPage from './pages/premium';
+import PremiumPage from './pages/pricing';
 import ProfilePage from './pages/profile';
 import EditProfilePage from './pages/edit-profile';
 import CompletionStage from './components/study/CompletionStage';

@@ -93,9 +93,9 @@ const IntroductionPage = () => {
           {/* Subtitle */}
           <div className="animate-fade-in [animation-delay:0.5s] opacity-0">
             <p className="text-lg md:text-xl lg:text-2xl text-foreground/90 leading-relaxed font-light tracking-wide max-w-3xl mx-auto">
-              first problem based and project based learning environment 
+              first all in one learning environment 
               <br className="hidden md:block" />
-              <span className="text-cosmic-aurora">with AI thinking mentor</span>
+              <span className="text-cosmic-aurora">with AI thinking tracker</span>
             </p>
           </div>
           
@@ -186,7 +186,7 @@ const IntroductionPage = () => {
                       WORLD ECONOMIC FORUM
                     </h3>
                     <p className="text-gray-300">
-                      Problem-solving is the #1 skill needed in the era of automation and AI orchestrators
+                      Problem-solving is the #1 skill needed in the era of automation and AI orchestrations
                     </p>
                   </div>
                   
@@ -212,12 +212,6 @@ const IntroductionPage = () => {
                   Join thousands of students who can be your collaboration and discussion team
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                  <Link 
-                    to="/login" 
-                    className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-8 py-4 rounded-2xl text-lg font-semibold hover:from-green-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl w-full sm:w-auto text-center"
-                  >
-                    Start Collaborating Now
-                  </Link>
                   <button className="border border-gray-600 text-gray-300 px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 w-full sm:w-auto">
                     Watch Demo
                   </button>
@@ -244,12 +238,6 @@ const IntroductionPage = () => {
                 <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl">
                 Online lab + Project portfolio + Deep-learning method + transcendent AI
                 </p>
-                <Link 
-                  to="/login" 
-                  className="bg-black text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-medium hover:bg-gray-800 transition-colors w-full sm:w-auto inline-block text-center"
-                >
-                  start your truth journey
-                </Link>
               </div>
 
               {/* Combined Section with Scroll Track Shadow Effect */}
@@ -262,7 +250,7 @@ const IntroductionPage = () => {
                         DEEP-LEARNING METHOD
                       </h2>
                       <p className="text-base sm:text-lg text-gray-700">
-                        High level repetition, active retrieval, meta cognition reflection, problem based and project based learning <br className="hidden sm:block" />
+                        Spaced repetition, active retrieval, meta cognition reflection, problem based and project based learning <br className="hidden sm:block" />
                         <span className="sm:hidden"> </span>
                       </p>
                     </div>
@@ -280,6 +268,277 @@ const IntroductionPage = () => {
                 </div>
               </div>
             </div>
+
+            <div className="min-h-screen bg-white py-16 sm:py-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-16 sm:mb-20 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+               data-scroll="fade-up">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+              Problem-Based Learning
+            </h2>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Experience learning through real-world challenges that develop critical thinking, 
+              collaboration skills, and deep understanding through authentic problem-solving scenarios
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-16">
+            {/* Problem-Based Learning Explanation */}
+            <div className="opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                 data-scroll="fade-up" style={{animationDelay: '0.2s'}}>
+              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">
+                Learn by Solving Real Problems
+              </h3>
+              <div className="space-y-6 text-gray-700">
+                <p className="text-lg leading-relaxed">
+                  Problem-based learning puts you at the center of authentic, complex challenges that mirror real-world scenarios. 
+                  Instead of passive consumption, you actively construct knowledge through investigation, collaboration, and reflection.
+                </p>
+                <div className="space-y-4">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Active Knowledge Construction</h4>
+                      <p className="text-gray-600">Build understanding through hands-on investigation rather than passive absorption</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Collaborative Learning</h4>
+                      <p className="text-gray-600">Work with peers to tackle complex challenges and share diverse perspectives</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Real-World Relevance</h4>
+                      <p className="text-gray-600">Engage with authentic problems that connect learning to meaningful contexts</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Visual Representation */}
+            <div className="opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                 data-scroll="fade-up" style={{animationDelay: '0.4s'}}>
+              <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl p-8 border border-blue-100">
+                <div className="text-center mb-8">
+                  <h4 className="text-xl font-bold text-gray-900 mb-4">PBL Learning Cycle</h4>
+                </div>
+                <div className="space-y-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">1</div>
+                    <div>
+                      <h5 className="font-semibold text-gray-900">Problem Presentation</h5>
+                      <p className="text-sm text-gray-600">Encounter authentic, complex scenarios</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">2</div>
+                    <div>
+                      <h5 className="font-semibold text-gray-900">Investigation & Research</h5>
+                      <p className="text-sm text-gray-600">Gather information and analyze data</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">3</div>
+                    <div>
+                      <h5 className="font-semibold text-gray-900">Solution Development</h5>
+                      <p className="text-sm text-gray-600">Create and test potential solutions</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold">4</div>
+                    <div>
+                      <h5 className="font-semibold text-gray-900">Reflection & Application</h5>
+                      <p className="text-sm text-gray-600">Evaluate learning and transfer knowledge</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Advanced Learning Techniques Section */}
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-16 sm:py-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-16 sm:mb-20 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+               data-scroll="fade-up">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+              Advanced Cognitive Enhancement
+            </h2>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+              Experience personalized learning that adapts to your cognitive patterns using scientifically-proven techniques 
+              that optimize memory retention, critical thinking, and self-awareness
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mb-16">
+            {/* Spaced Repetition */}
+            <div className="bg-white rounded-3xl p-8 shadow-lg border border-gray-200 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                 data-scroll="fade-up" style={{animationDelay: '0.2s'}}>
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mb-6">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Intelligent Spaced Repetition</h3>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                Our AI analyzes your forgetting curves and optimizes review intervals based on your individual memory patterns, 
+                ensuring maximum retention with minimal effort.
+              </p>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Personalized forgetting curve analysis</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Dynamic interval adjustment</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Context-aware scheduling</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Active Retrieval */}
+            <div className="bg-white rounded-3xl p-8 shadow-lg border border-gray-200 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                 data-scroll="fade-up" style={{animationDelay: '0.4s'}}>
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Adaptive Active Retrieval</h3>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                Engage in challenging recall exercises that strengthen neural pathways. Our system adapts difficulty and 
+                question types based on your cognitive load and performance patterns.
+              </p>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Multi-modal retrieval challenges</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Cognitive load monitoring</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Progressive difficulty scaling</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Metacognition */}
+            <div className="bg-white rounded-3xl p-8 shadow-lg border border-gray-200 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                 data-scroll="fade-up" style={{animationDelay: '0.6s'}}>
+              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-500 rounded-2xl flex items-center justify-center mb-6">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Deep Metacognitive Awareness</h3>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                Develop profound self-awareness of your thinking processes through guided reflection, strategy monitoring, 
+                and real-time feedback on your cognitive approaches.
+              </p>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Real-time thinking process analysis</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Strategic approach optimization</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span className="text-sm text-gray-700">Self-regulation skill development</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Advanced Features Showcase */}
+          <div className="bg-white rounded-3xl p-8 lg:p-12 shadow-xl border border-gray-200 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+               data-scroll="fade-up">
+            <div className="text-center mb-12">
+              <h3 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+                Beyond Traditional Learning Platforms
+              </h3>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Our AI doesn't just track what you learn—it understands how you think, adapts to your cognitive style, 
+                and continuously optimizes your learning experience for maximum growth.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="text-center opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                   data-scroll="fade-up" style={{animationDelay: '0.2s'}}>
+                <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                </div>
+                <h4 className="text-lg font-bold text-gray-900 mb-2">Cognitive Pattern Recognition</h4>
+                <p className="text-sm text-gray-600">AI identifies your unique thinking patterns and learning preferences</p>
+              </div>
+
+              <div className="text-center opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                   data-scroll="fade-up" style={{animationDelay: '0.4s'}}>
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                </div>
+                <h4 className="text-lg font-bold text-gray-900 mb-2">Emotional Intelligence Integration</h4>
+                <p className="text-sm text-gray-600">Considers your emotional state and motivation levels in learning optimization</p>
+              </div>
+
+              <div className="text-center opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                   data-scroll="fade-up" style={{animationDelay: '0.6s'}}>
+                <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                  </svg>
+                </div>
+                <h4 className="text-lg font-bold text-gray-900 mb-2">Predictive Performance Modeling</h4>
+                <p className="text-sm text-gray-600">Anticipates learning challenges and proactively adjusts strategies</p>
+              </div>
+
+              <div className="text-center opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                   data-scroll="fade-up" style={{animationDelay: '0.8s'}}>
+                <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                  </svg>
+                </div>
+                <h4 className="text-lg font-bold text-gray-900 mb-2">Neural Pathway Optimization</h4>
+                <p className="text-sm text-gray-600">Enhances specific neural connections for improved cognitive performance</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
             {/* Futuristic Landing Section */}
             <div className="bg-black text-white py-12 sm:py-32 mt-16 sm:mt-24 rounded-3xl opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
@@ -352,9 +611,12 @@ const IntroductionPage = () => {
                     >
                       Get Started Now
                     </Link>
-                    <button className="border border-gray-600 text-gray-300 px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300">
-                      Learn More
-                    </button>
+                    <Link
+                      to="/premium"
+                      className="border border-gray-600 text-gray-300 px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300"
+                     >
+                      Pricing
+                    </Link>
                   </div>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Check, Star, Zap, Brain, Search, Award, Crown, Rocket, Shield, Infinity, Target, Sparkles, Users, BookOpen, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Check, Star, Zap, Brain, Search, Award, Crown, Rocket, Shield, Infinity, Target, Sparkles, Users, BookOpen, X, ChevronLeft, ChevronRight, Gift } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { FallingStars } from '../components/ui/FallingStars';
 
@@ -21,9 +21,52 @@ interface Package {
   gradient: string;
   popular?: boolean;
   badge?: string;
+  isFree?: boolean;
 }
 
 const packages: Package[] = [
+  {
+    id: 'free-explorer',
+    name: 'Free Explorer',
+    subtitle: 'Starter Level Access',
+    price: 'Free',
+    description: 'Start your truth-seeking journey with basic access to fundamental learning resources',
+    icon: Gift,
+    gradient: 'from-blue-600 via-indigo-600 to-purple-700',
+    isFree: true,
+    featureCategories: [
+      {
+        name: 'Basic Learning',
+        icon: BookOpen,
+        features: [
+          'Access to 5 basic lessons per month',
+          'Introduction to truth seeking concepts',
+          'Basic AI learning companion',
+          'Community discussion access'
+        ]
+      },
+      {
+        name: 'Getting Started',
+        icon: Target,
+        features: [
+          'Basic course recommendations',
+          'Weekly learning tips',
+          'Public forum access',
+          'Progress tracking'
+        ]
+      },
+      {
+        name: 'Community',
+        icon: Users,
+        features: [
+          'Join beginner study groups',
+          'Access to free resources library',
+          'Monthly newsletter',
+          'Basic profile creation'
+        ]
+      }
+    ]
+  },
   {
     id: 'truth-seeker',
     name: 'Truth Seeker',
@@ -147,6 +190,14 @@ const PackageCard = ({ pkg, isSelected, onSelect }: { pkg: Package; isSelected: 
         </div>
       )}
 
+      {pkg.isFree && (
+        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
+          <div className="bg-gradient-to-r from-green-400 to-blue-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+            FREE FOREVER
+          </div>
+        </div>
+      )}
+
       <div 
         className={`relative overflow-hidden rounded-3xl p-8 min-h-[1100px] cursor-pointer transition-all duration-500 ${
           isSelected 
@@ -181,7 +232,8 @@ const PackageCard = ({ pkg, isSelected, onSelect }: { pkg: Package; isSelected: 
                 <span className="text-lg text-gray-400 line-through">{pkg.originalPrice}</span>
               )}
             </div>
-            <span className="text-gray-400">per month</span>
+            {!pkg.isFree && <span className="text-gray-400">per month</span>}
+            {pkg.isFree && <span className="text-green-400 font-medium">No credit card required</span>}
           </div>
 
           {/* Features */}
@@ -211,10 +263,12 @@ const PackageCard = ({ pkg, isSelected, onSelect }: { pkg: Package; isSelected: 
             className={`w-full py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
               isSelected
                 ? `bg-gradient-to-r ${pkg.gradient} text-white shadow-lg transform scale-105`
-                : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-600'
+                : pkg.isFree 
+                  ? 'bg-gradient-to-r from-green-500 to-blue-500 text-white hover:from-green-600 hover:to-blue-600 shadow-lg'
+                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-600'
             }`}
           >
-            {isSelected ? 'Selected' : 'Choose Plan'}
+            {isSelected ? 'Selected' : pkg.isFree ? 'Start Free' : 'Choose Plan'}
           </button>
         </div>
       </div>
@@ -362,7 +416,7 @@ const PremiumPage = () => {
 
       {/* Packages */}
       <div className="relative z-10 pb-20 md:pb-40">
-        <div className={`max-w-5xl mx-auto ${isMobile ? 'px-0' : 'px-4 sm:px-6 lg:px-8'}`}>
+        <div className={`max-w-7xl mx-auto ${isMobile ? 'px-0' : 'px-4 sm:px-6 lg:px-8'}`}>
           {/* Mobile Dynamic Navigation - Show only one button at a time */}
           {isMobile && (
             <>
