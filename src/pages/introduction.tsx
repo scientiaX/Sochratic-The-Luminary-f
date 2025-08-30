@@ -2,11 +2,19 @@ import cosmicBackground from "@/assets/cosmic-planet-background.jpg";
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useRef } from 'react'; // Import useRef
 
 const IntroductionPage = () => {
   const navigate = useNavigate();
   // Use scroll animation hook
   useScrollAnimation();
+
+  const videoDemoRef = useRef<HTMLDivElement>(null); // Ref untuk bagian demo video
+
+  // Fungsi untuk scroll ke demo video
+  const scrollToVideoDemo = () => {
+    videoDemoRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   // Navigation items data
   const navItems = [
@@ -35,26 +43,26 @@ const IntroductionPage = () => {
       <header
         className="fixed z-50 left-1/2 -translate-x-1/2
                   flex items-center justify-between
-                  px-6 py-3 rounded-[18px]
+                  px-3 py-2 sm:px-4 sm:py-3 rounded-[18px]
                   bg-black/60 backdrop-blur-lg border border-white/10 shadow-2xl
-                  max-w-4xl"
-        style={{ top: 'env(safe-area-inset-top, 1rem)', width: 'min(920px, calc(100% - 3rem))' }}
+                  max-w-4xl w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] md:w-[calc(100%-3rem)]"
+        style={{ top: 'env(safe-area-inset-top, 0.5rem)' }}
       >
-        <div className="font-bold text-white text-xl tracking-wide select-none">
+        <div className="font-bold text-white text-lg sm:text-xl tracking-wide select-none">
           novaX
         </div>
 
-        <nav className="flex items-center space-x-1.5">
+        <nav className="flex items-center space-x-1 sm:space-x-1.5">
           {navItems.map((item, idx) => (
             <Button
               key={idx}
               variant="ghost"
-              className="flex items-center space-x-1.5 h-9 px-3 rounded-lg
+              className="flex items-center space-x-1 sm:space-x-1.5 h-8 sm:h-9 px-2 sm:px-3 rounded-lg
                         text-white/90 hover:text-white hover:bg-white/10
                         transition-colors"
               onClick={() => navigate("/login")}
             >
-              {item.icon}
+              <span className="w-4 h-4">{item.icon}</span>
               <span className="hidden sm:inline text-sm font-normal">
                 {item.text}
               </span>
@@ -66,45 +74,45 @@ const IntroductionPage = () => {
 
       <div className="min-h-screen relative overflow-hidden bg-background">
       {/* Cosmic Background */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${cosmicBackground})` }}
       />
-      
+
       {/* Cosmic Gradient Overlays */}
       <div className="absolute inset-0 bg-cosmic-gradient opacity-80" />
       <div className="absolute inset-0 bg-planet-glow opacity-60" />
-      
+
       {/* Animated Cosmic Glow */}
       <div className="absolute top-1/2 left-1/3 w-96 h-96 bg-cosmic-glow rounded-full blur-3xl animate-cosmic-glow opacity-30" />
-      
+
       {/* Main Content */}
-      <div className="relative z-10 min-h-screen flex items-center justify-center px-6">
-        <div className="text-center space-y-8 max-w-4xl mx-auto">
+      <div className="relative z-10 min-h-screen flex items-center justify-center px-3 sm:px-4 md:px-6">
+        <div className="text-center space-y-6 sm:space-y-8 max-w-4xl mx-auto">
           {/* Main Title */}
-          <div className="space-y-4 animate-fade-in">
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-wider">
+          <div className="space-y-3 sm:space-y-4 animate-fade-in">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-wider">
               <span className="bg-gradient-to-r from-cosmic-glow via-cosmic-aurora to-cosmic-sunrise bg-clip-text text-transparent animate-float">
                 novaX
               </span>
             </h1>
           </div>
-          
+
           {/* Subtitle */}
           <div className="animate-fade-in [animation-delay:0.5s] opacity-0">
-            <p className="text-lg md:text-xl lg:text-2xl text-foreground/90 leading-relaxed font-light tracking-wide max-w-3xl mx-auto">
-              first all in one learning environment 
-              <br className="hidden md:block" />
-              <span className="text-cosmic-aurora">with AI thinking tracker</span>
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-foreground/90 leading-relaxed font-light tracking-wide max-w-3xl mx-auto px-2 sm:px-4">
+              first all in one learning environment
+              <br className="block sm:hidden" />
+              <span className="text-cosmic-aurora"> with AI thinking tracker</span>
             </p>
           </div>
-          
+
           {/* Subtle Accent Line */}
           <div className="animate-fade-in [animation-delay:1s] opacity-0">
             <div className="w-24 h-px bg-gradient-to-r from-transparent via-cosmic-glow to-transparent mx-auto" />
           </div>
         </div>
-      
+
         {/* Additional Cosmic Effects */}
         <div className="absolute bottom-10 right-10 w-32 h-32 bg-cosmic-aurora/20 rounded-full blur-2xl animate-cosmic-glow [animation-delay:2s]" />
         <div className="absolute top-20 right-1/4 w-16 h-16 bg-cosmic-sunrise/30 rounded-full blur-xl animate-float [animation-delay:3s]" />
@@ -116,86 +124,86 @@ const IntroductionPage = () => {
         <div className="flex-1 p-4">
           <div className="max-w-7xl mx-auto">
             {/* Main Content */}
-            <div className="max-w-6xl mx-auto pb-16 sm:pb-14 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+            <div className="max-w-6xl mx-auto pb-8 sm:pb-14 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" // Adjusted pb
                  data-scroll="fade-up">
               {/* Hero Section */}
-              <div className="mb-12 sm:mb-16 pt-16 sm:pt-24">
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+              <div className="mb-6 sm:mb-8 md:mb-16 pt-6 sm:pt-8 md:pt-24 px-3 sm:px-4">
+                <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-3 sm:mb-4 md:mb-6 leading-tight">
                   Transform Your Mind<br />
                   <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
                     In 10 Minutes
                   </span>
                 </h1>
-                <p className="text-lg sm:text-xl text-gray-300 mb-6 sm:mb-8 max-w-2xl">
+                <p className="text-sm sm:text-base md:text-xl text-gray-300 mb-4 sm:mb-6 md:mb-8 max-w-2xl mx-auto">
                   Experience the future of learning where AI adapts to your thinking patterns and accelerates your problem-solving abilities
                 </p>
-                <Link 
-                  to="/login" 
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-base sm:text-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl w-full sm:w-auto inline-block text-center"
+                <Link
+                  to="/login"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 rounded-lg text-sm sm:text-base md:text-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl w-full sm:w-auto inline-block text-center"
                 >
                   Begin Your Journey
                 </Link>
               </div>
 
               {/* Features Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 sm:mb-24">
-                <div className="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-3xl p-6 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-8 md:mb-24 px-3 sm:px-4">
+                <div className="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out"
                      data-scroll="fade-up" style={{animationDelay: '0.2s'}}>
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-4">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-2 sm:mb-3 md:mb-4">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold mb-3 text-white">Lightning Fast Learning</h3>
-                  <p className="text-gray-400">AI-powered adaptation that matches your pace and accelerates your understanding</p>
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1.5 sm:mb-2 md:mb-3 text-white">Lightning Fast Learning</h3>
+                  <p className="text-xs sm:text-sm md:text-base text-gray-400 leading-relaxed">AI-powered adaptation that matches your pace and accelerates your understanding</p>
                 </div>
 
-                <div className="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-3xl p-6 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                <div className="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out"
                      data-scroll="fade-up" style={{animationDelay: '0.4s'}}>
-                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mb-4">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mb-2 sm:mb-3 md:mb-4">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold mb-3 text-white">Smart Problem Solving</h3>
-                  <p className="text-gray-400">Real-world challenges that build critical thinking and analytical skills</p>
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1.5 sm:mb-2 md:mb-3 text-white">Smart Problem Solving</h3>
+                  <p className="text-xs sm:text-sm md:text-base text-gray-400 leading-relaxed">Real-world challenges that build critical thinking and analytical skills</p>
                 </div>
 
-                <div className="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-3xl p-6 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                <div className="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out"
                      data-scroll="fade-up" style={{animationDelay: '0.6s'}}>
-                  <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-red-600 rounded-full flex items-center justify-center mb-4">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-gradient-to-r from-pink-500 to-red-600 rounded-full flex items-center justify-center mb-2 sm:mb-3 md:mb-4">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold mb-3 text-white">Progress Tracking</h3>
-                  <p className="text-gray-400">Monitor your growth with detailed analytics with thinking process</p>
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1.5 sm:mb-2 md:mb-3 text-white">Progress Tracking</h3>
+                  <p className="text-xs sm:text-sm md:text-base text-gray-400 leading-relaxed">Monitor your growth with detailed analytics with thinking process</p>
                 </div>
               </div>
 
               {/* Statistics Section */}
-              <div className="text-center mb-16 sm:mb-24 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+              <div className="text-center mb-6 sm:mb-8 md:mb-24 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out"
                    data-scroll="fade-up">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-8">
+                <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 md:mb-8 px-3 sm:px-4">
                   Why <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Problem Solving</span> Matters
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                  <div className="bg-gradient-to-r from-yellow-400/10 to-orange-500/10 border border-yellow-500/30 rounded-3xl p-8 backdrop-blur-sm opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 md:gap-8 max-w-4xl mx-auto px-3 sm:px-4">
+                  <div className="bg-gradient-to-r from-yellow-400/10 to-orange-500/10 border border-yellow-500/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 backdrop-blur-sm opacity-0 transform translate-y-8 transition-all duration-1000 ease-out"
                        data-scroll="fade-up" style={{animationDelay: '0.2s'}}>
-                    <h3 className="text-2xl sm:text-3xl font-bold text-yellow-400 mb-4">
+                    <h3 className="text-lg sm:text-xl md:text-3xl font-bold text-yellow-400 mb-2 sm:mb-3 md:mb-4">
                       WORLD ECONOMIC FORUM
                     </h3>
-                    <p className="text-gray-300">
+                    <p className="text-xs sm:text-sm md:text-base text-gray-300 leading-relaxed">
                       Problem-solving is the #1 skill needed in the era of automation and AI orchestrations
                     </p>
                   </div>
-                  
-                  <div className="bg-gradient-to-r from-blue-400/10 to-purple-500/10 border border-blue-500/30 rounded-3xl p-8 backdrop-blur-sm opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+
+                  <div className="bg-gradient-to-r from-blue-400/10 to-purple-500/10 border border-blue-500/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 backdrop-blur-sm opacity-0 transform translate-y-8 transition-all duration-1000 ease-out"
                        data-scroll="fade-up" style={{animationDelay: '0.4s'}}>
-                    <h3 className="text-2xl sm:text-3xl font-bold text-blue-400 mb-4">
+                    <h3 className="text-lg sm:text-xl md:text-3xl font-bold text-blue-400 mb-2 sm:mb-3 md:mb-4">
                       TOP LINKEDIN SKILL
                     </h3>
-                    <p className="text-gray-300">
+                    <p className="text-xs sm:text-sm md:text-base text-gray-300 leading-relaxed">
                       Most sought-after skill by employers across all industries
                     </p>
                   </div>
@@ -203,16 +211,19 @@ const IntroductionPage = () => {
               </div>
 
               {/* Call to Action */}
-              <div className="text-center opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+              <div className="text-center opacity-0 transform translate-y-8 transition-all duration-1000 ease-out px-3 sm:px-4"
                    data-scroll="fade-up">
-                <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+                <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-white mb-3 sm:mb-4 md:mb-6">
                   Ready to <span className="bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">Unlock</span> Your Team?
                 </h2>
-                <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+                <p className="text-sm sm:text-base md:text-lg text-gray-300 mb-4 sm:mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed">
                   Join thousands of students who can be your collaboration and discussion team
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                  <button className="border border-gray-600 text-gray-300 px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 w-full sm:w-auto">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 justify-center items-center">
+                  <button
+                    className="border border-gray-600 text-gray-300 px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 rounded-xl sm:rounded-2xl text-sm sm:text-base md:text-lg font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 w-full sm:w-auto"
+                    onClick={scrollToVideoDemo}
+                  >
                     Watch Demo
                   </button>
                 </div>
@@ -227,15 +238,15 @@ const IntroductionPage = () => {
         <div className="flex-1 p-4">
           <div className="max-w-7xl mx-auto">
             {/* Main Content */}
-            <div className="max-w-6xl mx-auto pb-16 sm:pb-14 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+            <div className="max-w-6xl mx-auto pb-8 sm:pb-14 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" // Adjusted pb
                  data-scroll="fade-up">
               {/* Hero Section */}
-              <div className="mb-12 sm:mb-16">
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
+              <div className="mb-6 sm:mb-8 md:mb-16 px-3 sm:px-4">
+                <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-3 sm:mb-4 md:mb-6 leading-tight">
                   online thinking lab<br />
                   with transcendent AI
                 </h1>
-                <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl">
+                <p className="text-sm sm:text-base md:text-xl text-gray-600 mb-4 sm:mb-6 md:mb-8 max-w-2xl mx-auto">
                 Online lab + Project portfolio + Deep-learning method + transcendent AI
                 </p>
               </div>
@@ -243,24 +254,23 @@ const IntroductionPage = () => {
               {/* Combined Section with Scroll Track Shadow Effect */}
               <div className="relative">
                 <div className="p-0 relative z-10">
-                  <div className="flex overflow-x-auto gap-4 pb-4 md:flex-col md:space-y-8 md:overflow-x-visible snap-x snap-mandatory px-4 md:px-0">
-                    <div className="bg-gradient-to-r from-yellow-400/10 to-orange-500/10 border border-yellow-500/30 rounded-3xl p-6 backdrop-blur-sm min-w-[280px] md:min-w-0 md:p-8 snap-center opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                  <div className="flex overflow-x-auto gap-3 sm:gap-4 pb-4 md:flex-col md:space-y-6 lg:space-y-8 md:overflow-x-visible snap-x snap-mandatory px-3 sm:px-4 md:px-0">
+                    <div className="bg-gradient-to-r from-yellow-400/10 to-orange-500/10 border border-yellow-500/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 backdrop-blur-sm min-w-[260px] sm:min-w-[280px] md:min-w-0 snap-center opacity-0 transform translate-y-8 transition-all duration-1000 ease-out"
                          data-scroll="fade-up" style={{animationDelay: '0.2s'}}>
-                      <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-yellow-500 mb-4">
+                      <h2 className="text-lg sm:text-2xl md:text-4xl lg:text-5xl font-bold text-yellow-500 mb-2 sm:mb-3 md:mb-4">
                         DEEP-LEARNING METHOD
                       </h2>
-                      <p className="text-base sm:text-lg text-gray-700">
-                        Spaced repetition, active retrieval, meta cognition reflection, problem based and project based learning <br className="hidden sm:block" />
-                        <span className="sm:hidden"> </span>
+                      <p className="text-xs sm:text-sm md:text-lg text-gray-700 leading-relaxed">
+                        Spaced repetition, active retrieval, meta cognition reflection, problem based and project based learning
                       </p>
                     </div>
-                    
-                    <div className="bg-gradient-to-r from-yellow-400/10 to-orange-500/10 border border-yellow-500/30 rounded-3xl p-6 backdrop-blur-sm min-w-[280px] md:min-w-0 md:p-8 snap-center opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+
+                    <div className="bg-gradient-to-r from-yellow-400/10 to-orange-500/10 border border-yellow-500/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 backdrop-blur-sm min-w-[260px] sm:min-w-[280px] md:min-w-0 snap-center opacity-0 transform translate-y-8 transition-all duration-1000 ease-out"
                          data-scroll="fade-up" style={{animationDelay: '0.4s'}}>
-                      <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-yellow-500 mb-4">
+                      <h2 className="text-lg sm:text-2xl md:text-4xl lg:text-5xl font-bold text-yellow-500 mb-2 sm:mb-3 md:mb-4">
                         AI TRANSCENDENT
                       </h2>
-                      <p className="text-base sm:text-lg text-gray-700">
+                      <p className="text-xs sm:text-sm md:text-lg text-gray-700 leading-relaxed">
                       AI that assesses thinking skills in all conditions while learning, arguing, experimenting, working on projects and collaborating
                       </p>
                     </div>
@@ -269,63 +279,61 @@ const IntroductionPage = () => {
               </div>
             </div>
 
-            <div className="min-h-screen bg-white py-16 sm:py-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-16 sm:mb-20 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+            <div className="min-h-screen bg-white py-6 sm:py-8 md:py-24">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6">
+          <div className="text-center mb-8 sm:mb-12 md:mb-20 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out"
                data-scroll="fade-up">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-3 sm:mb-4 md:mb-6">
               Problem-Based Learning
             </h2>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Experience learning through real-world challenges that develop critical thinking, 
-              collaboration skills, and deep understanding through authentic problem-solving scenarios
+            <p className="text-sm sm:text-base md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Experience learning through real-world challenges that develop critical thinking, and deep understanding through authentic problem-solving scenarios.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-16 items-center mb-8 sm:mb-12">
             {/* Problem-Based Learning Explanation */}
-            <div className="opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+            <div className="opacity-0 transform translate-y-8 transition-all duration-1000 ease-out"
                  data-scroll="fade-up" style={{animationDelay: '0.2s'}}>
-              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">
+              <h3 className="text-lg sm:text-xl md:text-3xl font-bold text-gray-900 mb-3 sm:mb-4 md:mb-6">
                 Learn by Solving Real Problems
               </h3>
-              <div className="space-y-6 text-gray-700">
-                <p className="text-lg leading-relaxed">
-                  Problem-based learning puts you at the center of authentic, complex challenges that mirror real-world scenarios. 
-                  Instead of passive consumption, you actively construct knowledge through investigation, collaboration, and reflection.
+              <div className="space-y-3 sm:space-y-4 text-gray-700">
+                <p className="text-sm sm:text-base leading-relaxed">
+                Problem-based learning puts you at the center of authentic, complex challenges that mirror real-world scenarios. Instead of passive consumption, you actively construct knowledge through investigation, and reflection.
                 </p>
-                <div className="space-y-4">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="space-y-2 sm:space-y-3">
+                  <div className="flex items-start space-x-2 sm:space-x-3">
+                    <div className="w-6 h-6 sm:w-7 sm:h-7 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-1">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                       </svg>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-2">Active Knowledge Construction</h4>
-                      <p className="text-gray-600">Build understanding through hands-on investigation rather than passive absorption</p>
+                      <h4 className="font-semibold text-gray-900 mb-0.5 sm:mb-1 text-sm sm:text-base">Active Knowledge Construction</h4>
+                      <p className="text-xs sm:text-sm text-gray-600">Build understanding through hands-on investigation rather than passive absorption</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-4">
-                    <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex items-start space-x-2 sm:space-x-3">
+                    <div className="w-6 h-6 sm:w-7 sm:h-7 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-1">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                       </svg>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-2">Collaborative Learning</h4>
-                      <p className="text-gray-600">Work with peers to tackle complex challenges and share diverse perspectives</p>
+                      <h4 className="font-semibold text-gray-900 mb-0.5 sm:mb-1 text-sm sm:text-base">Collaborative Learning (coming soon)</h4>
+                      <p className="text-xs sm:text-sm text-gray-600">Work with peers to tackle complex challenges and share diverse perspectives</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-4">
-                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex items-start space-x-2 sm:space-x-3">
+                    <div className="w-6 h-6 sm:w-7 sm:h-7 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-1">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-2">Real-World Relevance</h4>
-                      <p className="text-gray-600">Engage with authentic problems that connect learning to meaningful contexts</p>
+                      <h4 className="font-semibold text-gray-900 mb-0.5 sm:mb-1 text-sm sm:text-base">Real-World Relevance</h4>
+                      <p className="text-xs sm:text-sm text-gray-600">Engage with authentic problems that connect learning to meaningful contexts</p>
                     </div>
                   </div>
                 </div>
@@ -333,39 +341,39 @@ const IntroductionPage = () => {
             </div>
 
             {/* Visual Representation */}
-            <div className="opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+            <div className="opacity-0 transform translate-y-8 transition-all duration-1000 ease-out"
                  data-scroll="fade-up" style={{animationDelay: '0.4s'}}>
-              <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl p-8 border border-blue-100">
-                <div className="text-center mb-8">
-                  <h4 className="text-xl font-bold text-gray-900 mb-4">PBL Learning Cycle</h4>
+              <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border border-blue-100">
+                <div className="text-center mb-4 sm:mb-6 md:mb-8">
+                  <h4 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4">PBL Learning Cycle</h4>
                 </div>
-                <div className="space-y-6">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">1</div>
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="flex items-center space-x-2 sm:space-x-3">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm md:text-base">1</div>
                     <div>
-                      <h5 className="font-semibold text-gray-900">Problem Presentation</h5>
-                      <p className="text-sm text-gray-600">Encounter authentic, complex scenarios</p>
+                      <h5 className="font-semibold text-gray-900 text-sm sm:text-base md:text-lg">Problem Presentation</h5>
+                      <p className="text-xs sm:text-sm text-gray-600">Encounter authentic, complex scenarios</p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-4">
-                    <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">2</div>
+                  <div className="flex items-center space-x-2 sm:space-x-3">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm md:text-base">2</div>
                     <div>
-                      <h5 className="font-semibold text-gray-900">Investigation & Research</h5>
-                      <p className="text-sm text-gray-600">Gather information and analyze data</p>
+                      <h5 className="font-semibold text-gray-900 text-sm sm:text-base md:text-lg">Investigation & Research</h5>
+                      <p className="text-xs sm:text-sm text-gray-600">Gather information and analyze data</p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-4">
-                    <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">3</div>
+                  <div className="flex items-center space-x-2 sm:space-x-3">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm md:text-base">3</div>
                     <div>
-                      <h5 className="font-semibold text-gray-900">Solution Development</h5>
-                      <p className="text-sm text-gray-600">Create and test potential solutions</p>
+                      <h5 className="font-semibold text-gray-900 text-sm sm:text-base md:text-lg">Solution Development</h5>
+                      <p className="text-xs sm:text-sm text-gray-600">Create and test potential solutions</p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-4">
-                    <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold">4</div>
+                  <div className="flex items-center space-x-2 sm:space-x-3">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm md:text-base">4</div>
                     <div>
-                      <h5 className="font-semibold text-gray-900">Reflection & Application</h5>
-                      <p className="text-sm text-gray-600">Evaluate learning and transfer knowledge</p>
+                      <h5 className="font-semibold text-gray-900 text-sm sm:text-base md:text-lg">Reflection & Application</h5>
+                      <p className="text-xs sm:text-sm text-gray-600">Evaluate learning and transfer knowledge</p>
                     </div>
                   </div>
                 </div>
@@ -376,45 +384,45 @@ const IntroductionPage = () => {
       </div>
 
       {/* Advanced Learning Techniques Section */}
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-16 sm:py-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-16 sm:mb-20 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8 sm:py-16 md:py-24">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6">
+          <div className="text-center mb-10 sm:mb-16 md:mb-20 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
                data-scroll="fade-up">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
               Advanced Cognitive Enhancement
             </h2>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-sm sm:text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
               Experience personalized learning that adapts to your cognitive patterns using scientifically-proven techniques 
               that optimize memory retention, critical thinking, and self-awareness
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 xl:gap-12 mb-10 sm:mb-16">
             {/* Spaced Repetition */}
-            <div className="bg-white rounded-3xl p-8 shadow-lg border border-gray-200 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+            <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-lg border border-gray-200 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
                  data-scroll="fade-up" style={{animationDelay: '0.2s'}}>
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mb-6">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6">
+                <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Intelligent Spaced Repetition</h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">Intelligent Spaced Repetition</h3>
+              <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed">
                 Our AI analyzes your forgetting curves and optimizes review intervals based on your individual memory patterns, 
                 ensuring maximum retention with minimal effort.
               </p>
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Personalized forgetting curve analysis</span>
+              <div className="space-y-2 sm:space-y-3">
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                  <span className="text-xs sm:text-sm text-gray-700">Personalized forgetting curve analysis</span>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Dynamic interval adjustment</span>
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                  <span className="text-xs sm:text-sm text-gray-700">Dynamic interval adjustment</span>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Context-aware scheduling</span>
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
+                  <span className="text-xs sm:text-sm text-gray-700">Context-aware scheduling</span>
                 </div>
               </div>
             </div>
@@ -511,7 +519,7 @@ const IntroductionPage = () => {
                   </svg>
                 </div>
                 <h4 className="text-lg font-bold text-gray-900 mb-2">Emotional Intelligence Integration</h4>
-                <p className="text-sm text-gray-600">Considers your emotional state and motivation levels in learning optimization</p>
+                <p className="text-sm text-gray-600">Take into account your emotional state and level of confidence in optimizing learning</p>
               </div>
 
               <div className="text-center opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
@@ -645,16 +653,16 @@ const IntroductionPage = () => {
                     >
                       Get Started Now
                     </Link>
-                    <button className="border border-gray-600 text-gray-300 px-6 py-3 rounded-2xl text-base font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 w-full text-center">
-                      Learn More
-                    </button>
+                    <Link to="/premium" className="border border-gray-600 text-gray-300 px-6 py-3 rounded-2xl text-base font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 w-full text-center">
+                      Pricing
+                    </Link>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Video and Explanation Section */}
-            <div className="py-16 sm:py-24 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+            <div ref={videoDemoRef} className="py-16 sm:py-24 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
                  data-scroll="fade-up">
               <div className="max-w-6xl mx-auto px-4 sm:px-6">
                 <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
@@ -693,38 +701,38 @@ const IntroductionPage = () => {
                   </div>
 
                   {/* Explanation Box */}
-                  <div className="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-3xl p-8 lg:p-10 shadow-lg order-2 lg:order-1 w-full lg:w-1/2 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
+                  <div className="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-3xl p-6 sm:p-8 lg:p-10 shadow-lg order-2 lg:order-1 w-full lg:w-1/2 opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" 
                        data-scroll="fade-up" style={{animationDelay: '0.4s'}}>
-                    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
                       See How It Works
                     </h2>
-                    <p className="text-lg text-gray-700 mb-6 leading-relaxed">
+                    <p className="text-base sm:text-lg text-gray-700 mb-4 sm:mb-6 leading-relaxed">
                       Watch our interactive demonstration to see how AI-powered problem solving transforms your learning experience in just 10 minutes a day.
                     </p>
-                    <div className="space-y-4">
-                      <div className="flex items-start space-x-3">
-                        <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="space-y-3 sm:space-y-4">
+                      <div className="flex items-start space-x-2 sm:space-x-3">
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                          <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
-                        <p className="text-gray-700">Real-time AI adaptation to your thinking level</p>
+                        <p className="text-sm sm:text-base text-gray-700">Real-time AI adaptation to your thinking level</p>
                       </div>
-                      <div className="flex items-start space-x-3">
-                        <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="flex items-start space-x-2 sm:space-x-3">
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                          <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
-                        <p className="text-gray-700">Interactive problem-solving scenarios</p>
+                        <p className="text-sm sm:text-base text-gray-700">Interactive problem-solving scenarios</p>
                       </div>
-                      <div className="flex items-start space-x-3">
-                        <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="flex items-start space-x-2 sm:space-x-3">
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                          <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
-                        <p className="text-gray-700">Instant feedback and progress tracking by procces not result</p>
+                        <p className="text-sm sm:text-base text-gray-700">Instant feedback and progress tracking by procces not result</p>
                       </div>
                     </div>
                   </div>
