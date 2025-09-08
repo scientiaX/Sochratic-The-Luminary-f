@@ -620,7 +620,7 @@ const IntroductionPage = () => {
                       Get Started Now
                     </Link>
                     <Link
-                      to="/premium"
+                      to="/pricing"
                       className="border border-gray-600 text-gray-300 px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300"
                      >
                       Pricing
@@ -653,7 +653,7 @@ const IntroductionPage = () => {
                     >
                       Get Started Now
                     </Link>
-                    <Link to="/premium" className="border border-gray-600 text-gray-300 px-6 py-3 rounded-2xl text-base font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 w-full text-center">
+                    <Link to="/pricing" className="border border-gray-600 text-gray-300 px-6 py-3 rounded-2xl text-base font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 w-full text-center">
                       Pricing
                     </Link>
                   </div>

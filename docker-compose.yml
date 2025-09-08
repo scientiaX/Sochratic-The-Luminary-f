@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  web-dev:
+    profiles: ["dev"]
+    build:
+      context: .
+      target: dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    # Jika Vite perlu tahu host HMR secara eksplisit:
+    # command: ["npm","run","dev","--","--host","0.0.0.0","--port","5173","--strictPort","--hmr","protocol=ws,host=localhost,port=5173"]
+    depends_on:
+      - backend
+
+  web:
+    profiles: ["prod"]
+    build:
+      context: src/pages
+      target: prod
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+  backend:
+    # Opsional: ganti dengan backend kamu yang sebenarnya
+    # profiles: ["dev","prod"]  # aktif di semua profile
+    image: nginx:alpine
+    container_name: dummy-backend
+    ports:
+      - "8081:8080"
+    # Contoh placeholder reverse-proxy/static; sesuaikan atau ganti dengan service backendmu
+    command: ["/bin/sh","-c","apk add --no-cache busybox-extras >/dev/null 2>&1; httpd -p 8080 -h /var/www/localhost/htdocs -f & tail -f /dev/null"]

@@ -32,7 +32,7 @@ function App() {
         <Route path="/study" element={<Navigate to="/selection" replace />} />
         <Route path="/completion/:courseId/:topicId" element={<CompletionWrapper />} />
         <Route path="/login" element={<LoginRegisterPage />} />
-        <Route path="/premium" element={<PremiumPage />} />
+        <Route path="/pricing" element={<PremiumPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/edit-profile" element={<EditProfilePage />} />
         <Route path="/checkout/success" element={<CheckoutSuccessPage />} />

@@ -505,7 +505,7 @@ const LessonSelectionPage = () => {
           </span>
         </p>
         <button 
-          onClick={() => navigate('/premium')}
+          onClick={() => navigate('/pricing')}
           className="w-full bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-white px-6 py-3 rounded-xl font-semibold shadow-lg border border-gray-600 hover:from-gray-800 hover:via-gray-700 hover:to-gray-600 transition-all duration-300"
         >
           Join Contributor
@@ -611,7 +611,7 @@ const LessonSelectionPage = () => {
             </div>
             
             <button 
-              onClick={() => navigate('/premium')}
+              onClick={() => navigate('/pricing')}
               className="flex items-center justify-center sm:justify-start space-x-2 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-white px-4 py-2 rounded-lg shadow-lg border border-gray-600 hover:from-gray-800 hover:via-gray-700 hover:to-gray-600 transition-all duration-300 cursor-pointer text-sm sm:text-base"
             >
               <Award size={18} className="text-gray-300 sm:w-5" />
