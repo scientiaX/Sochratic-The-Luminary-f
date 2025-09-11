@@ -4,13 +4,13 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'rea
 // Impor komponen halaman yang berbeda
 import IntroductionPage from './pages/introduction';
 import LessonSelectionPage from './pages/selection';
-import TopicsPage from './pages/topics';
-import StudyPage from './pages/study';
+import TopicsPage from './pages/pbl/topics.tsx';
+import StudyPage from './pages/pbl/study.tsx';
 import LoginRegisterPage from './pages/login';
 import PremiumPage from './pages/pricing';
 import ProfilePage from './pages/profile';
 import EditProfilePage from './pages/edit-profile';
-import CompletionStage from './components/study/CompletionStage';
+import CompletionStage from './components/study/pbl/CompletionStage.tsx';
 import CheckoutSuccessPage from './pages/checkout-success';
 import CheckoutCancelPage from './pages/checkout-cancel';
 

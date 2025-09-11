@@ -1,10 +1,10 @@
 // src/components/study/CompletionStage.tsx
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card.tsx';
+import { Button } from '@/components/ui/button.tsx';
 import { Home, Trophy, Star, Target, Brain, Zap, Lightbulb, TrendingUp, Award } from 'lucide-react';
 import Lottie from 'lottie-react';
-import expAnimation from '../element/exp.json';
+import expAnimation from '../../element/exp.json';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {

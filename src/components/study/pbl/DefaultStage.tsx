@@ -18,10 +18,10 @@
 
 import React, {useState, useEffect} from 'react';
 import {Home, BookOpen, Sparkles} from 'lucide-react';
-import NextButton from '../element/NextButton';
-import {Button} from '@/components/ui/button';
-import {Card, CardContent} from '@/components/ui/card';
-import {Input} from '@/components/ui/input';
+import NextButton from '../../element/NextButton.tsx';
+import {Button} from '@/components/ui/button.tsx';
+import {Card, CardContent} from '@/components/ui/card.tsx';
+import {Input} from '@/components/ui/input.tsx';
 // API imports removed since this component doesn't use backend APIs yet
 import {useNavigate} from 'react-router-dom';
 

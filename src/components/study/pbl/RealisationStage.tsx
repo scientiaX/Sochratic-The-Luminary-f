@@ -1,10 +1,10 @@
 // src/components/study/RealisationStage.tsx
 import React, { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent } from '@/components/ui/card.tsx';
+import { Button } from '@/components/ui/button.tsx';
+import { Textarea } from '@/components/ui/textarea.tsx';
 import { Home } from 'lucide-react';
-import NextButton from '../element/NextButton';
+import NextButton from '../../element/NextButton.tsx';
 // API imports removed since this component doesn't use backend APIs yet
 import { useNavigate } from 'react-router-dom';
 

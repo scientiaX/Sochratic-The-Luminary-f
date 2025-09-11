@@ -1,10 +1,10 @@
 // src
 import React, {useState, useEffect} from 'react';
-import {Card, CardContent} from '@/components/ui/card';
-import {Button} from '@/components/ui/button';
+import {Card, CardContent} from '@/components/ui/card.tsx';
+import {Button} from '@/components/ui/button.tsx';
 import {Home, Edit3, CheckCircle} from 'lucide-react';
-import NextButton from '../element/NextButton';
-import {FallingStars} from '../ui/FallingStars';
+import NextButton from '../../element/NextButton.tsx';
+import {FallingStars} from '../../ui/FallingStars.tsx';
 import {useNavigate} from 'react-router-dom';
 
 interface Props {

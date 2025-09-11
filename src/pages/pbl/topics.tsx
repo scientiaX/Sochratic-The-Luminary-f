@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, BookOpen, Clock, Star, Play, Brain, Target, Zap, CheckCircle } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
-import algorithmPng from '../assets/StudyIcon/algorithm.png';
-import { FallingStars } from '../components/ui/FallingStars';
+import algorithmPng from '../../assets/StudyIcon/algorithm.png';
+import { FallingStars } from '../../components/ui/FallingStars.tsx';
 
 // Course topics data
 const courseTopics = {

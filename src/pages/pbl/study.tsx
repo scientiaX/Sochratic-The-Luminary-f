@@ -10,11 +10,11 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import DefaultStage from '../components/study/DefaultStage';
-import ExplanationStage from '../components/study/ExplanationStage';
-import FinalSolutionStage from '../components/study/FinalSolutionStage';
-import RealisationStage from '../components/study/RealisationStage';
-import RecallStage from '../components/study/RecallStage';
+import DefaultStage from '../../components/study/pbl/DefaultStage.tsx';
+import ExplanationStage from '../../components/study/pbl/ExplanationStage.tsx';
+import FinalSolutionStage from '../../components/study/pbl/FinalSolutionStage.tsx';
+import RealisationStage from '../../components/study/pbl/RealisationStage.tsx';
+import RecallStage from '../../components/study/pbl/RecallStage.tsx';
 
 /**
  * Available learning stages in the study flow
